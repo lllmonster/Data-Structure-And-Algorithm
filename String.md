@@ -59,6 +59,9 @@ If we want string to be mutable, there are some substitutions:
 String s = "Hello World";
 char[] str = s.toCharArray();
 str[5] = ','; // str becomes "Hello,World"
+// covert from a char array to string
+String news = new String(str);
+String news = String.valueOf(str);
 ```
 2. If we have to concatenate strings often, it will be better to use some other data structures like `StringBuilder`. O(n) time complexity.
 ```
