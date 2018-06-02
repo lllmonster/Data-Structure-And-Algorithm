@@ -8,8 +8,9 @@ StringBuilder str = new StringBuilder(s);
 len = str.length();
 
 str.reverse();//reverse
-
 str.toString();//convert to String
+str.setLength(0); // empty StringBuilder
+str.insert(0, 'a'); // insert
 
 s == null || s.isEmpty(); //judge if exists or empty
 ```
