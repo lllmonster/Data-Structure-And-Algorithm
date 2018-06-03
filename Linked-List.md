@@ -59,3 +59,44 @@ Problem: Reverse a singly linked list.
 One Solution is to `iterate the nodes in original order and move them to the head of the list one by one.`  
 In this algorithm, each node will be moved exactly once.  
 Therefore, the time complexity is `O(n)`, the sapce complexity is `O(1)`.
+There are two algorithms to reverse linked list: iterative and recursive.
+```
+// iterative
+public ListNode reverseList(ListNode head) {
+    if(head == null || head.next == null) return head;
+    ListNode prev = null;
+    ListNode cur = head;
+    ListNode temp = cur;
+    while (cur != null) {
+        temp = cur.next;
+        cur.next = prev;
+        prev = cur;
+        cur = temp;
+    }
+    return prev;
+}
+// recursive
+public ListNode reverseList(ListNode head) {
+    if (head == null || head.next == null) return head;
+    ListNode ans = reverseList(head.next);
+    head.next.next = head;
+    head.next = null;
+    return ans;
+}
+```
+## Doubly Linked List
+### Node structure
+```
+// Definition for doubly-linked list.
+class DoublyListNode {
+    int val;
+    DoublyListNode next, prev;
+    DoublyListNode(int x) {val = x;}
+}
+```
+### Operations
+#### Add Operation - Doubly Linked List - O(1)
+#### Delete Operation - Doubly Linked List - O(1)  
+
+## Time complexity Comparison'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+![alt text](./image/timeComparison.png)  
