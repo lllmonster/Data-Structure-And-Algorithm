@@ -1,4 +1,5 @@
 # Array
+## 1D Array
 An array has a `a fixed capacity`, and we need to specify the size of the array when we initialize it. Sometimes this will be inconvenient and wasteful.
 
 In Java,
@@ -30,7 +31,7 @@ public class Main {
   }
 }
 ```
-# Dynamic Array
+## Dynamic Array
 An dynamic array is a random access list data structure with `variable size`. In java, we have `ArrayList`. In python, we have `list`.
 
 ```
@@ -77,7 +78,7 @@ public class test {
 	}
 }
 ```
-# 2D Array
+## 2D Array
 In java, the 2D array is actually a 1D array which contains M elements, each of which is an array of N integers.
 
 Also, we can define a 2D dynamic array. It can be just a nested dynamic array.
@@ -98,7 +99,7 @@ public class test {
 }
 ```
 
-## Note:
+### Note:
 The difference between `i++` and `++i` in Java:
 `i++ = ++i => i = i + 1`, but not exactly same
 ```
@@ -128,3 +129,65 @@ lst.remove(x) # remove the first occurence of x in the lst
 for item in lst[:]: # Notice the [:] which makes a slice
        # Now we can modify lst, since we are iterating over a copy of it
 ```
+## Two Pointer Technique -- Array
+Start with a classic problem.  
+
+**Reverse the elements in an array**  
+The idea is to swap the first element with the end, advance to the next element and swapping repeatedly until it reaches the middle position.
+```
+public static void reverse(int[] v, int N) {
+  int i = 0;
+  int j = N - 1;
+  while(i < j) {
+    swap(v, i, j); // self-defined function
+    i++;
+    j--;
+  }
+}
+```
+**Summary**  
+To summarize, one of typical scenarios to use two-pointer technique is that you want to `Iterate the array from two ends to the middle`.  
+And it is worth noting that this technique is often used in an `sorted` array.
+
+Sometimes, we can use `two pointers with different steps` to solve problems. Let's start with another classic problem.
+
+**Given an array and a value, remove all instances of that value in-place and return the new length**  
+If we don't have the limitation of space complexity, it will be easier. We can initialize a new array to store the answer. Actually, it is equivalent to using two pointers, one is used for the iteration of original array and another one always points at the last position of the new array.  
+If we consider the space limitation, we can still use two pointers: `one is still used for the iteration while the seconde one always points at the position for next addition`.
+```
+public int removeElement(int[] nums, int val) {
+  int k = 0;
+  for (int i = 0; i < nums.length; i++) {
+    if (nums[i] != val) {
+      nums[k] = nums[i];
+      k++;
+    }
+  }
+  return k;
+}
+```
+**Summary**  
+To summarize, this is very common scenario of using the two-pointer technique when you need `one slow-runner and one fast-runner at the same time`, but you need to determine the movement strategy for both pointers at first.  
+And it is worth noting that you might sometimes need to `sort` the array and a `greedy` thought to determine your strategy.
+
+
+## Conclusion
+
+There are more array-related data structures we need to learn.
+
+1. Other data structures  
+  - String
+  - Hash table
+  - Linked List
+  - Queue
+  - Stack
+
+2. Understand the principle of some widely-used sorting algorithms and their complexity.
+
+3. Binary search is used to search a specific element in a sorted array.
+
+4. Two pointer also can be used in,
+  - Slow-pointer and faster-pointer problem in Linked List
+  - Sliding Window Problem
+
+5. Two pointers technique sometimes will relate to Greedy Algorithm which helps us to design our pointers' movement strategy.
