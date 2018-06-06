@@ -112,3 +112,96 @@ The typical design of built-in hash table is:
 
 The average time complexity of insertion and search is still O(1).  
 And the time complexity in the worst case is O(logN) for insertion and search by using height-balanced BST. It is a trade-off between insertion and search.
+
+## HashSet Operation
+```
+public static void main(String[] args) {
+  Set<Integer> hashSet = new HashSet<>(); // initialize the hash set
+  hashSet.add(3); // add a new key
+  hashSet.remove(3); // remove the key
+  if (!hashSet.contains(2)) {
+    // check if the key is in the hash set
+  }
+  hashSet.size();
+  // iterate the hash set
+  for (Integer i : hashSet) {}
+  hashSet.clear(); // clear the hash set
+  hashSet.isEmpty();
+}
+```
+Typically, a hash set is used to `check if a value has ever appeared or not`. Let's look at an example:  
+**Given an array of Integers, find if the array contains any duplicates.**
+```
+public boolean findDuplicates(List<Type>& keys) {
+  Set<Type> hashset = new HashSet<>();
+  for (Type key : keys) {
+    if (hashset.contains(key)) return true;
+    hashset.add(key);
+  }
+  return false;
+}
+```
+## HashMap Operation
+```
+public static void main(String[] args) {
+  // 1. initialize the hash map
+  Map<Integer, Integer> hashmap = new HashMap<>();
+  // 2. insert a new (key, value) pair
+  hashmap.putIfAbsent(0,0);
+  // 3. insert a new (key, value) pair or update the value of existed key
+  hashmap.put(1,1);
+  // 4. get the value of specific key
+  hashmap.get(1);
+  // 5. delete a key
+  hashmap.remove(2);
+  // 6. check if a key/value is in the hash map
+  hashmap.containsKey(2);
+  hashmap.containsValue(2);
+  // 7. get the size of the hash map
+  hashmap.size();
+  // 8. iterate the hash map
+  for (Map.Entry<Integer, Integer> entry : hashmap.entrySet()) {
+    entry.getKey();
+    entry.getValue();
+  }
+  // 9. clear the hash map
+  hashmap.clear();
+  // 10. check if the hash map is empty
+  hashmap.isEmpty();
+}
+```
+Let's look at an example:  
+**Given an array of integers, return indices of the two numbers such that they add up to a specific target.**  
+In this example, if we only want to return true if there is a solution, we can use a hash set to store all the values when we iterate the array and check if `target - current_value` is in the hash set or not.  
+However, we are asked to `return more information` which means we not only care about the value but also care about the index. We need to store not only the number as the key but also the index as the value. Therefore, we should use a hash map rather than a hash set.
+```
+ReturnType aggregateByKey_hashmap(List<Type>& keys) {
+  Map<Type, InfoType> hashmap = new HashMap<>();
+  for (Type key : keys) {
+    if (hashmap.containsKey(key)) {
+      if (hashmap.get(key) satisfies the requirement) {
+        return needed_information;
+      }
+    }
+    hashmap.put(key, value);
+  }
+  return needed_information;
+}
+```
+Another frequent scenario is to `aggregate all the information by key`. Here's an example:  
+**Given a string, find the first non-repeating character in it and return its index. If it doesn't exist, return -1.**  
+A simple way is to `count the occurrence` of each character first. And then go through the results to find out the first unique character.  
+Therefore, we can maintain a hashmap whose key is the character while the value is a counter for the corresponding character. Each time when we iterate a character, we just add the corresponding value by 1.  
+The key to solving this kind of problem is to `decide your strategy when you encounter an existing key`.
+```
+ReturnType aggregateByKey_hashmap(List<Type>& keys) {
+  Map<Type, InfoType> hashmap = new HashMap<>();
+  for (Type key : keys) {
+    if (hashmap.containsKey(key)) {
+      hashmap.put(key, updated_information);
+    }
+    hashmap.put(key, value);
+  }
+  return needed_information;
+}
+```
