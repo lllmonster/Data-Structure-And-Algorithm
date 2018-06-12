@@ -164,6 +164,8 @@ public static void main(String[] args) {
     entry.getKey();
     entry.getValue();
   }
+  for (String key : map.keySet()) {}
+  for (String value : map.values()) {}
   // 9. clear the hash map
   hashmap.clear();
   // 10. check if the hash map is empty
@@ -205,3 +207,22 @@ ReturnType aggregateByKey_hashmap(List<Type>& keys) {
   return needed_information;
 }
 ```
+## Design the key
+Sometimes we have to think it over to `design a suitable key` when using a hash table. Let's look at an example:  
+**Given an array of strings, group anagrams together.**  
+When you design a key, you need to guarantee that:
+1. All values belong to the same group will be mapped in the same group.  
+2. Values which needed to be separated into different groups will not be mapped into the same group.  
+
+In the example above, our mapping strategy can be 'sort the string and use the sorted string as the key'.  
+The mapping strategy can be really `tricky` sometimes.  
+#### Summary
+- When the order of each element in the string/array doesn't matter, you can use the `sorted string/array` as the key.  
+- If you only care about the offset of each value, usually the offset from the first value, you can use the `offset` as the key.  
+- In a tree, you might want to know directly use the `TreeNode` as key sometimes. But in most cases, the `serialization of the subtree` might be a better idea.
+<img src="./image/hashkey3.png" alt="drawing" height="200px">
+- In a matrix, you might want to use the `row index` and `column index` as key.  
+- In a Sudoku, you can combine the row index and the column index to identify which `block` this element belongs to.  
+<img src="./image/hashkey5.png" alt="drawing" height="200px">  
+- Sometimes, in a matrix, you might want to aggregate the values in the same `diagonal line`.  
+<img src="./image/hashkey6.png" alt="drawing" height="200px">  
