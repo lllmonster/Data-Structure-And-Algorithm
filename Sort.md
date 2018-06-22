@@ -1,6 +1,7 @@
 # Sort
-<img src="./image/sort.png" >
-## Selection Sort
+ <img src="./image/sort.png" alt="drawing"> 
+
+## Selection Sort  
 The selection sort algorithm sorts an array by repeatedly finding the minimum element from unsorted part and putting it at the beginning.  
 In every iteration, the minimum element from the unsorted subarray is picked and moved to the sorted subarray.  
 Example:  
