@@ -299,7 +299,8 @@ class QuickSort
     }
 }
 ```
-## Merge Sort
+## Merge Sort  
+
 ```
 class MergeSort
 {
