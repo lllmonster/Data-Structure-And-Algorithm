@@ -1,7 +1,15 @@
 # Sort
  <img src="./image/sort.png" alt="drawing"> 
 
-## Selection Sort  
+1. [Selection Sort](#selection-sort)
+2. [Bubble Sort](#bubble-sort)
+3. [Insertion Sort](#insertion-sort)
+4. [Heap Sort](#heap-sort)
+5. [Quick Sort](#quick-sort)
+6. [Merge Sort](#merge-sort)
+7. [Bucket Sort](#bucket-sort)
+
+## Selection Sort
 The selection sort algorithm sorts an array by repeatedly finding the minimum element from unsorted part and putting it at the beginning.  
 In every iteration, the minimum element from the unsorted subarray is picked and moved to the sorted subarray.  
 Example:  
@@ -408,5 +416,41 @@ class MergeSort
         System.out.println("\nSorted array");
         printArray(arr);
     }
+}
+```
+
+## Bucket Sort
+Bucket Sort is mainly useful when input is uniformly distributed over a range.
+```
+public class BucketSort{
+ 
+   public static void sort(int[] a, int maxVal) {
+      int [] bucket=new int[maxVal+1];
+ 
+      for (int i=0; i<bucket.length; i++) {
+         bucket[i]=0;
+      }
+ 
+      for (int i=0; i<a.length; i++) {
+         bucket[a[i]]++;
+      }
+ 
+      int outPos=0;
+      for (int i=0; i<bucket.length; i++) {
+         for (int j=0; j<bucket[i]; j++) {
+            a[outPos++]=i;
+         }
+      }
+   }
+ 
+ 
+   public static void main(String[] args) {
+      int maxVal=5;
+      int [] data= {5,3,0,2,4,1,0,5,2,3,1,4}; 
+ 
+      System.out.println("Before: " + Arrays.toString(data));
+      sort(data,maxVal);
+      System.out.println("After:  " + Arrays.toString(data));
+   }
 }
 ```
