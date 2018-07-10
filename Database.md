@@ -22,3 +22,12 @@ from user, temp
 where user.id = temp.id and user.version = temp.v
 group by temp.id
 ```
+
+## delete duplicate rows in sql
+```
+With EmployeeCTE As (
+    select *, ROW_NUMBER() OVER(Partition BY ID order By ID) as RowNumber
+    from Employee
+)
+Delete from Employee where RowNumber > 1
+```
