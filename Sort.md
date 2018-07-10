@@ -420,7 +420,7 @@ class MergeSort
 ```
 
 ## Bucket Sort
-Bucket Sort is mainly useful when input is uniformly distributed over a range.
+Bucket Sort is mainly useful when input is uniformly distributed over a range. Here, time complexity becomes O(n). Space is O(1).  
 ```
 public class BucketSort{
  
