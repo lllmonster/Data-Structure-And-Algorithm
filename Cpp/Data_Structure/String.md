@@ -11,16 +11,23 @@ int main()
     string s1 = "hello";
     string s2 = s1;
     string s3(s1);
-    
+
+    // access the ele
+    s1[0];
+
     // 2. compare
     if (s1 == "hello"){}
     if (s1.compare("hello")){}
-    
-    // 3. find 
+
+    // 3. find
     s1.find('o');
     s1.rfind('o');
-    
+
     // 4. get substring
     s1.substr(1,2);
+
+    // size
+    s1.length();
+    s1.size();
 }
 ```

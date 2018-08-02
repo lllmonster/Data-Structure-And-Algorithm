@@ -44,7 +44,7 @@ int main()
 {
     int fish = 5;
     cout << $fish << endl;
-    
+
     int *fishPointer;
     fishPointer = &fish;
     cout << fishPointer << endl;
@@ -66,10 +66,10 @@ int main()
 {
     int a = 5;
     int b = 5;
-    
+
     passByValue(a);
     passByReference(&b);
-    
+
     cout << "passByValue is " << a << endl;
     cout << "passByReference is " << b << endl;
 }
@@ -92,9 +92,39 @@ double: 8 bytes
 int main()
 {
     double a[10];
-    
+
     cout << sizeof(a) << endl;
     cout << sizeof(a) / sizeof(a[0]) << endl;
 }
 ```
 
+## Constant Object
+`const`: It's unable to modify.  
+const object need const func.  
+```
+void Sally::print() const{
+    cout << "cost func print" << endl;
+}
+```
+
+## Member Initialization
+```
+Sally::Sally(int a, int b)
+: regVar(a),
+constVar(b)
+{
+}
+```
+
+## Composition
+using other class inside the class.  
+
+## Friend Function
+## This Pointer
+`this` stores the address of the object.  
+`h`  
+`this->h`  
+`(*this).h`
+
+## Operator Overloading
+fuction with the same name, but with different parameters.  

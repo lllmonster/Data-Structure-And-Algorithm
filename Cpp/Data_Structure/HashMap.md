@@ -19,8 +19,9 @@ int main() {
     if (hashmap.count(2) <= 0) {
         cout << "Key 2 is not in the hash map." << endl;
     }
+    if (hashmap.find(key) != hashmap.end()){} // find a key
     // 7. get the size of the hash map
-    cout << "the size of hash map is: " << hashmap.size() << endl; 
+    cout << "the size of hash map is: " << hashmap.size() << endl;
     // 8. iterate the hash map
     for (auto it = hashmap.begin(); it != hashmap.end(); ++it) {
         cout << "(" << it->first << "," << it->second << ") ";
