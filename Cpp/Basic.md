@@ -38,7 +38,7 @@ void print() {
     cout << "amazing print" << endl;
 }
 ```
-# Pointer
+## Pointer
 ```
 int main()
 {
@@ -53,7 +53,7 @@ int main()
 }
 
 ```
-# Pass By Reference
+## Pass By Reference
 ```
 #include <iostream>
 
@@ -84,10 +84,10 @@ void passByReference(int *x) {
 ```
 
 ## sizeof()
-char : 1 byte
-int : 4 bytes
-float : 4 bytes
-double: 8 bytes
+char : 1 byte  
+int : 4 bytes      
+float : 4 bytes    
+double: 8 bytes  
 ```
 int main()
 {
