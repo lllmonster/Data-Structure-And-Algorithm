@@ -1,4 +1,4 @@
-# Basic
+# Basic Knowledge
 ## Main Func  
 ```
 #include <iostream>
@@ -81,6 +81,15 @@ void passByValue(int x) {
 void passByReference(int *x) {
     *x = 66;
 }
+```
+## String
+```
+s.substr(1,2);
+s.find(c);
+s.rfind(c);
+s.erase(1);
+s.replace(14,2,"ssjjjj");
+s.insert(1, "lucky");
 ```
 
 ## sizeof()
@@ -243,3 +252,26 @@ int main() {
   }
 }
 ```
+
+## File
+```
+#include <iostream>
+#include <fstream>
+using namespace std;
+
+int main()
+{
+    ofstream buckyFile;
+    buckyFile.open("tuna.txt");
+
+    // Another expression
+    // ofstream buckyFile("chicken.txt");
+
+    buckyFile << "I love tuna" << endl;
+    buckyFile.close();
+
+}
+```
+Custorm file structure  
+`ofstream` : write  
+`ifstream` : read (close file automatically)   
