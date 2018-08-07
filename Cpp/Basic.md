@@ -275,3 +275,41 @@ int main()
 Custorm file structure  
 `ofstream` : write  
 `ifstream` : read (close file automatically)   
+
+## DeadLock
+For example, the withdraw and deposit in the bank.  
+```
+class Account {
+  double balance;
+
+  void withdraw(double amount){
+     balance -= amount;
+  }
+
+  void deposit(double amount){
+     balance += amount;
+  }
+
+   void transfer(Account from, Account to, double amount){
+        sync(from);
+        sync(to);
+
+        from.withdraw(amount);
+        to.deposit(amount);
+
+        release(to);
+        release(from);
+    }
+}
+```
+Obviously, when there are two threads which attempt to run `transfer(a, b)` and  `tansfer(b, a)` at the same time, a deadlock is going to occur because they try to acquire the resources in reverese order.  
+
+## Memory Leak & Memory Corruption
+[Reference](http://www.yolinux.com/TUTORIALS/C++MemoryCorruptionAndMemoryLeaks.html)  
+Memory Leak occurs when objects are no longer being used by the application, but the Garbage Collector is unable to romove them from working memory - because they are still being referenced.  
+There are some scenarios which cause memory leak.
+1. Static Field Holding on to the Object Reference
+2. Calling `Stirng.intern()` on Long String.
+3. Unclosed Streams
+4. Unclosed Connections
+5. Adding Objects with no `hashCode()` and `equals()` into a HashSet
