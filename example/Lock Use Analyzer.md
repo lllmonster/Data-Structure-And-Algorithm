@@ -56,3 +56,16 @@ string* split(string s) {
 }
 
 ```
+Another Split Method  
+```
+#include <sstream>
+string* split(string s) {
+    string *log = new string[2];
+    istringstream iss(s);
+    int i = 0;
+    do {
+        iss >> log[i++];
+    } while (iss);
+    return log;
+}
+```

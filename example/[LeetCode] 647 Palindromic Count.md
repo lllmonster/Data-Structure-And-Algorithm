@@ -1,4 +1,36 @@
-Find the number of palindromes in a string.
+Simple Solution  
+```
+#include <iostream>
+
+using namespace std;
+
+int count_palindromes(string s);
+
+int main()
+{
+    string s = "wowpurerocks";
+    int ans = count_palindromes(s);
+    cout << ans << endl;
+}
+
+int count_palindromes(string s) {
+    if (s.size() == 0 || s.size() == 1) return s.size();
+    int cnt = 0;
+    int len = s.size();
+    for (int center = 0; center < 2 * len - 1; center++) {
+        int left = center / 2;
+        int right = left + center % 2;
+        while (left >= 0 && right < len && s[left] == s[right]) {
+            cnt++;
+            left--;
+            right++;
+        }
+    }
+    return cnt;
+}
+
+```
+Original Solution  
 ```
 #include <iostream>
 
