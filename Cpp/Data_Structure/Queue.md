@@ -25,3 +25,17 @@ int main() {
     cout << "The size is: " << q.size() << endl;
 }
 ```
+## Priority Queue
+In c++, it is a max heap.  
+```
+#include <queue>
+
+int main {
+    priority_queue<int> q;
+    q.empty();
+    q.size();
+    q.push();
+    q.pop();
+    q.top();
+}
+```
