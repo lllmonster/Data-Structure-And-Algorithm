@@ -39,3 +39,17 @@ int main {
     q.top();
 }
 ```
+Write Comparator  
+```
+// for example, leetcode 632 smallest range
+int main {
+    typedef vector<int>::iterator vi;
+    struct comp {
+        bool operator()(pair<vi,vi> p1, pair<vi,vi> p2) {
+            return *p1.first > *p2.first;
+        }
+    };
+    // initialize
+    priority_queue<pair<vi,vi>, vector<pair<vi,vi>>, comp> q;
+}
+```
