@@ -1,5 +1,12 @@
 # Sort
- <img src="./image/sort.png" alt="drawing"> 
+```
+Collections.sort(intervals, new Comparator<Interval>() {
+                public int compare(Interval o1, Interval o2) {
+                    return o1.start-o2.start;
+                }
+            });
+```
+ <img src="../image/sort.png" alt="drawing"> 
 
 1. [Selection Sort](#selection-sort)
 2. [Bubble Sort](#bubble-sort)
