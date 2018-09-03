@@ -1,5 +1,5 @@
 # Sort
- <img src="./image/sort.png" alt="drawing"> 
+ <img src="../image/sort.png" alt="drawing">
 
 1. [Selection Sort](#selection-sort)
 2. [Bubble Sort](#bubble-sort)
@@ -423,18 +423,18 @@ class MergeSort
 Bucket Sort is mainly useful when input is uniformly distributed over a range. Here, time complexity becomes O(n). Space is O(1).  
 ```
 public class BucketSort{
- 
+
    public static void sort(int[] a, int maxVal) {
       int [] bucket=new int[maxVal+1];
- 
+
       for (int i=0; i<bucket.length; i++) {
          bucket[i]=0;
       }
- 
+
       for (int i=0; i<a.length; i++) {
          bucket[a[i]]++;
       }
- 
+
       int outPos=0;
       for (int i=0; i<bucket.length; i++) {
          for (int j=0; j<bucket[i]; j++) {
@@ -442,12 +442,12 @@ public class BucketSort{
          }
       }
    }
- 
- 
+
+
    public static void main(String[] args) {
       int maxVal=5;
-      int [] data= {5,3,0,2,4,1,0,5,2,3,1,4}; 
- 
+      int [] data= {5,3,0,2,4,1,0,5,2,3,1,4};
+
       System.out.println("Before: " + Arrays.toString(data));
       sort(data,maxVal);
       System.out.println("After:  " + Arrays.toString(data));

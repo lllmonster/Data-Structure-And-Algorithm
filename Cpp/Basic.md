@@ -129,6 +129,7 @@ constVar(b)
 using other class inside the class.  
 
 ## Friend Function
+A function which is not a member of the class but still can access all the member of the class is called so. To make it happen we need to declare within the required class following the keyword ‘friend’.  
 ## This Pointer
 `this` stores the address of the object.  
 `h`  
