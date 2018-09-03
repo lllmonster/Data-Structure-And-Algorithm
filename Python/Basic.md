@@ -50,7 +50,7 @@ len(str)
 len(list)
 list(seq) # convert a tuple to lists
 list.append(obj)
-list.index(obj)
+list.index(obj) 
 list.insert(index, obj)
 list.pop()
 list.remove()

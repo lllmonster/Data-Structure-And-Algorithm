@@ -41,7 +41,7 @@ public class Solution{
 
 ## dynamic programming - space optimized
 time complexity: O(n)  
-sapce: O(1) 
+sapce: O(1)
 ```
 public class Solution{
     public static int fabonacci(int n) {

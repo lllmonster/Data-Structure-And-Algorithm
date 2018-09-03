@@ -25,3 +25,31 @@ int main() {
     cout << "The size is: " << q.size() << endl;
 }
 ```
+## Priority Queue
+In c++, it is a max heap.  
+```
+#include <queue>
+
+int main {
+    priority_queue<int> q;
+    q.empty();
+    q.size();
+    q.push();
+    q.pop();
+    q.top();
+}
+```
+Write Comparator  
+```
+// for example, leetcode 632 smallest range
+int main {
+    typedef vector<int>::iterator vi;
+    struct comp {
+        bool operator()(pair<vi,vi> p1, pair<vi,vi> p2) {
+            return *p1.first > *p2.first;
+        }
+    };
+    // initialize
+    priority_queue<pair<vi,vi>, vector<pair<vi,vi>>, comp> q;
+}
+```

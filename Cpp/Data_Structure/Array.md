@@ -35,6 +35,7 @@ int main()
     vector<int> v0;
     vector<int> v1(5, 0);
     vector<int> v1{1,2,3};
+    vector<vector<int>> matrix( n, vector<int>(n) );
 
     // 2. make a copy
     vector<int> v2(v1.begin(), v1.end());
