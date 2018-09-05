@@ -1,7 +1,4 @@
 # Sort
-<<<<<<< HEAD
- <img src="../image/sort.png" alt="drawing">
-=======
 ```
 Collections.sort(intervals, new Comparator<Interval>() {
                 public int compare(Interval o1, Interval o2) {
@@ -9,8 +6,7 @@ Collections.sort(intervals, new Comparator<Interval>() {
                 }
             });
 ```
- <img src="../image/sort.png" alt="drawing"> 
->>>>>>> d6669c2a64e8255e481b5caf954da91af3b625c8
+ <img src="../image/sort.png" alt="drawing">
 
 1. [Selection Sort](#selection-sort)
 2. [Bubble Sort](#bubble-sort)
