@@ -4,29 +4,29 @@
 
 [Introduction](#introduction)
 
-[SSL](###SSL)
+[SSL](#SSL)
 
-[Private Keys](###private-keys)
+[Private Keys](#private-keys)
 
-[Public Key](###public-key)
+[Public Key](#public-key)
 
-[Root Certificate](###root-certificate)
+[Root Certificate](#root-certificate)
 
-[Certificate Authorities](###Certificate-authorities)
+[Certificate Authorities](##ertificate-authorities)
 
-[Certificate Chain](###certificate-chain)
+[Certificate Chain](#certificate-chain)
 
-[Keystore using Java Keytool](###keystore-using-java-keytool)
+[Keystore using Java Keytool](#keystore-using-java-keytool)
 
-[Truststore and Keystore](###truststore-and-keystore)
+[Truststore and Keystore](#truststore-and-keystore)
 
-[Keytool Commands](###keytool-commands)
+[Keytool Commands](#keytool-commands)
 
-[Configure SSL on Apache Tomcat](###configure-ssl-on-apache-tomcat)
+[Configure SSL on Apache Tomcat](#configure-ssl-on-apache-tomcat)
 
-[Reference](###Reference)
+[Reference](#Reference)
 
-[Understand](###understand)
+[Understand](#understand)
 
 ### Introduction
 
