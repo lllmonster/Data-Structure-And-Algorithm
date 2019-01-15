@@ -26,3 +26,10 @@ $ stat -c "%a %n" ./folder/
 
 
 
+### Check Process
+
+```
+$ pgrep kdc
+$ kill $(pid)
+```
+
