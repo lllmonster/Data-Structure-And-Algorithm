@@ -1,6 +1,6 @@
 ### Configuration Kerberos Server and Client
 
-### How does Kerberos Authentication work
+#### How does Kerberos Authentication work
 
 Assuming there are three machines, Domain Controller, Client, and Server.
 
