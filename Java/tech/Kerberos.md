@@ -146,4 +146,9 @@ kinit: unable to reach any KDC in realm EXAMPLE.COM
   $ systemctl status firewalld
   ```
 
-#### 
+#### Reference
+
+[Turtorial](https://www.varonis.com/blog/kerberos-authentication-explained/)
+
+[MIT-KDC](https://web.mit.edu/kerberos/krb5-devel/doc/admin/install_kdc.html)
+
