@@ -94,7 +94,55 @@ Access Privileges
 * protected - be accessible to the class itself, everyone within the same package, and any subclass.
 * private - be accessible only the class itself.  
 
+## Modifier
+
+### Static
+
+static is a non-access modifier in Java which is applicable for the following:
+
+blocks \\ variables \\ methods \\ nested classes    
+
+when a member is declared static, it can be accessed before any objects of its class are created, and without reference to any object.
+
+```java
+// Java program to demonstrate use of static blocks 
+class Test 
+{ 
+	// static variable 
+	static int a = 10; 
+	static int b; 
+	
+	// static block 
+	static { 
+		System.out.println("Static block initialized."); 
+		b = a * 4; 
+	} 
+
+	public static void main(String[] args) 
+	{ 
+	System.out.println("from main"); 
+	System.out.println("Value of a : "+a); 
+	System.out.println("Value of b : "+b); 
+	} 
+} 
+
+```
+
+output:
+
+```
+Static block initialized.
+from main
+Value of a : 10
+Value of b : 40
+```
+
+
+
+
+
 ## Inheritance
+
 No multiple inheritance. Classes extend from one and only one class.  
 
 ## Polymorphism  
