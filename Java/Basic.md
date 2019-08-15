@@ -96,7 +96,26 @@ Access Privileges
 
 ## Modifier
 
-### Static
+### Static 
+
+#### What is Static Variable in Java
+
+Static variable is a variable which belongs to the class and initialized only once at the start of the execution.
+
+* It is a variable which belongs to the class and not to object (instance)
+* Static variables are initialized only once, at the start of execution. These variables will be initialized first, before the initialization of any instance variables.
+* A single copy to be shared by all instance of the class
+* A static variable can be accessed directly by the class name and doesn't need any object
+
+#### What is Static Method in Java
+
+Static method is a method which belongs to the class and not to the object. A static method can access only static data.
+
+* It is a method which belongs to the class and not to the object (instance)
+* A static method can access only static data. It can not access non-static data (instance variables)
+* A static method can call only other static methods and cannot call a non-static method from it
+* A static method can be accessed directly by the class name and doesn't need any object
+* A static method cannot refer to "this" or "super" keywords in anyway.
 
 static is a non-access modifier in Java which is applicable for the following:
 
@@ -105,36 +124,48 @@ blocks \\ variables \\ methods \\ nested classes
 when a member is declared static, it can be accessed before any objects of its class are created, and without reference to any object.
 
 ```java
-// Java program to demonstrate use of static blocks 
-class Test 
-{ 
-	// static variable 
-	static int a = 10; 
-	static int b; 
-	
-	// static block 
-	static { 
-		System.out.println("Static block initialized."); 
-		b = a * 4; 
-	} 
+public class Test{
 
-	public static void main(String[] args) 
-	{ 
-	System.out.println("from main"); 
-	System.out.println("Value of a : "+a); 
-	System.out.println("Value of b : "+b); 
-	} 
-} 
+     public static void main(String []args){
+         Student s1 = new Student();
+         s1.showData();
+         Student s2 = new Student();
+         s2.showData();
+         Student.b++;
+         s1.showData();
+     }
+}
+
+class Student {
+int a = 0; //initialized to zero
+static int b = 0; //initialized to zero only when class is loaded not for each object created.
+
+  Student(){
+   //Constructor incrementing static variable b
+   b++;
+  }
+
+   public void showData(){
+      System.out.println("Value of a = "+a);
+      System.out.println("Value of b = "+b);
+   }
+//public static void increment(){
+//a++;
+//}
+
+}
 
 ```
 
 output:
 
 ```
-Static block initialized.
-from main
-Value of a : 10
-Value of b : 40
+Value of a = 0
+Value of b = 1
+Value of a = 0
+Value of b = 2
+Value of a = 0
+Value of b = 3
 ```
 
 
@@ -203,6 +234,152 @@ public class Programmer extends Employee {
 `wait()` : waits the current thread until another calls one of the notify methods.  
 `finalize()` : called when no more references exist. Never override this.
 
+### Shallow Copy VS Deep Copy
+
+The Shallow Copy is the approach when we only field values and therefore the copy might be dependent on the original object.
+
+In the deep copy approach, we make sure that all the objects in the tree are deeply copied, so the copy isn't dependent on earlier existing object that might ever change.
+
+Example
+
+```java
+public class Test{
+
+     public static void main(String []args){
+        Address address = new Address("Downing St 10", "London", "England");
+        User pm = new User("Prime", "Minister", address);
+     	// shallow copy example
+        User shallowCopy = new User(
+            pm.getFirstName(), pm.getLastName(), pm.getAddress());
+        printCopy(shallowCopy);
+        address.setCountry("Great Britain");
+        printCopy(shallowCopy);
+		// deep copy example
+        Address address1 = new Address("Downing St 10", "London", "England");
+        User pm1 = new User("Prime", "Minister", address1);
+        User deepCopy = new User(pm1);
+        printCopy(deepCopy);
+        address.setCountry("Great Britain");
+        printCopy(deepCopy);
+        
+     }
+    
+    public static void printCopy(User user) {
+        System.out.println(user.getFirstName());
+        System.out.println(user.getLastName());
+        System.out.println(user.getAddress().getStreet() + " " +
+        user.getAddress().getCity() + " " +
+        user.getAddress().getCountry());
+    }
+}
+
+class Address {
+ 
+    private String street;
+    private String city;
+    private String country;
+ 
+    // standard constructors, getters and setters
+    Address(String street, String city, String country) {
+        this.street = street;
+        this.city = city;
+        this.country = country;
+    }
+    // constructor for deep copy
+    public Address(Address that) {
+        this(that.getStreet(), that.getCity(), that.getCountry());
+    }
+    
+    public String getStreet() {
+        return street;
+    }
+    public void setStreet(String street) {
+			this.street = street;
+		}
+		public String getCity() {
+			return city;
+		}
+		public void setCity(String city) {
+			this.city = city;
+		}
+		public String getCountry() {
+			return country;
+		}
+		public void setCountry(String country) {
+			this.country = country;
+		}
+	
+}
+
+class User {
+ 
+    private String firstName;
+    private String lastName;
+    private Address address;
+ 
+    // standard constructors, getters and setters
+    User(String firstName, String lastName, Address address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+    }
+    // constructor for deep copy
+    public User(User that) {
+        this(that.getFirstName(), that.getLastName(), new Address(that.getAddress()));
+    }
+    public String getFirstName() {
+			return firstName;
+		}
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
+		}
+		public String getLastName() {
+			return lastName;
+		}
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
+		}
+		public Address getAddress() {
+			return address;
+		}
+		public void setAddress(Address address) {
+			this.address = address;
+		}
+		
+}
+```
+
+Output
+
+```
+Prime
+Minister
+Downing St 10 London England
+Prime
+Minister
+Downing St 10 London Great Britain
+Prime
+Minister
+Downing St 10 London England
+Prime
+Minister
+Downing St 10 London England
+```
+
+The above examples look easy, but sometimes they don't apply as a solution when we can't add an additional constructor or override the clone method. In this case, we can use an external library.
+
+`````` java
+// Apache Commons Lang
+User deepCopy = (User) SerializationUtils.clone(pm);
+
+//Json Serialization with Gson
+User deepCopy = gson.fromJson(gson.toJson(pm), User.class);
+
+// Json Serialization with Jackson
+User deepCopy = objectMapper
+      .readValue(objectMapper.writeValueAsString(pm), User.class);
+``````
+
 ## Interface
 Think of interfaces as higher level templates than classes. You're creating a type where you do not care about the implementation (Class) but want to express desired functionality.
 ```
@@ -241,6 +418,74 @@ A synchronization mechanism to limit access to a shared resource; a way of imple
 A particular type of Lock. Records how many units of a resource are available in conjunction with providing a safe means of adjusting the record and potentially waiting for resources to become available.  
 
 ## Threads
+
+### Thread Local
+
+#### What is Thread Local?
+
+Thread Local can be considered as a scope of access, like a request scope or session scope. It's a *thread* scope. You can set any object in Thread Local and this object will be *global* and *local* to the specific thread which is accessing this object.
+
+* Values stored in Thread Local are *global* to the thread, meaning that they can be accessed from anywhere inside that thread. If a thread calls methods from several classes, then all the methods can see the Thread Local variable set by other methods. The value need not be passed explicitly. It's like how you use global variables.
+* Values stored in Thread Local are *local* to the thread, meaning that each thread will have its own Thread Local variable. One thread cannot access/modify other thread's Thread Local variables.
+
+#### When to use Thread Local?
+
+Consider you have a Servlet which calls some business methods. You have a requirement to generate a unique transaction id for each and every request this servlet process and you need to pass this transaction id to the business methods, for logging purpose. One solution would be passing this transaction id as a parameter to all the business methods. But this is not a good solution as the code is redundant and unnecessary.
+
+To solve that, you can use Thread Local. You can generate a transaction id (either in servlet or better in a filter) and set it in the Thread Local. After this, whatever the business method, that this servlet calls, can access the transaction id from the thread local.
+
+This servlet might be servicing more than one request at a time. Since each request is processed in separate thread, the transaction id will be unique to each thread local and will be accessible from all over the thread's execution (global).
+
+#### How to use Thread Local?
+
+```java
+public class Context {
+    private String transactionId = null;
+    public void setTransactionId(String id) {
+        this.transactionId = id;
+    }
+    public String getTransactionId() {
+        return this.transactionId;
+    }
+}
+
+public class MyThreadLocal {
+    public static final ThreadLocal userThreadLocal = new ThreadLocal();
+    public static void set(Context user) {
+        userThreadLocal.set(user);
+    }
+    public static Context get() {
+        return userThreadLocal.get();
+    }
+    public static void unset() {
+        userThreadLocal.remove();
+    }
+}
+public Demo extends Thread {
+    public static void main(String args[]) {
+        Thread t1 = new Demo();
+        t1.start();
+        Thread t2 = new Demp();
+        t2.start();
+    }
+    @Override
+    public void run() {
+        Context cxt = new Context();
+        cxt.setTransactionId("id");
+        MyThreadLocal.set(cxt);
+        new BusinessService().businessMethod();
+        MyThreadLocal.unset();
+    }
+}
+public class BusinessService {
+    public void businessMethod() {
+        Context cxt = MyThreadLocal.get();
+        System.out.println(cxt.getTransactionId());
+    }
+}
+```
+
+
 
 ## Function in Java 8
 Related Changes:  
