@@ -168,6 +168,48 @@ Value of a = 0
 Value of b = 3
 ```
 
+### Transient
+
+Transient is a variables modifier used in *serialization*. At the time of serialization, if we don't want to save value of a particular variable in a file, then we use *transient* keyword. When JVM comes across transient keyword, it ignores original value of the variable and save default value of that variable data type.
+
+**transient and static**: Since *static* fields are not part of state of the object, there's no use/impact of using *transient* keyword with static variables. 
+
+**transient and final**: final variables are directly serialized by their values, so there is no use/impact of declaring final variable as transient.
+
+```java
+public class TransientExample {
+
+	public static void main(String[] args) throws Exception {
+		Student s1 = new Student(211, "ravi", 22);// creating object
+		// writing object into file
+		FileOutputStream f = new FileOutputStream("f.txt");
+		ObjectOutputStream out = new ObjectOutputStream(f);
+		out.writeObject(s1);
+		out.flush();
+
+		out.close();
+		f.close();
+		// decompress
+		ObjectInputStream in = new ObjectInputStream(new FileInputStream("f.txt"));
+		Student s = (Student) in.readObject();
+		System.out.println(s.id + " " + s.name + " " + s.age);
+		in.close();
+	}
+}
+
+class Student implements Serializable {
+	int id;
+	String name;
+	transient int age;// Now it will not be serialized
+
+	public Student(int id, String name, int age) {
+		this.id = id;
+		this.name = name;
+		this.age = age;
+	}
+}
+```
+
 
 
 
@@ -518,3 +560,40 @@ JUnit - Framework for Unit Testing
 * Jackson
 * Mockito
 * Junit
+
+## Framework
+
+### Aspect-Oriented Programming
+
+#### What is Aspect-Oriented Programming
+
+An aspect is a common feature that's typically scattered across methods, classes, object hierarchies, or even entire object models. It is behavior that looks and smells like it should have structure, but  you can't find a way to express this structure in code with traditional object-oriented techniques.
+
+For example, metrics is one common aspect. To generate useful logs from your application, you have to sprinkle informative messages throughout your code. However, metrics is something that your class or object model really shouldn't be concerned about. After all, metrics is irrelevant to your actual application: it doesn't represent a customer or an account, and it doesn't realize a business rule. It's simply orthogonal.
+
+As a development methodology, AOP recommends that you abstract and encapsulate crosscutting concerns.
+
+For example, let's say you wanted to add code to an application to measure the amount of time it would take to invoke a particular method. In plain Java, the code would look something like the following:
+
+```java
+public class BankAccountDAO
+{
+  public void withdraw(double amount)
+  {
+    long startTime = System.currentTimeMillis();
+    try
+    {
+      // Actual method body...
+    }
+    finally
+    {
+      long endTime = System.currentTimeMillis() - startTime;
+      System.out.println("withdraw took: " + endTime);
+    }
+  }
+}
+```
+
+This approach to metrics is very difficult to maintain, expand, and extend, because it's dispersed throughout your entire code base. And this is just a tiny example. In many cases, OOP may not always be the best way to add metrics to a class.
+
+AOP gives you a way to encapsulate this type of behavior functionality. It allows you to add behavior such as metrics "around" your code.
