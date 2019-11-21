@@ -459,6 +459,16 @@ A synchronization mechanism to limit access to a shared resource; a way of imple
 * Semaphores  
 A particular type of Lock. Records how many units of a resource are available in conjunction with providing a safe means of adjusting the record and potentially waiting for resources to become available.  
 
+### Synchronization
+Multi-threaded programs may often come to a situation when multiple threads try to access the same resources and finally produce erroneous and unforeseen results.
+Synchronization method make sure that only thread can access the resource at a given point of time.
+```java
+synchronized(sync_object)
+{
+   // Access shared variables and other shared resources
+}
+```
+
 ## Threads
 
 ### Thread Local
