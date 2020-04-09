@@ -16,7 +16,10 @@ Naming:
 * be descriptive with naming
 
 Descirptive Variable Names  
-`private static final double KILOMETER_TO_MILE = 0.621371d;`
+`private static final double KILOMETER_TO_MILE = 0.621371d;`  
+```
+NOTE:  `static final` is only for primitive types and immutable types, like int/string. Never use `static final` for Array which is mutable and can be modified. It's not safe.
+```
 
 String is object, not primitive!
 ```
