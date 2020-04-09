@@ -3,6 +3,9 @@ Semaphore, limit the number of thread to access the specific resource
 Semaphore sem = new Semaphore(limitNumber), definition
 acquire(), lock (means this step is locked & stopped and cannot go through)
 release(), unlock
+
+If the counter is greater than zero, then access is allowed. 
+If it is zero, then access is denied. What the counter is counting are permits that allow access to the shared resource.
 */
 
 class FooBar {
