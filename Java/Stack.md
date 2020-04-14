@@ -1,13 +1,21 @@
 # Stack
+## Methods
+`Object push(Object element)`
+`Object pop()` - Removes and return the top element of the stack
+`Object peek()` - Returns the element on the top of the stack but not remove it
+`boolean empty()`
+`int search(Object element)` - If the element is found, it returns the position from the top of the stack. Else, it returns -1.
+
+
 ## Reverse stack
-Without extra memory, without using other data struture (like linked list), reverse a stack in place.  
-Time Complexity O(n^2).  
+Without extra memory, without using other data struture (like linked list), reverse a stack in place.
+Time Complexity O(n^2).
 ```
 import java.util.*;
 
 public class ReverseStack{
     static Stack<Integer> stack = new Stack<>();
-    
+
     static void insertAtBottom(int x) {
         if (stack.size() == 0) {
             stack.push(x);
@@ -17,7 +25,7 @@ public class ReverseStack{
             stack.push(a);
         }
     }
-    
+
     static void reverse() {
         if (stack.size() > 0) {
             int x = stack.pop();
@@ -25,7 +33,7 @@ public class ReverseStack{
             insertAtBottom(x);
         }
     }
-    
+
      public static void main(String []args){
         System.out.println("Hello World");
         stack.push(1);
