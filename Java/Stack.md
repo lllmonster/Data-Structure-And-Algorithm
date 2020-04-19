@@ -1,10 +1,10 @@
 # Stack
-## Methods
-`Object push(Object element)`
-`Object pop()` - Removes and return the top element of the stack
-`Object peek()` - Returns the element on the top of the stack but not remove it
-`boolean empty()`
-`int search(Object element)` - If the element is found, it returns the position from the top of the stack. Else, it returns -1.
+## Methods  
+`Object push(Object element)`  
+`Object pop()` - Removes and return the top element of the stack  
+`Object peek()` - Returns the element on the top of the stack but not remove it  
+`boolean empty()`  
+`int search(Object element)` - If the element is found, it returns the position from the top of the stack. Else, it returns -1.  
 
 
 ## Reverse stack
