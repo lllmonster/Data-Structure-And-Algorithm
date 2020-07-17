@@ -10,7 +10,7 @@
 ## Reverse stack
 Without extra memory, without using other data struture (like linked list), reverse a stack in place.
 Time Complexity O(n^2).
-```
+```Java
 import java.util.*;
 
 public class ReverseStack{

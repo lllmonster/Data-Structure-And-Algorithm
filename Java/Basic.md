@@ -1,3 +1,5 @@
+[[TOC]]
+
 # Basic Knowledge
 
 ## Primitives
@@ -21,13 +23,26 @@ Descirptive Variable Names
 NOTE:  `static final` is only for primitive types and immutable types, like int/string. Never use `static final` for Array which is mutable and can be modified. It's not safe.
 ```
 
+### String
+
 String is object, not primitive!
-```
+```Java
 StringBuilder sb = new StringBuilder();
 sb.append('a');
 String text = sb.toString();
 ```
 
+Common Method
+```Java
+String str = "hello";
+str.startsWith("he");
+str.endsWith("lo");
+str.indexOf('e');
+str.replace('h','g');
+str.trim();
+```
+
+### Array
 Arrays, zero based. Cannot use pointer to increment.
 ```
 int[] arr = new int[100];
@@ -48,6 +63,11 @@ Random random = new Random();
 a[random.nextInt(10)] = random.nextInt();
 Arrays.sort(a);
 ```
+
+### Convert Array to List
+`Arrays.asList(arr)`
+### Convert List to Array
+`String[] newarr = list.toArray(new String[list.size()]);`
 
 ## Object Oriented Programming
 Immutable Objects:  
@@ -220,6 +240,7 @@ class Student implements Serializable {
 ## Inheritance
 
 No multiple inheritance. Classes extend from one and only one class.  
+`extends` keyword is used. 
 
 ## Polymorphism  
 Many distinct types referenced by their shared supertype.  
@@ -445,6 +466,21 @@ public interface StringSplitter {
 Enable code reuse in classes / interfaces. As methods have parameters which enable code reuse, generics enable the creation of classes / interfaces which can reuse the same code with different input.  
 
 ## Collections
+### Sort & Reverse & Fill & addAll
+```Java
+List<String> list = new ArrayList<>();
+Collections.sort(list);
+Collections.sort(list, Collections.reverseOrder());
+Collections.reverse(list);
+Collections.copy(desc, src);
+Collections.fill(list, 'X');
+Collections.addAll(list, new String[2]);
+```
+### Frequency & disjoint
+```Java
+Collections.frequency(list, "hello");
+Collections.disjoint(l1, l2);
+```
 
 ## Concurrency
 * Race Condition  
