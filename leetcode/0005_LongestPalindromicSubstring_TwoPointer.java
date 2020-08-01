@@ -1,6 +1,7 @@
 class Solution {
     /**
     * Also can be done in DP. TODO
+    O(n^2), O(1)
      */
     public String longestPalindrome(String s) {
         char[] chars = s.toCharArray();

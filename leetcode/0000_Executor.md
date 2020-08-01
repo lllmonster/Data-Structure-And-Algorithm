@@ -13,3 +13,10 @@ LC283 Move Zeros
 LC1 Two Sum
 LC36 Valid Sudoku
 LC48 Rotate Image
+## 08/01/2020 Sat
+**Top Interview Question - Array - Medium Collection**
+LC15 3 Sum
+LC73 Set Matrix Zeros
+LC49 Group Anagrams
+LC3 Longest Substring Without Repeating Characters
+LC334 Increasing Triplet Subsequence
