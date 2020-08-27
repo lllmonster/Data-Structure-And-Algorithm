@@ -19,4 +19,15 @@ LC15 3 Sum
 LC73 Set Matrix Zeros
 LC49 Group Anagrams
 LC3 Longest Substring Without Repeating Characters
+LC5 Longest Palindromic Substring
 LC334 Increasing Triplet Subsequence
+## 08/16/2020 Sun
+**Top Interview Question - Array - Hard Collection**
+LC238 Product of Array Except Self
+LC54 Spiral Matrix
+LC454 4Sum II
+## 08/23/2020 Sun
+LC289 Game of Life
+LC41 First Missing Positive
+LC128 Longest Consecutive Sequence
+LC287 Find the Duplicate Number
