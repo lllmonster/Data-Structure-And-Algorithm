@@ -31,3 +31,6 @@ LC289 Game of Life
 LC41 First Missing Positive
 LC128 Longest Consecutive Sequence
 LC287 Find the Duplicate Number
+## 08/27/2020 Thu
+LC227 Basic Calculator II
+LC239 Sliding Window Maximum
