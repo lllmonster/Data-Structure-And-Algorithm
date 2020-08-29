@@ -34,3 +34,19 @@ LC287 Find the Duplicate Number
 ## 08/27/2020 Thu
 LC227 Basic Calculator II
 LC239 Sliding Window Maximum
+## 08/29/2020 Sat
+**Top Interview Question - String - Easy Collection**
+LC344 Reverse String
+LC387 First Unique Character in a String
+LC242 Valid Anagram 
+LC125 Valid Palindrome
+LC28 Implement strStr()
+LC14 Longest Common Prefix
+**Top Interview Question - LinkedList - Easy Collection**
+LC237 Delete Node in a Linked List
+LC19 Remove Nth Node From End of List
+LC206 Reverse Linked List
+LC21 Merge Two Sorted Lists
+LC234 Palindrome Linked List 
+LC141 Linked List Cycle
+
