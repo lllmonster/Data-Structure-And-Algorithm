@@ -45,6 +45,8 @@ docker exec -it EXAMPLE bash
 docker exec -it -e VAR=1 EXAMPLE bash
 # select working dir for the cmd to execute into
 docker exec -it -w /root EXAMPLE pwd
+# execute as root user
+docker exec -it -u root EXAMPLE bash
 ```
 
 **CLEAN UP**  
@@ -166,6 +168,9 @@ $URL/${REPOSITORY_NAME}/tags/list
 # sudo systemctl enable docker
 # sudo systemctl status docker
 ```
+
+### Clean up rancher docker host
+[Ref](https://www.claudiokuenzler.com/blog/674/reset-clean-up-a-rancher-docker-host)
 
 ### Build OralceDB SE image
 Download oracleDB zip file from [Oracle DB Software Downloads](https://www.oracle.com/database/technologies/oracle-database-software-downloads.html)

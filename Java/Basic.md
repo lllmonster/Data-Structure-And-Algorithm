@@ -1,4 +1,38 @@
 [[TOC]]
+- [Basic Knowledge](#basic-knowledge)
+  - [Primitives](#primitives)
+  - [Object Oriented Programming](#object-oriented-programming)
+  - [Keyword](#keyword)
+    - [Static](#static)
+      - [What is Static Variable in Java](#what-is-static-variable-in-java)
+      - [What is Static Method in Java](#what-is-static-method-in-java)
+    - [Transient](#transient)
+    - [InstanceOf](#instanceof)
+  - [Inheritance](#inheritance)
+  - [Polymorphism](#polymorphism)
+  - [Abstract Class](#abstract-class)
+  - [Object Class methods](#object-class-methods)
+    - [Shallow Copy VS Deep Copy](#shallow-copy-vs-deep-copy)
+  - [Interface](#interface)
+  - [Exception](#exception)
+  - [Generics](#generics)
+  - [Collections](#collections)
+  - [Concurrency](#concurrency)
+    - [Synchronization](#synchronization)
+  - [Threads](#threads)
+    - [Thread Local](#thread-local)
+      - [What is Thread Local?](#what-is-thread-local)
+      - [When to use Thread Local?](#when-to-use-thread-local)
+      - [How to use Thread Local?](#how-to-use-thread-local)
+  - [Function in Java 8](#function-in-java-8)
+    - [HashMap.merge()](#hashmapmerge)
+    - [HashMap.computeIfAbsent](#hashmapcomputeifabsent)
+  - [Design Patterns](#design-patterns)
+  - [Testing](#testing)
+  - [Library](#library)
+  - [Framework](#framework)
+    - [Aspect-Oriented Programming](#aspect-oriented-programming)
+      - [What is Aspect-Oriented Programming](#what-is-aspect-oriented-programming)
 
 # Basic Knowledge
 
@@ -117,7 +151,7 @@ Access Privileges
 * protected - be accessible to the class itself, everyone within the same package, and any subclass.
 * private - be accessible only the class itself.  
 
-## Modifier
+## Keyword
 
 ### Static 
 
@@ -233,8 +267,8 @@ class Student implements Serializable {
 }
 ```
 
-
-
+### InstanceOf
+It's a keyword that is used for checking if a reference variable is containing a given type of object reference or not.
 
 
 ## Inheritance
@@ -587,6 +621,90 @@ Related Changes:
 (parameters)->{statements;}
 * Streams API  
 * DataTime API
+  
+### HashMap.merge()
+
+[Ref](https://www.topjavatutorial.com/java-8/java-8-map-merge/)
+
+```Java
+package com.topjavatutorial;
+ 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.BiFunction;
+ 
+public class TestMap4 {
+ 
+    public static void main(String[] args) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(1, 1);
+        map.put(2, 2);
+        map.put(3, null);
+        System.out.println(map); // {1=1, 2=2, 3=null}
+ 
+        map.merge(1, 10, (x, y) -> x + y);
+        // key 1 is present, so new value 10 will be added to previous value 1
+        System.out.println(map); // {1=11, 2=2, 3=null}
+ 
+        map.merge(2, 10, (x, y) -> x < y ? x : y);
+        // Previous value for key=2 is less than new value. So, the old value
+        // remains as per the BiFunction
+        System.out.println(map); // {1=11, 2=2, 3=null}
+ 
+        map.merge(3, 10, (x, y) -> x * y);
+        // The old value for key=3 is null . But its not null * 3, the value 10
+        // will be added for the key
+        System.out.println(map); // {1=11, 2=2, 3=10}
+ 
+        map.merge(4, 10, (x, y) -> x / y);
+        // key=4 is not in map. So, BiFunction not evaluated, the element is
+        // added to map
+        System.out.println(map); // {1=11, 2=2, 3=10, 4=10}
+ 
+        map.merge(1, 10, (x, y) -> null);
+        // Since the BiFunction results in null, the element will be removed
+        // from map
+        System.out.println(map); // {2=2, 3=10, 4=10}
+ 
+    }
+ 
+}
+ 
+Output :
+{1=1, 2=2, 3=null}
+{1=11, 2=2, 3=null}
+{1=11, 2=2, 3=null}
+{1=11, 2=2, 3=10}
+{1=11, 2=2, 3=10, 4=10}
+{2=2, 3=10, 4=10}
+```
+
+### HashMap.computeIfAbsent
+To implement a multi-value map, Map<K,Collection<V>>,supporting multiple values per key:
+`map.computeIfAbsent(key, k -> new HashSet<V>()).add(v);`
+
+Example:
+```Java
+public static Map<String, List<String>> convertListToMultiValueMap(List<Object> myObjs) {
+    Map<String, List<String>> map = new HashMap<>();
+    myObjs.forEach(obj -> {
+        map.computeIfAbsent(obj.getId(), key -> new ArrayList<>()).add(obj.getValue());
+    });
+    return map;
+}
+```
+
+Explanation:
+The default implementation is equivalent to the following steps for this map, then returning the current value or null if nowabsent:  
+```Java
+ if (map.get(key) == null) {
+     V newValue = mappingFunction.apply(key);
+     if (newValue != null)
+         map.put(key, newValue);
+ }
+
+
+```
 
 ## Design Patterns
 * Factory Pattern  
