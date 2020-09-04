@@ -32,6 +32,8 @@
 
 Most of sites use the Socket Layer (SSL) protocol to secure their Internet applications. SSL allows the data from a client, such a web browser, to be encrypted prior to transmission.
 
+`TLS` (transport layer security) and its predecessor `SSL` (secure sockets layer) are web protocols used to wrap normal traffic in a protected, encryped wrapper.
+
 ### SSL
 
 A HTTP-based SSL connection is always initiated by the client using a URL starting with https:// instead of with http://. At the beginning of an SSL session, an SSL handshake is performed. This handshake produces the cryptographic parameters of the session. 
@@ -82,6 +84,12 @@ A keystore contains private keys, and the certificates with their corresponding 
 
 A truststore contains certificates from other parties that you expect to communicate with, or from Cerificate Authorities that you trust to identify other parties. Truststore file, cacerts.jks, contains the server’s trusted certificates, including public keys for other entities. For a trusted certificate, the server has confirmed that the public key in the certificate belongs to the certificate’s owner. Trusted certificates generally include those of certification authorities(CAs).
 
+### Create a new certificate
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout selfsigned.key -out selfsigned.crt
+
+"CN=asvcent7edc02.informatica.com,OU=Informatica,O=Informatica,L=RedwoodCity,S=California,C=US"
+```
 ### Keytool Commands
 
 create a keystore and key pair
