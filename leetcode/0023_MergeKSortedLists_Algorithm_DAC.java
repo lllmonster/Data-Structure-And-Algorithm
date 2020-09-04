@@ -8,7 +8,8 @@
  */
 class Solution {
     /**
-    * Divide and Conquer, O(Nlogk)
+    * Divide and Conquer, O(Nlogk), O(1)
+    How to divide is tricky
     */
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;

@@ -49,4 +49,22 @@ LC206 Reverse Linked List
 LC21 Merge Two Sorted Lists
 LC234 Palindrome Linked List 
 LC141 Linked List Cycle
-
+## 08/30/2020 Sun
+**Top Interview Question - LinkedList - Medium Collection**
+LC2 Add Two Numbers
+LC328 Odd Even Linked List
+LC160. Intersection of Two Linked Lists
+## 08/31/2020 Mon
+**Top Interview Question - LinkedList - Hard Collection**
+LC23. Merge k Sorted Lists
+LC148. Sort List
+LC138. Copy List with Random Pointer
+## 09/01/2020 Tue
+**Top Interview Question - Tree - Easy Collection**
+LC104. Maximum Depth of Binary Tree
+LC98. Validate Binary Search Tree
+LC101. Symmetric Tree
+## 09/02/2020 Wed
+LC102. Binary Tree Level Order Traversal
+LC108. Convert Sorted Array to Binary Search Tree
+**Top Interview Question - Trees and Graphs - Medium Collection**
