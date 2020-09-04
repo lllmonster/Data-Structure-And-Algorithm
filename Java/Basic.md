@@ -1,5 +1,47 @@
-[[TOC]]
+<!-- TOC -->
 
+- [Basic Knowledge](#basic-knowledge)
+    - [Primitives](#primitives)
+        - [String](#string)
+        - [Array](#array)
+        - [Convert Array to List](#convert-array-to-list)
+        - [Convert List to Array](#convert-list-to-array)
+    - [Object Oriented Programming](#object-oriented-programming)
+    - [Keyword](#keyword)
+        - [Static](#static)
+            - [What is Static Variable in Java](#what-is-static-variable-in-java)
+            - [What is Static Method in Java](#what-is-static-method-in-java)
+        - [Transient](#transient)
+        - [InstanceOf](#instanceof)
+    - [Inheritance](#inheritance)
+    - [Polymorphism](#polymorphism)
+    - [Abstract Class](#abstract-class)
+    - [Object Class methods](#object-class-methods)
+        - [Shallow Copy VS Deep Copy](#shallow-copy-vs-deep-copy)
+    - [Interface](#interface)
+    - [Exception](#exception)
+    - [Generics](#generics)
+    - [Collections](#collections)
+        - [Sort & Reverse & Fill & addAll](#sort--reverse--fill--addall)
+        - [Frequency & disjoint](#frequency--disjoint)
+    - [Concurrency](#concurrency)
+        - [Synchronization](#synchronization)
+    - [Threads](#threads)
+        - [Thread Local](#thread-local)
+            - [What is Thread Local?](#what-is-thread-local)
+            - [When to use Thread Local?](#when-to-use-thread-local)
+            - [How to use Thread Local?](#how-to-use-thread-local)
+    - [Function in Java 8](#function-in-java-8)
+        - [HashMap.merge()](#hashmapmerge)
+        - [HashMap.computeIfAbsent](#hashmapcomputeifabsent)
+    - [Design Patterns](#design-patterns)
+    - [Testing](#testing)
+    - [Library](#library)
+    - [Framework](#framework)
+        - [Aspect-Oriented Programming](#aspect-oriented-programming)
+            - [What is Aspect-Oriented Programming](#what-is-aspect-oriented-programming)
+
+<!-- /TOC -->
 # Basic Knowledge
 
 ## Primitives
