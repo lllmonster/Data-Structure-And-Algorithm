@@ -48,7 +48,7 @@ class MyThread extends Thread {
                     if (i == 1) s1.acquire();
                     System.out.println(i);
                     s0.release();
-                    if (i < Share.count) s1.acquire();
+                    if (i <= Share.count && i+2 <= Share.count) s1.acquire();
                     System.out.println("odd thread end");
                 }
             } catch (InterruptedException e) {
@@ -61,7 +61,7 @@ class MyThread extends Thread {
                     if (i == 2) s2.acquire();
                     System.out.println(i);
                     s0.release();
-                    if (i < Share.count) s2.acquire();
+                    if (i <= Share.count && i+2 <= Share.count) s2.acquire();
                     System.out.println("even thread end"); 
                 }
             } catch (InterruptedException e) {
