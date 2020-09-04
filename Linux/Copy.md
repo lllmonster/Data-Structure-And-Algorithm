@@ -31,6 +31,11 @@ Where,
 -e ssh : Use ssh for remote shell so everything gets encrypted
 --exclude='*.out' : exclude files matching PATTERN e.g. *.out or *.c and so on.
 
+#### Copy via rsync
+```
+rsync -chavzP --stats root@hostname:$source_dir $dest_dir
+```
+
 
 
 
