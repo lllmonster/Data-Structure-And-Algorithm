@@ -68,10 +68,20 @@ LC101. Symmetric Tree
 LC102. Binary Tree Level Order Traversal  
 LC108. Convert Sorted Array to Binary Search Tree  
 **Top Interview Question - Trees and Graphs - Medium Collection**  
-## 09/05/2020 Thu
+## 09/05/2020 Sat
 LC94. Binary Tree Inorder Traversal
 LC103. Binary Tree Zigzag Level Order Traversal
 LC105. Construct Binary Tree from Preorder and Inorder Traversal
 LC116. Populating Next Right Pointers in Each Node
 LC230. Kth Smallest Element in a BST
 LC200. Number of Islands
+## 09/07/2020 Mon
+**Top Interview Question - Trees and Graphs - Hard Collection**
+LC127. Word Ladder
+LC130. Surrounded Regions
+LC236. Lowest Common Ancestor of a Binary Tree
+LC124. Binary Tree Maximum Path Sum
+LC547. Friend Circles
+LC207. Course Schedule
+LC210. Course Schedule II
+LC329. Longest Increasing Path in a Matrix
