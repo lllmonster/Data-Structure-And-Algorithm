@@ -128,6 +128,25 @@ After all commands in the tutorial, you should get the following files:
 
 Each Nomad node should have the appropriate key (-key.pem) and certificate (.pem) file for its region and role. In addition each node needs the CA's public certificate (nomad-ca.pem).  
 
+## Deployment Nomad as System Service
+[Ref](https://www.nomadproject.io/docs/install/production/deployment-guide)
+```
+# Download Nomad Binary
+# Install Nomad
+sudo chown root:root nomad
+sudo mv nomad /usr/local/bin
+nomad version
+# nomad -autocomplete-install
+sudo touch /etc/systemd/system/nomad.service
+sudo mkdir -p /etc/nomad.d
+sudo chmod 700 /etc/nomad.d
+sudo touch /etc/nomad.d/nomad.hcl
+sudo touch /etc/nomad.d/server.hcl
+sudo touch /etc/nomad.d/client.hcl
+sudo systemctl enable nomad
+sudo systemctl start nomad
+sydo systemctl status nomad
+```
 ## Tutorial
 [Nomad-network-dymystified](https://www.hashicorp.com/resources/nomad-networking-demystified/)  
 Including brief intro of nomad, and network knowledge.  
