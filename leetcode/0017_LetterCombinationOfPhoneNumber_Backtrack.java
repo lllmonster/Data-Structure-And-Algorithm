@@ -1,4 +1,8 @@
 class Solution {
+    /**
+    Method 1: backTracking
+    Method 2: FIFO queue
+     */
     private String[] KEYS = {"0","1","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
     
     public List<String> letterCombinations(String digits) {
@@ -14,8 +18,8 @@ class Solution {
             while(ans.peek().length() == i) {
                 String t = ans.remove();
                 String str = KEYS[Character.getNumericValue(digits.charAt(i))];
-                for(int j = 0; j < str.length(); j++) {
-                    ans.add(t+str.charAt(j));
+                for(Character c : letter.toCharArray()) {
+                    ans.add(t+c);
                 }
             }
         }

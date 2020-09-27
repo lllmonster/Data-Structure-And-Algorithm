@@ -85,3 +85,13 @@ LC547. Friend Circles
 LC207. Course Schedule
 LC210. Course Schedule II
 LC329. Longest Increasing Path in a Matrix
+## 09/20/2020 Sun
+LC315. Count of Smaller Numbers After Self *TODO*  
+**Top Interview Question - Backtracking - Meidum Collection**  
+LC17. Letter Combinations of a Phone Number  
+LC22. Generate Parentheses  
+LC46. Permutations  
+LC78. Subsets  
+LC79. Word Search  
+**Top Interview Question - Backtracking - Hard Collection**  
+
