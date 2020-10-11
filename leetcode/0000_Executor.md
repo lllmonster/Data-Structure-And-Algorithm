@@ -93,5 +93,10 @@ LC22. Generate Parentheses
 LC46. Permutations  
 LC78. Subsets  
 LC79. Word Search  
+## 10/10/2020 Sat  
 **Top Interview Question - Backtracking - Hard Collection**  
+LC131. Palindrome Partitioning  
+LC212. Word Search II  
+LC301. Remove Invalid Parentheses  
+LC10. Regular Expression Matching  
 
