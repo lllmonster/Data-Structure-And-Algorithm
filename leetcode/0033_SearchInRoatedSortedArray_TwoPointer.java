@@ -1,4 +1,8 @@
 class Solution {
+    /**
+    Two Pointer: the condition is very tricky. if include equal condition
+    is also very important.
+     */
     public int search(int[] nums, int target) {
         if (nums == null || nums.length == 0) return -1;
         int l = 0, r = nums.length - 1;

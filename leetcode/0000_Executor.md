@@ -99,4 +99,17 @@ LC131. Palindrome Partitioning
 LC212. Word Search II  
 LC301. Remove Invalid Parentheses  
 LC10. Regular Expression Matching  
+## 10/11/2020 Sun  
+**Top Interview Question - Sorting and Searching - Easy Collection**  
+LC88. Merge Sorted Array  
+LC278. First Bad Version  
+**Top Interview Question - Sorting and Searching - Medium Collection**  
+## 10/25/2020 Sun
+LC75. Sort Colors  
+LC347. Top K Frequent Elements  
+LC215. Kth Largest Element in an Array  
+LC162. Find Peak Element  
+LC56. Merge Intervals  
+LC33. Search in Rotated Sorted Array  
+LC240. Search a 2D Matrix II  
 
