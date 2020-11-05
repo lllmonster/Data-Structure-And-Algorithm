@@ -3,14 +3,14 @@ class Solution {
     * one is O(n) space, the other one o(1) space
     */
     public int maxSubArray(int[] nums) {
-        int max = Integer.MIN_VALUE;
-        int[] dp = new int[nums.length+1];
-        dp[0] = 0;
-        for (int i = 1; i < dp.length; i++) {
-            if (dp[i-1] > 0) {
-                dp[i] = dp[i-1]+nums[i-1];
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int max = dp[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (dp[i-1] < 0) {
+                dp[i] = nums[i];
             } else {
-                dp[i] = nums[i-1];
+                dp[i] = nums[i] + dp[i-1];
             }
             max = Math.max(max, dp[i]);
         }

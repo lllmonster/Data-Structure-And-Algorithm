@@ -117,6 +117,11 @@ LC240. Search a 2D Matrix II
 LC324. Wiggle Sort II  
 LC378. Kth Smallest Element in a Sorted Matrix  
 LC4. Median of Two Sorted Arrays  
-
+## 11/04/2020 Wed  
+**Top Interview Question - Dynamic Programming - Easy Collection**  
+LC70. Climbing Stairs  
+LC121. Best Time to Buy and Sell Stock  
+LC53. Maximum Subarray  
+LC198. House Robber  
 
 
