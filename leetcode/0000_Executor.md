@@ -123,5 +123,12 @@ LC70. Climbing Stairs
 LC121. Best Time to Buy and Sell Stock  
 LC53. Maximum Subarray  
 LC198. House Robber  
+## 11/07/2020 Sat
+**Top Interview Question - Dynamic Programming - Medium Collection**  
+LC55. Jump Game  
+LC62. Unique Paths  
+LC322. Coin Change  
+LC300. Longest Increasing Subsequence  
+
 
 
