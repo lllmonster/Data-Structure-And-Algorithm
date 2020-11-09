@@ -129,6 +129,15 @@ LC55. Jump Game
 LC62. Unique Paths  
 LC322. Coin Change  
 LC300. Longest Increasing Subsequence  
+## 11/08/2020 Sun
+**Top Interview Question - Dynamic Programming - Hard Collection**  
+LC152. Maximum Product Subarray  
+LC91. Decode Ways  
+LC309. Best Time to Buy and Sell Stock with Cooldown  
+LC279. Perfect Squares  
+LC139. Word Break  
+LC140. Word Break II (not fully understand)   
+LC312. Burst Balloons (not fully understand)  
 
 
 
