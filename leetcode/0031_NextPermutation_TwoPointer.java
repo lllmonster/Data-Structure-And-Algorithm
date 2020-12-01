@@ -1,9 +1,10 @@
 class Solution {
     /**
-    1. Find the first decending number from the end '4'
-    2. Find the number just larger than '4'
-    3. swap
-    4. reverse the other elements.
+    Algorithm is the point
+    1. Find the first decending number i from the end
+    2. Find the number j just larger than i
+    3. swap(i.j)
+    4. reverse the other elements.(i+1, nums.length-1)
     
     O(n), O(1)
     */

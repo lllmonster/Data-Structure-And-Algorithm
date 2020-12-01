@@ -138,6 +138,17 @@ LC279. Perfect Squares
 LC139. Word Break  
 LC140. Word Break II (not fully understand)   
 LC312. Burst Balloons (not fully understand)  
+## 11/29/2020 Sun
+**Google Interview - Arrays And Strings**  
+LC3.Longest Substring Without Repeating Characters  
+LC11. Container With Most Water  
+LC15. 3Sum  
+LC31. Next Permutation  
+LC43. Multiply Strings  
+LC48. Rotate Image  
+## 11/30/2020 Mon  
+LC55. Jump Game  
+
 
 
 

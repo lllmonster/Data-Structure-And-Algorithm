@@ -1,5 +1,13 @@
 class Solution {
     /**
+    1st Idea: two pointer, use hash set to store the list, compare len and j-i+1
+    2nd Idea: replace hash set with map, map to store the charachter and its index.
+    
+    Normal Example: abcabcbb - 3
+    Special Example: tmmzuxt - 5
+    */
+    
+    /**
     Using map, optimization, O(n), O(min(m,n))
      */
     public int lengthOfLongestSubstring(String s) {
