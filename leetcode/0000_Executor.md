@@ -151,6 +151,8 @@ LC55. Jump Game
 LC66. Plus One  
 ## 01/09/2021 Sat
 LC76. Minimum Window Substring  
+LC158. Read N Characters Given Read4 II - Call multiple times  
+LC159. Longest Substring with At Most Two Distinct Characters  
 
 
 
