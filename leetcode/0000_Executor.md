@@ -148,6 +148,9 @@ LC43. Multiply Strings
 LC48. Rotate Image  
 ## 11/30/2020 Mon  
 LC55. Jump Game  
+LC66. Plus One  
+## 01/09/2021 Sat
+LC76. Minimum Window Substring  
 
 
 
