@@ -157,6 +157,9 @@ SELinux status: disabled
 # sudo rm -r /var/log/mongodb
 # sudo rm -r /var/lib/mongo
 ```
+### Check Command
+1. Show current user roles `db.runCommand({connectionStatus : 1})`
+
 ### Tutorial
 #### Monitor
 Enable MongoDB's free cloud-based monitoring service, which will then receive and display
