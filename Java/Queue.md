@@ -13,6 +13,14 @@ PriorityQueue<int> pq = new PriorityQueue<int>(new Comparator<int>() {
         return a - b;
     }
 });
+
+pq.add(i);
+pq.poll();
+```
+**CompareMethod**
+```
+double[][] arr = new double[2][2];
+Arrays.sort(arr, (a, b) -> Double.compare(a[0], b[0]));
 ```
 
 ## Deque
@@ -20,7 +28,7 @@ The Deque is a subtype of the queue interface, which is related to the `double-e
 It can either be used as a `queue(first in first out/FIFO)` or as a `stack(last in first out/LIFO)`.
 ```Java
 Deque<Obj> deque = new ArrayDeque<Obj>();
-eque<String> deque = new LinkedList<String>(); 
+Deque<String> deque = new LinkedList<String>(); 
 
 // Add at the last 
 deque.add("Element 1 (Tail)"); 

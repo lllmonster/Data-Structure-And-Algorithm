@@ -151,8 +151,25 @@ LC55. Jump Game
 LC66. Plus One  
 ## 01/09/2021 Sat
 LC76. Minimum Window Substring  
+## 01/12/2021 Tue
 LC158. Read N Characters Given Read4 II - Call multiple times  
 LC159. Longest Substring with At Most Two Distinct Characters  
+## 01/14/2021 Thu
+LC163. Missing Ranges  
+## 01/20/2020 Wed  
+LC681. Next Closest Time  
+## 01/23/2020 Sat
+LC809. Expressive Words  
+LC849. Maximize Distance to Closest Person  
+LC20. Valid Parentheses  
+LC23. Merge k Sorted Lists  
+LC42. Trapping Rain Water  
+LC215. Kth Largest Element in an Array  
+LC253. Meeting Rooms II  
+LC844. Backspace String Compare  
+LC857. Minimum Cost to Hire K Workers  
+LC973. K Closest Points to Origin  
+
 
 
 
