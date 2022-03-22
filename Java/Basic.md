@@ -27,6 +27,7 @@
     - [Concurrency](#concurrency)
         - [Synchronization](#synchronization)
     - [Threads](#threads)
+        - [Multi-thread Example](#multi-thread-example)
         - [Thread Local](#thread-local)
             - [What is Thread Local?](#what-is-thread-local)
             - [When to use Thread Local?](#when-to-use-thread-local)
@@ -551,6 +552,40 @@ synchronized(sync_object)
 ```
 
 ## Threads
+
+### Multi-thread Example
+```Java
+public class MultiThreadExample {
+
+    public static void main(String[] args) {
+        int n = 10; // Number of threads
+        for (int i = 0; i < n; i++) {
+            String threadName = "Thread" + i;
+            MyMultiThread mythread = new MyMultiThread(threadName);
+            mythread.start();
+        }
+    }
+}
+
+class MyMultiThread extends Thread {
+    private String threadName;
+    MyMultiThread( String name) {
+        this.threadName = name;
+    }
+    public void run()
+    {
+        try {
+            // the run function will be run parallel in 10 threads.
+            // You can use this to test your pq.
+            System.out.println("Thread " + threadName + " is running");
+        }
+        catch (Exception e) {
+            System.out.println("Exception is caught");
+        }
+    }
+}
+
+```
 
 ### Thread Local
 
