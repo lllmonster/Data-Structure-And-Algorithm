@@ -1,11 +1,14 @@
 <!-- TOC -->
 
 - [Basic Knowledge](#basic-knowledge)
+    - [Common Usage](#common-usage)
+        - [Sort](#sort)
     - [Primitives](#primitives)
         - [String](#string)
         - [Array](#array)
         - [Convert Array to List](#convert-array-to-list)
         - [Convert List to Array](#convert-list-to-array)
+        - [Stack](#stack)
     - [Object Oriented Programming](#object-oriented-programming)
     - [Keyword](#keyword)
         - [Static](#static)
@@ -35,6 +38,7 @@
     - [Function in Java 8](#function-in-java-8)
         - [HashMap.merge()](#hashmapmerge)
         - [HashMap.computeIfAbsent](#hashmapcomputeifabsent)
+        - [java.util.IntSummaryStatistics](#javautilintsummarystatistics)
     - [Design Patterns](#design-patterns)
     - [Testing](#testing)
     - [Library](#library)
@@ -44,6 +48,13 @@
 
 <!-- /TOC -->
 # Basic Knowledge
+
+## Common Usage
+### Sort
+`Arrays.sort(arr)`  
+`Collections.sort(list)`  
+`Collections.sort(list, Collections.reverseOrder());`  
+
 
 ## Primitives
 * boolean - 1 bit
@@ -65,6 +76,9 @@ Descirptive Variable Names
 ```
 NOTE:  `static final` is only for primitive types and immutable types, like int/string. Never use `static final` for Array which is mutable and can be modified. It's not safe.
 ```
+
+Bit:  
+`>>` is arithmetic shift right, `>>>` is logical shift right
 
 ### String
 
@@ -108,9 +122,19 @@ Arrays.sort(a);
 ```
 
 ### Convert Array to List
-`Arrays.asList(arr)`
+**Convert Interger[] to list**  
+`Arrays.asList(arr)`  
+**Convert int[] to list**  
+`List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());`
 ### Convert List to Array
 `String[] newarr = list.toArray(new String[list.size()]);`
+
+### Stack
+`Object push(Object element)`  
+`Object pop()` - Removes and return the top element of the stack  
+`Object peek()` - Returns the element on the top of the stack but not remove it  
+`boolean empty()`  
+`int search(Object element)` - If the element is found, it returns the position from the top of the stack. Else, it returns -1. 
 
 ## Object Oriented Programming
 Immutable Objects:  
@@ -258,6 +282,7 @@ public class TransientExample {
 		// decompress
 		ObjectInputStream in = new ObjectInputStream(new FileInputStream("f.txt"));
 		Student s = (Student) in.readObject();
+        // output: 211 ravi 0
 		System.out.println(s.id + " " + s.name + " " + s.age);
 		in.close();
 	}
@@ -749,6 +774,16 @@ The default implementation is equivalent to the following steps for this map, th
 
 ```
 
+
+### java.util.IntSummaryStatistics
+```Java
+import java.util.IntSummaryStatistics;
+
+public double average(int[] salary) {
+    IntSummaryStatistics stat = Arrays.stream(salary).boxed().collect(Collectors.summarizingInt(i -> i));
+    return (double)(stat.getSum() - stat.getMax() - stat.getMin()) / (stat.getCount() - 2);
+}
+```
 ## Design Patterns
 * Factory Pattern  
 A factory class decouples the user from the implementing classes.  

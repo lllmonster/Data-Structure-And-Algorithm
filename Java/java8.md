@@ -2,7 +2,7 @@
 
 [Ref](https://www.topjavatutorial.com/java-8/java-8-map-merge/)
 
-```
+```Java
 package com.topjavatutorial;
  
 import java.util.HashMap;
