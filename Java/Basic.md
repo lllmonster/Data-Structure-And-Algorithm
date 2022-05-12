@@ -80,6 +80,10 @@ NOTE:  `static final` is only for primitive types and immutable types, like int/
 Bit:  
 `>>` is arithmetic shift right, `>>>` is logical shift right
 
+char to int
+`int a = Character.getNumbericValue(c);`
+
+
 ### String
 
 String is object, not primitive!
