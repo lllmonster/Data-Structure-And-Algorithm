@@ -4,10 +4,9 @@
     - [Common Usage](#common-usage)
         - [Sort](#sort)
     - [Primitives](#primitives)
+        - [Convert](#convert)
         - [String](#string)
         - [Array](#array)
-        - [Convert Array to List](#convert-array-to-list)
-        - [Convert List to Array](#convert-list-to-array)
         - [Stack](#stack)
     - [Object Oriented Programming](#object-oriented-programming)
     - [Keyword](#keyword)
@@ -55,6 +54,9 @@
 `Collections.sort(list)`  
 `Collections.sort(list, Collections.reverseOrder());`  
 
+* Custom sort
+`Arrays.sort(arr, (a,b) -> a-b);`
+
 
 ## Primitives
 * boolean - 1 bit
@@ -66,7 +68,7 @@
 * float - 32 bits
 * double - 64 bits
 
-Naming:
+Naming Principle:
 * camelCase
 * only `static final` use UPPER_SNAKE_CASE
 * be descriptive with naming
@@ -77,11 +79,38 @@ Descirptive Variable Names
 NOTE:  `static final` is only for primitive types and immutable types, like int/string. Never use `static final` for Array which is mutable and can be modified. It's not safe.
 ```
 
-Bit:  
+### Convert 
+* Bit:  
 `>>` is arithmetic shift right, `>>>` is logical shift right
 
-char to int
+* Character to int  
 `int a = Character.getNumbericValue(c);`
+
+* Binary - int  
+`String bit = Integer.toBinaryString(int);`  
+`int a = Integer.parseInt(bit);`
+
+* Interger[] to list  
+`Arrays.asList(arr)`  
+
+* int[] to list  
+`List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());`
+
+* list to String[]  
+`String[] newarr = list.toArray(new String[list.size()]);`
+
+* int[] to Integer[]  
+`Integer[] input = Arrays.stream(arr).boxed().toArray(Integer[]::new);`
+
+* Integer[] to int[]  
+`int[] arr = Arrays.stream(input).mapToInt(Integer::intValue).toArray();`
+
+* char[] to String  
+`String s = String.valueOf(c);`  
+
+
+
+
 
 
 ### String
@@ -124,14 +153,6 @@ Random random = new Random();
 a[random.nextInt(10)] = random.nextInt();
 Arrays.sort(a);
 ```
-
-### Convert Array to List
-**Convert Interger[] to list**  
-`Arrays.asList(arr)`  
-**Convert int[] to list**  
-`List<Integer> list = Arrays.stream(arr).boxed().collect(Collectors.toList());`
-### Convert List to Array
-`String[] newarr = list.toArray(new String[list.size()]);`
 
 ### Stack
 `Object push(Object element)`  
