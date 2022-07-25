@@ -1,5 +1,5 @@
 /**
-Ideal Solution - if else
+Ideal Solution - if else - o(n),o(n)
  */
 
 class Solution {
