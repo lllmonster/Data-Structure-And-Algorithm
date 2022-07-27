@@ -8,6 +8,8 @@
         - [Write File - Write String to File](#write-file---write-string-to-file)
         - [Gson - read Object from file](#gson---read-object-from-file)
     - [Pattern & Regluar Expression](#pattern--regluar-expression)
+    - [Spring Framework](#spring-framework)
+        - [IOC(Inversion of Control)](#iocinversion-of-control)
 
 <!-- /TOC -->
 # Intermediate Knowledge
@@ -120,4 +122,34 @@ while(m.find()) {
 | ? | occurs no or one times
 | {x} | occurs x number of times. \\d{3}
 | {x,y} | occurs between x and y times \\d{1,4}
+
+## Spring Framework
+### IOC(Inversion of Control)
+We can define inversion as a reversal of the natural order. The natural order is to decalre variables and then initailize those variables with instances of objects you create. like:  
+`Question q1 = new Question();`  
+
+If we were to apply the IOC, the developer could not use the `new` keyword and call the constructor of the Question class.
+
+Instead, when needed, a magical and mysterious black box (IoC container) will provide instances of the Qeustion class. like:  
+`Question q1 = MysteriousBlackBox.getInstance(Question.class)`  
+
+If you introduces the IoC with the Spring Framework. It's like:  
+`Qeustion q1 = context.getBean(Question.class)`
+
+Here in Spring, call the IoC container that provisions instances the ApplicationContext, not MysteriousBlackBox.
+
+**Benefits**
+
+* maintain the creation, configuration, provisioning and lifecycle of all container-managed objects separately from the code where they are referenced. 
+    * If the configuraiton for the database connection changes, a developer only needs to change the setting in the IoC container, not rewrite the code.
+    * If an instance of a class get cached and pooled, the IoC container can take care of this
+    * If an application uses only one instance of a class, and IoC container can provide this behavior.
+* IoC container can provide a new implementation of a class, or even a specialized subclass.
+* IoC container can provide a new and more efficient implementation at runtime.
+
+**Summary**
+
+The IoC pattern is a way of reversing the traditional approach to create and initialize java objects. Rather than create objects directly within their code, developers ask a third party, such as the Spring container or the Java EE context, to provide instances instead.  
+
+
 

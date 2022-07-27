@@ -12,10 +12,9 @@
     - [Object Oriented Programming](#object-oriented-programming)
     - [Keyword](#keyword)
         - [Static](#static)
-            - [What is Static Variable in Java](#what-is-static-variable-in-java)
-            - [What is Static Method in Java](#what-is-static-method-in-java)
         - [Transient](#transient)
         - [InstanceOf](#instanceof)
+        - [Volatile](#volatile)
     - [Inheritance](#inheritance)
     - [Polymorphism](#polymorphism)
     - [Abstract Class](#abstract-class)
@@ -270,7 +269,7 @@ Access Privileges
 
 ### Static 
 
-#### What is Static Variable in Java
+**What is Static Variable in Java**
 
 Static variable is a variable which belongs to the class and initialized only once at the start of the execution.
 
@@ -279,7 +278,7 @@ Static variable is a variable which belongs to the class and initialized only on
 * A single copy to be shared by all instance of the class
 * A static variable can be accessed directly by the class name and doesn't need any object
 
-#### What is Static Method in Java
+**What is Static Method in Java**
 
 Static method is a method which belongs to the class and not to the object. A static method can access only static data.
 
@@ -386,6 +385,8 @@ class Student implements Serializable {
 ### InstanceOf
 It's a keyword that is used for checking if a reference variable is containing a given type of object reference or not.
 
+### Volatile
+Volatile keyword is used to modify the value of a variable by different threads. It is also used to make classes thread safe. It means that multiple threads can use a method and instance of the classes at the same time without any problem. 
 
 ## Inheritance
 
