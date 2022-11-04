@@ -1,4 +1,37 @@
-### HashMap.merge()
+<!-- TOC -->
+
+- [Stream](#stream)
+- [HashMap.merge()](#hashmapmerge)
+
+<!-- /TOC -->
+
+## Stream
+```Java
+// Empty stream
+Stream<String> s = Stream.empty();
+// Stream of Collection
+Collection<String> collection = Arrays.asList("a","b","c");
+Stream<String> s = collection.stream();
+//Stream of Array
+Stream<String> s = Stream.of("a","b","c");
+String[] arr = new String[]{"a","b","c"};
+Stream<String> s = Arrays.stream(arr);
+```
+```Java
+List<Integer> list = new ArrayList<>();
+list.add(1);
+list.add(2);
+list.add(3);
+list.add(4);
+// filter
+List<Integer> l2 = list.stream().filter( i -> i%2==0).collect(Collectors.toList());
+// map
+List<Integer> l3 = list.stream().filter(i -> i+5).collect(Collectors.toList());
+
+```
+
+
+## HashMap.merge()
 
 [Ref](https://www.topjavatutorial.com/java-8/java-8-map-merge/)
 

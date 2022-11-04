@@ -1,16 +1,23 @@
 # Head First Design Pattern
+<!-- TOC -->
+
 - [Head First Design Pattern](#head-first-design-pattern)
-  - [Definition](#definition)
-  - [The Observer Pattern](#the-observer-pattern)
-  - [The Decorator Pattern](#the-decorator-pattern)
-  - [The Factory Pattern](#the-factory-pattern)
-  - [The Singleton Pattern](#the-singleton-pattern)
-  - [The Command Pattern](#the-command-pattern)
-  - [The Adapter and Facade Patterns](#the-adapter-and-facade-patterns)
-  - [The Template Method Pattern](#the-template-method-pattern)
-  - [The Iterator and Composite Patterns](#the-iterator-and-composite-patterns)
+    - [Definition](#definition)
+    - [The Observer Pattern](#the-observer-pattern)
+    - [The Decorator Pattern](#the-decorator-pattern)
+    - [The Factory Pattern](#the-factory-pattern)
+    - [The Singleton Pattern](#the-singleton-pattern)
+    - [The Command Pattern](#the-command-pattern)
+    - [The Adapter and Facade Patterns](#the-adapter-and-facade-patterns)
+    - [The Template Method Pattern](#the-template-method-pattern)
+    - [The Iterator and Composite Patterns](#the-iterator-and-composite-patterns)
+    - [The State Pattern](#the-state-pattern)
+    - [The Proxy Pattern](#the-proxy-pattern)
+        - [Gumball Machine Example](#gumball-machine-example)
 - [APPENDIX A - Note](#appendix-a---note)
-  - [Difference between abstract class and interface](#difference-between-abstract-class-and-interface)
+    - [Difference between abstract class and interface](#difference-between-abstract-class-and-interface)
+
+<!-- /TOC -->
 
 ## Definition
 OO Basic
@@ -28,7 +35,7 @@ OO Principles
 * Depend on abstractions. Do not depend on concrete classes.
 * Principle of Least Knowledge - talk only to you immediate friends.
 * Don't call us, we'll call you.
-* Keep each class to a single responsibility.
+* A class should have only one reason to change.
 
 OO Patterns
 * The Strategy Pattern: defines a family of algorithms, encapsulates each other and makes them interchangeable. Strategy lets the algorithm vary independently from clients that use it. 
@@ -53,8 +60,8 @@ OO Patterns
 * The Template Method Pattern: defines the skeleton of an algorithm in a method, deferring some steps to subclasses. Template Methods lets subclasses redefine certain steps of an algorithm without changing the algorithm's structure.  
 * The Iterator Pattern: provides a way to access the elements of an aggregate object sequentially without exposing its underlying representation.  
 * The Composite Pattern: allows you to compose objects into tree structure to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.  
-* The State Pattern:
-* The Proxy Pattern:
+* The State Pattern: Allow an object to alter its behavior when its internal state changes. THe Object will apear to change its class.
+* The Proxy Pattern: Provides a surrogate or placeholder for another object to control access to it.
 * Compound Patterns:
 * Better Living with Patterns:
 * Leftover Patterns:
@@ -73,6 +80,13 @@ Comparsion
 | Template Method | Encapsulate interchangeable behaviors and use delegation to decide which behavior to use | 
 | Strategy | Subclasses decide how to implement steps in an algorithm | 
 | Factory Method | Subclasses decide which concrete classes to create | 
+
+| Pattern | Intent |
+| --- | --- |
+| Decorator | Wraps another object and provides a different interface to it | 
+| Adapter | Wraps a bunch of objects to simplify their interface | 
+| Facade | Wraps another object and provides additional behavior for it | 
+| Proxy | Wraps another object to control access to it | 
 
 ## The Observer Pattern
 Publishers + Subscribers = Observer Pattern - Defines a one-to-many dependency between objects so that when one object changes state, all of its dependents are notified and updated automatically.  
@@ -764,6 +778,90 @@ public class GumballMachine {
 }
 ```
 
+## The Proxy Pattern
+1. Remote proxy  
+
+Remote Interface
+```Java
+import java.rmi.*;
+public interface MyRemote extends Remote {
+    public String sayHello() throws RemoteException;
+}
+```
+
+Remote Service (Implementation)
+```Java
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class MyRemoteImpl extends UnicasRemoteObject implements MyRemote {
+    public String sayHello() {
+        return "Server says Hey";
+    }
+
+    public MyRemoteImpl() throws RemoteException {
+
+    }
+
+    public static void main(String[] args) {
+        try {
+            MyRemote service = new MyRemoteImpl();
+            Naming.rebind("RemoteHello", service);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Client Code
+```Java
+import java.rmi.*;
+
+public class MyRemoteClient {
+    public static void main (String[] args) {
+        new MyRemoteClient().go();
+    }
+
+    public void go() {
+        try {
+            MyRemote service = (MyRemote) Naming.lookup("rmi://127.0.0.1/RemoteHello");
+            String s = service.sayHello();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Notes:
+1. Don't forget to start rmiregistry before starting remote service
+2. Don't forget to make arguments and return type serializable
+3. Don't forget give the stub class to the client.
+
+### Gumball Machine Example
+```Java
+public interface GumballMachineRemote extends Remote {
+    public int getCount() throws RemoteException;
+    public String getLocation() throws RemoteException;
+    public State getState() throws RemoteException;
+}
+
+public interface State extends Serializable {
+    public void insertQuarter();
+    public void ejectQuarter();
+    public void turnCrank();
+    public void dispense();
+}
+```
+We don't want the entire gumball machine serialized and transferred with the state objects
+```Java
+public class NoQuarterState implements State {
+    transient GumballMachine gumballMachine;
+}
+```
+2. Virtual Proxy
+3. Protection Proxy
 
 # APPENDIX A - Note
 ## Difference between abstract class and interface
