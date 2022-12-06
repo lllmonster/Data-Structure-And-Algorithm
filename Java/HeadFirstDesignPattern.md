@@ -14,6 +14,8 @@
     - [The State Pattern](#the-state-pattern)
     - [The Proxy Pattern](#the-proxy-pattern)
         - [Gumball Machine Example](#gumball-machine-example)
+    - [Compond Patterns](#compond-patterns)
+    - [Patterns in the real world](#patterns-in-the-real-world)
 - [APPENDIX A - Note](#appendix-a---note)
     - [Difference between abstract class and interface](#difference-between-abstract-class-and-interface)
 
@@ -62,7 +64,7 @@ OO Patterns
 * The Composite Pattern: allows you to compose objects into tree structure to represent part-whole hierarchies. Composite lets clients treat individual objects and compositions of objects uniformly.  
 * The State Pattern: Allow an object to alter its behavior when its internal state changes. THe Object will apear to change its class.
 * The Proxy Pattern: Provides a surrogate or placeholder for another object to control access to it.
-* Compound Patterns:
+* Compound Patterns: Combines two or more patterns into a solution that solves a recurring or general problem.
 * Better Living with Patterns:
 * Leftover Patterns:
 
@@ -862,6 +864,53 @@ public class NoQuarterState implements State {
 ```
 2. Virtual Proxy
 3. Protection Proxy
+
+## Compond Patterns
+
+Model-View-Controller
+
+## Patterns in the real world
+
+Pattern Categories (GoF)
+* Creational patterns: involve object instantiation and all provide a way to decouple a client from the objects it nees to instantiate.  
+    * Example: Singleton, Builder, Prototype, Abstract Factory, Factory Method
+    * Abstract Factory: Allows the creation of objects without specifying their concrete type.
+    * Builder: Uses to create complex objects.
+    * Factory Method: Creates objects without specifying the exact class to create.
+    * Prototype: Creates a new object from an existing object.
+    * Singleton: Ensures only one instance of an object is created.
+* Behavioral pattern: how class and objects interact and distribute responsibility.
+    * Example: Tempalte, Visitor, Mediator, Iterator, Command, Interpreter, Observer, State, Strategy
+    * Chain of Responsibility: Delegates commands to a chain of processing objects.
+    * Command: Creates objects which encapsulate actions and parameters.
+    * Interpreter: Implements a specialized language.
+    * Iterator: Accesses the element of an object sequentially without exposing its underlying representation.
+    * Mediator: Allows loose coupling between classes by being the only class that has detailed knowledge of their methods.
+    * Memento: Provides the ability to restore an object to its previous state
+    * Observer: Is a publish/subscribe pattern which allows a number of observer objects to see an event.
+    * State: Allows an object to alter its behavior when its internal state changes.
+    * Strategy: Allows one of a family of algorithm to be selected on the fly at run time.
+    * Template Method: Defines the skeleton of an algorithm as an abstract class, allowing its sub classes to provide concrete behavior.
+    * Visitor: Separates an algorithm from an object structure by moveing the hierarchy of methods into one object.
+* Structual pattern: let you compose classes or objects into larger structures.
+    * Example: Decorator, Composite, Proxy, Facade, Adapter, Flyweight, Bridge
+    * Adapter: Allows for two incompatible calsses to work together by wrapping an interface around one of the existing classes.
+    * Bridge: Decouples an abstraction so two classes can vary independently.
+    * Composite: Takes a group of objects into a single object
+    * Decorator: Allows for an object's behavior to be extended dynamically at run time.
+    * Facade: Provides a simple interface to a more complex underlying object.
+    * Flyweight: Reduces the cost of complex object models.
+    * Proxy: Provides a placeholder interface to an underlying object to control access, reduce cost, or reduce complexity.
+
+Start with the simplest and most common patterns:
+* Abstract Factory
+* Factory Method
+* Adapter
+* Observer
+* Compositer
+* Strategy
+* Decorator
+* Tempalte Method
 
 # APPENDIX A - Note
 ## Difference between abstract class and interface
