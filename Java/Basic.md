@@ -271,6 +271,8 @@ Access Privileges
 
 **What is Static Variable in Java**
 
+The keyword static means that the particular member belongs to a type itself, rather than to an instance of that type.
+
 Static variable is a variable which belongs to the class and initialized only once at the start of the execution.
 
 * It is a variable which belongs to the class and not to object (instance)
