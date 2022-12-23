@@ -148,7 +148,7 @@ nameLengths = names.stream().map(String::length).collect(Collectors.toList());
 ```
 
 Other Examples:
-* Map.computerIfAbsent(K key, Function<? super K, ? extends V> mappingFunction);
+* Map.computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction);
 * Comparator.comparing(Function<? super T, ? extends U> keyExtractor)
 * Comparator.thenComparing(Function<? super T, ? extends U> keyExtractor)
 
@@ -589,3 +589,402 @@ public SortedSet<String> oddLengthStringSet(String... strings) {
 ```
 
 ## Chapter 5: Issues with Streams, Lambdas, and Method References 
+
+### The java.util.Object Class 
+
+static utility methods for null checking, comparisons, and more. 
+- `static boolean deepEquals(Object a, Object b)`
+- `static boolean equals(Object a, Object b)`
+- `static int hash(Object... values)`
+- `static String toString(Object o)`
+- `static String toString(Object o, String nullDefault)`
+- `static <T> T requireNotNull(T obj)`
+- `static <T> T requireNotNull(T obj, String message)`
+- `static <T> T requireNotNull(T obj, Supplier<String> messageSupplier)`
+- `static boolean isNull(Object obj)`
+- `static boolean nonNull(Object obj)`
+
+Example
+```java
+// return a collection and filtering out nulls
+List<String> nonNullStrings = strings.stream().filter(Object::nonNull).collect(Collectors.toList());
+```
+
+### Lambdas and Effectively Final 
+Local variables accessed inside lambda expressions must be final or effectively final.  
+Attributes can be both accessed and modified.  
+
+### Streams of Random Numbers 
+java.util.Random - three methods  
+- IntStream ints()
+- LongStream longs()
+- DoubleStream doubles()
+- DoubleStream doubles(long streamSize, double randomNumebrOrigin, double randomNumberBound)
+
+SecureRandom is a subclass of Random. It provides a cryptographically strong random number generator.  
+
+### Default Methods in Map 
+
+| Method | Purpose
+| --- | --- |
+| compute | 
+| computeIfAbsent | `V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction)`
+| computeIfPresent | `V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)`
+| forEach | 
+| getOrDefault | `V getOrDefault(K key, V defaultValue)`
+| merge | `V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)`
+| putIfAbsent | 
+| remove | 
+| replace | `V replace(K key, V value); OR V replace(K key, V oldValue, V newValue);`
+| replaceAll | 
+
+
+Example - computeIfAbsent - recursive calculation of Fibonacci numbers
+```java
+// old method - highly inefficient
+long fib(long i) {
+    if (i == 0) return 0;
+    if (i == 1) return 1;
+    return fib(i - 1) + fib(i - 2);
+}
+
+// with cache
+private Map<Long, BigInteger> cache = new HashMap<>();
+BigInteger fib(long i) {
+    if (i == 0) return BigInteger.ZERO;
+    if (i == 1) return BigInteger.ONE;
+    return cache.computeIfAbsent(i, n -> fib(n-2).add(fib(n-1)));
+}
+```
+
+Example - merge - calcuate full word counts
+```java
+public Map<String, Integer> fullWordCounts(String messgae) {
+    Map<String, Integer> wordCounts = new HashMap<>();
+    String testString = message.toLowerCase().replaceAll("\\W"," ");
+    Arrays.stream(testString.split("\\s+")).forEach(word -> wordCounts.merge(word, 1, Integer::sum));
+    return wordCounts;
+}
+```
+
+### Default Method Conflict 
+Java 8 supports both default and static methods in interface. Default methods provide an implementation, which is then inherited by the class. 
+
+### Iterating Over Collections and Maps 
+
+`default void forEach(Consumer<? super T> action)`
+
+### Logging with a Supplier 
+
+java.util.logging.Logger
+- void info(String message)
+- void info(Supplier<String> messageSupplier)
+
+Example
+```java
+private Logger logger = Logger.getLogger(this.getClass().getName());
+logger.info("this data is " + data.toString()); // argument always constructed
+logger.info(() -> "this data is " + data.toString()); // argument only constructed if log level shows info messages. 
+```
+
+### Closure Composition 
+Composition methods in java.util.function.Function 
+- `default <V> Function<V,R> compose(Function<? super V, ? extends T> before)`
+- `default <V> Function<T,V> andThen(Function<? super R, ? extends V> after)`
+
+Example
+```java
+Function<Integer, Integer> add2 = x -> x + 2;
+Function<Integer, Integer> mult3 = x -> x * 3;
+
+Function<Integer, Integer> mult3add2 = add2.compose(mult3);
+Function<Integer, Integer> add2mult3 = add2.andThen(mult3);
+
+System.out.println(add2mult3(1));
+```
+
+Closure composition with Consumers
+`default Consumer<T> andThen(Consumer<? super T> after)`  
+
+Example
+```java
+Consumer<String> printer = System.out::println;
+Consumer<String> logger = log::info;
+Consumer<String> printThenLog = printer.andThen(logger);
+```
+
+Closure composition with Predicate
+- `default Predicate<T> and(Predicate<? super T> other)`  
+- `default Predicate<T> negate()`
+- `default Predicate<T> or(Predicate<? super T> other)`  
+
+
+### Using an Extracted Method for Exception Handling
+
+Create a separate method that does the operation, handle the exception there, and invoke the extracted method in your lambda expression.  
+
+### Checked Exceptions and Lambdas 
+ Add a try/catch block to the lambda expression, or delegate to an extracted method to handle it.  
+
+### Using a Generic Exception Wrapper 
+
+Create special exception classes and add a generic method to accept them and return lambdas without exceptions.  
+
+Example
+```java
+// a functional interface based on Function that throws Exception
+@FunctionalInterface
+public interface FunctionWithException<T, R, E extends Exception> {
+    R apply(T t) throws E;
+}
+
+// a wrapper method to deal with exceptions
+private static <T, R, E extends Exception> Function<T,R> wrapper(FunctionWithException<T,R,E> fe) {
+    return arg -> {
+        try {
+            return fe.apply(arg);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    };
+}
+
+// using a generic static wrapper method
+public List<String> encodeValuesWithWrapper(String... values) {
+    return Arrays.stream(values).map(wrapper(s -> URLEncoder.encodes(s, "UTF-8"))).collect(Collectors.toList());
+}
+```
+
+## Chapter 6: The Optional Type 
+
+### Creating the Optional 
+
+- Optional.of(T value)
+- Optional.ofNullable(T value)
+- Optional.empty()
+
+Optional instance are immutable:
+1. are final and immutable
+2. have no public constructors, and thus must be instantiated by factory methods
+3. have implementations of equals, hashCode, and toString that are based only on their state 
+
+### Retrieving values from Optional 
+
+- get()
+- orElse(T other)
+  - orElseGet(Supplier<? extends T> other)
+  - orElseThrow(Supplier<? extends X> exceptionSupplier)
+- ifPresent()
+
+
+### Optional in Getters and Setters 
+
+You can wrap the result of getter methods in Optionals, but do not do the same for setters.
+
+And the optional class is deliberately designed not to be serializable.
+
+### Optional flatMap Versus Map 
+
+Example
+```java
+// Manager (name), Department (manager, could be null)
+// Extract a name from an Optional manager
+Manager m = new Manager("m1");
+Department d = new Department();
+d.setBoss(m);
+
+Department d1 = new Department(); // no boss
+
+// 
+d.getBoss().orElse(new Manag("Unknown").getName());
+d1.getBoss().orElse(new Manag("Unknown").getName());
+
+// 
+d.getBoss().map(Manager::getName);
+d1.getBoss().map(Manager::getName);
+```
+
+### Mapping Optionals 
+
+Example
+```java
+public Optional<Employee> findEmployeeById(int id);
+
+public List<Employee> findEmployeeByIds(List<Integer> ids) {
+    return ids.stream().map(this::findEmployeeById).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+}
+
+// using Optional.map
+public List<Employee> findEmployeeByIds(List<Integer> ids) {
+    return ids.stream().map(this::findEmployeeById).flatMap(optional -> optional.map(Stream::of).orElseGet(Stream::empty)).collect(Collectors.toList());
+}
+```
+
+## Chapter 7: File I/O  
+
+Methods in java.nio.files.Files that return streams
+|Method|Return type|
+|---|---|
+|lines|Stream\<String>|
+|list|Stream\<Path>|
+|walk|Stream\<Path>|
+|find|Stream\<Path>|
+
+### Process Files  
+
+Use static lines() method in either java.io.BufferedReader or java.nio.file.Files to return the contents of a file as a stream.  
+
+Example
+```java
+try(Stream<String> lines = Files.lines(Paths.get("/usr/share/log"))) {
+    lines.filter(s -> s.length() > 20)
+         .sorted(Comparator.comparingInt(String::length).reversed())
+         .limit(10)
+         .forEach(w);
+} catch(IOException e) {
+    e.printStackTrace();
+}
+
+// using bufferedReader.lines method
+try(Stream<String> lines = new BufferedReader(new FileReader("/usr/share/log")).lines()) {
+    ...
+}
+```
+
+The Stream interface extends BaseStream, which is a subinterface of AutoCloseable. Streams can therefore be used inside the java 7 try-with-resources block. Whem exiting the block, the system will automatically invoke the close method, which will not only close the stream, it will also call any close handlers from the stream pipeline to release any resources. 
+
+
+### Retrieving Files as a Stream 
+
+You want to process all files in a directory as a Stream. - using Files.list method 
+
+Example
+```java
+// using Files.list(path)
+try(Stream<Path> list = Files.list(Paths.get("src/main/java"))) {
+    list.forEach(System.out::println);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+### Walking the Filesystem 
+
+You need to perform a depth-first traversal of the filesystem. - using Files.walk method   
+- `public static Stream<Path> walk(Path start, FileVisitOption... options) throws IOException;`
+- `public static Stream<Path> walk(Path start, int maxDepth, FileVisitOption... options) throws IOException;`
+
+Example
+```java
+// walking the tree
+try(Stream<Path> paths = Files.walk(Paths.get("src/main/java"))) {
+    paths.forEach(System.out::println);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+### Searching the Filesystem 
+
+You want to find files in a file tree that satisfy given properties. - using Files.find method.  
+
+Example
+```java
+// Finding the nondirectory files in the fileio package
+try(Stream<Path> paths = Files.find(Paths.get("src/main/java"), Integer.MAX_VALUE,
+                                    (path, attributes) ->
+                                            !attributes.isDirectory() && path.toString().contains("fileio"))) {
+    paths.forEach(System.out::println);
+} catch (IOException e) {
+    e.printStackTrace();
+}
+```
+
+## Chapter 8: The java.time Package 
+
+### Using the Basic Date-Time Classes 
+
+java.time package - java.time classes are immutable     
+|Method|Output|
+|---|---|
+|Instant.now()|2017-06-20T17:27:08.184Z
+|LocalDate.now()|2017-06-20
+|LocalTime.now()|13:27:08.318
+|LocalDateTime.now()|2017-06-20T13:27:08.318
+|ZonedDateTime.now()|2017-06-20T13:27:08.318-04:00\[America/NewYork]
+
+
+Example - apply a time zone to a LocalDateTime
+```java
+LocalDateTime dateTime = LocalDateTime.now();
+ZonedDateTime nyc = dateTime.atZone(ZoneId.of("America/New_York"));
+ZonedDateTime london = nyc.withZoneSameInstant(ZoneId.of("Europe/London"));
+```
+
+### Creating Dates and Times from Existing Instances 
+
+LocalDate  
+- LocalDate plusDays(long daysToAdd)
+- LocalDate plusWeeks(long weeksToAdd)
+- LocalDate plusMonths(long monthsToAdd)
+- LocalDate plusYears(long yearsToAdd)
+
+LocalTime  
+- LocalTime plusNanos(long nanosToAdd)
+- LocalTime plusSeconds(long secondsToAdd)
+- LocalTime plusMinutes(long minutesToAdd)
+- LocalTime plusHours(long hoursToAdd)
+
+Example - DateTimeFormatter
+```java
+DateTimeFormatter formatter = DateTimeFormatter.ofPatter("yyyy-MM-dd");
+LocaDate date = LocaDate.now();
+assertEquals("2017-02-05", date.format(formatter));
+```
+
+### Adjusters and Queries  
+
+Create a TemporalAdjuster or formulate a TemporalQuery
+
+- [ ] TODO: Here to save time, I did not note all details. Will add it later. 
+
+Example - PaydayAdjuster
+```java
+public class PaydayAdjuster implements TemporalAdjuster {
+    public Temporal adjustInto(Temporal input) {
+        LocaDate date = LocalDate.from(input);
+        int day;
+        if (date.getDayOfMonth() < 15) {
+            day = 15;
+        } else {
+            day = date.with(TemporalAdjuster.lastDayOfMonth()).getDayOfMonth();
+        }
+        date = date.withDayOfMonth(day);
+        if (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+            date = date.with(TemporalAdjuster.previous(DayOfWeek.FRIDAY));
+        }
+        return input.with(date);
+    }
+}
+```
+
+### Convert from java.util.Date to java.time.LocalDate 
+
+```java
+public LocalDate convertFromUtilDateUsingInstant(Date date) {
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+}
+```
+
+### Parsing and Formatting 
+
+using DateTimeFormatter classes. 
+
+### Finding Time Zones with Unusual Offsets 
+
+### Finding Region Names from Offsets 
+
+### Time Between Events 
+
+using between or until method  
+
