@@ -796,8 +796,8 @@ d.setBoss(m);
 Department d1 = new Department(); // no boss
 
 // 
-d.getBoss().orElse(new Manag("Unknown").getName());
-d1.getBoss().orElse(new Manag("Unknown").getName());
+d.getBoss().orElse(new Manager("Unknown").getName());
+d1.getBoss().orElse(new Manager("Unknown").getName());
 
 // 
 d.getBoss().map(Manager::getName);
