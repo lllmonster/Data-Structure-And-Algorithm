@@ -988,3 +988,81 @@ using DateTimeFormatter classes.
 
 using between or until method  
 
+## Chapter 9: Parallelism and Concurrency
+
+Concurrency is when multiple task can run in overlapping time periods.  
+Parallelism is when multiple tasks run at literally the same time.  
+
+### Converting from Sequential to Parallel Streams 
+
+`Collection.stream() or Collection.parallelStream()`  
+`Stream.sequentail() or Stream.parallel()`  
+
+Example
+```java
+// Creating sequential streams 
+assertFalse(Stream.of(1,2,3,4).isParallel());
+assertFalse(Stream.iterate(1, n->n+1).isParallel());
+assertFalse(Stream.generate(Math::random).isParallel());
+
+List<Integer> numbers = Arrays.asList(1,2,3,4,5);
+assertFalse(numbers.stream().isParallel());
+assertTrue(numbers.parallelStream().isParallel());
+assertTrue(Stream.of(1,2,3,4).parallel().isParallel());
+```
+
+When executing, a stream can be either parallel or sequential. The parallel or sequentail methods effectively set or unset a boolean, which is checked when the terminal expression is reached.   
+```java
+numbers.parallelStream().sequential().isParallel(); //false, actually it's always a sequential stream.
+```
+
+### When Parallel Helps  
+Timing using JMH: JMH lets you use annotaion to specify the time mode, scope, JVM arguments, and more.  
+
+Before  
+```java
+Instant start = Instant.now();
+total = IntStream.of(1,2,3,4).map(ParallelDemo.doubleIt).sum();
+Instant end = Instant.now();
+Duration duration = Duration.between(start, end);
+System.out.println("Total of doubles = " + total);
+System.out.println("time = " + duration.toMillis() + " ms");
+```
+
+After
+```java
+import org.openjdk.jmh.annotations.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+@BenchmarkMode(Mode.AverageTime)
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@State(Scope.Thread)
+@Fork(value=2, jvmArgs={"-Xms4G, -Xmx4G"})
+public class DoublingDemo{
+    public int doubleIt(int n) {
+        try {
+            Thread.sleep(100)
+        } catch(InterruptedException e) {}
+        return n * 2;
+    }
+    
+    @Benchmark
+    public int doubleAndSumSequential() {
+        return IntStream.of(2,3,4,1).map(this::doubleIt).sum();
+    }
+
+    @Benchmark
+    public int doubleAdnSumParallel() {
+        return IntStream.of(2,3,4,1).parallel().map(this::doubleIt).sum();
+    }
+}
+```
+
+Output
+```
+Benchmark                             Mode  Score 
+DoublingDemo.doubleAdnSumParallel     avgt  103
+DoublingDemo.doubleAndSumSequential   avgt  620
+```
+
