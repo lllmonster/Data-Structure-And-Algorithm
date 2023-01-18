@@ -535,14 +535,14 @@ Map<Integer, List<String>> lengthMap = strings.stream().collect(Collectors.group
 ```
 
 Collectors methods similar to Stream methods
-| Stream | Collectors |
-| --- | --- |
-| count | counting 
-| map | mapping 
-| min | minBy 
-| max | maxBy 
-| IntStream.sum | summingInt 
-| IntStream.summarizing | summarizingInt 
+| Stream                | Collectors     |
+| --------------------- | -------------- |
+| count                 | counting       |
+| map                   | mapping        |
+| min                   | minBy          |
+| max                   | maxBy          |
+| IntStream.sum         | summingInt     |
+| IntStream.summarizing | summarizingInt |
 
 ### Finding Max and Min Values 
 
@@ -625,18 +625,18 @@ SecureRandom is a subclass of Random. It provides a cryptographically strong ran
 
 ### Default Methods in Map 
 
-| Method | Purpose
-| --- | --- |
-| compute | 
-| computeIfAbsent | `V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction)`
-| computeIfPresent | `V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)`
-| forEach | 
-| getOrDefault | `V getOrDefault(K key, V defaultValue)`
-| merge | `V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)`
-| putIfAbsent | 
-| remove | 
-| replace | `V replace(K key, V value); OR V replace(K key, V oldValue, V newValue);`
-| replaceAll | 
+| Method           | Purpose                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------- |
+| compute          |
+| computeIfAbsent  | `V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction)`                 |
+| computeIfPresent | `V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)` |
+| forEach          |
+| getOrDefault     | `V getOrDefault(K key, V defaultValue)`                                                      |
+| merge            | `V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)`   |
+| putIfAbsent      |
+| remove           |
+| replace          | `V replace(K key, V value); OR V replace(K key, V oldValue, V newValue);`                    |
+| replaceAll       |
 
 
 Example - computeIfAbsent - recursive calculation of Fibonacci numbers
@@ -823,12 +823,12 @@ public List<Employee> findEmployeeByIds(List<Integer> ids) {
 ## Chapter 7: File I/O  
 
 Methods in java.nio.files.Files that return streams
-|Method|Return type|
-|---|---|
-|lines|Stream\<String>|
-|list|Stream\<Path>|
-|walk|Stream\<Path>|
-|find|Stream\<Path>|
+| Method | Return type     |
+| ------ | --------------- |
+| lines  | Stream\<String> |
+| list   | Stream\<Path>   |
+| walk   | Stream\<Path>   |
+| find   | Stream\<Path>   |
 
 ### Process Files  
 
@@ -905,13 +905,13 @@ try(Stream<Path> paths = Files.find(Paths.get("src/main/java"), Integer.MAX_VALU
 ### Using the Basic Date-Time Classes 
 
 java.time package - java.time classes are immutable     
-|Method|Output|
-|---|---|
-|Instant.now()|2017-06-20T17:27:08.184Z
-|LocalDate.now()|2017-06-20
-|LocalTime.now()|13:27:08.318
-|LocalDateTime.now()|2017-06-20T13:27:08.318
-|ZonedDateTime.now()|2017-06-20T13:27:08.318-04:00\[America/NewYork]
+| Method              | Output                                          |
+| ------------------- | ----------------------------------------------- |
+| Instant.now()       | 2017-06-20T17:27:08.184Z                        |
+| LocalDate.now()     | 2017-06-20                                      |
+| LocalTime.now()     | 13:27:08.318                                    |
+| LocalDateTime.now() | 2017-06-20T13:27:08.318                         |
+| ZonedDateTime.now() | 2017-06-20T13:27:08.318-04:00\[America/NewYork] |
 
 
 Example - apply a time zone to a LocalDateTime
@@ -1066,3 +1066,182 @@ DoublingDemo.doubleAdnSumParallel     avgt  103
 DoublingDemo.doubleAndSumSequential   avgt  620
 ```
 
+### Changing the Pool Size 
+By default, the size of the common thread pool equals the number of processors on your machine, computed from `Runtime.getRuntime().availableProcessors()`. Setting the `parallelism` flag to a nonnegative integer lets you specify the parallelism level. The flag can be specified either programmatically or on the command line. You can also create your own ForkJoinPool.  
+
+Example
+```java
+// specify the common pool size programmatically
+System.setProperty("java.util.concurrent.ForkJoinPool.common.parallelism", 20);
+int poolSize = ForkJoinPool.commonPool().getPoolSize(); // 20
+
+// setting using a system parameter
+java -cp build/classes/main -Djava.util.concurrent.ForkJoinPool.common.parallelism=10 concurrency.CommonPoolSize
+```
+
+### The Future Interface 
+
+`java.util.concurrent.Future` - If you want to represnt the result of an asynchronous computation, check if it is completed, cancel if necessary, and retrieve the result.  
+
+Example
+```java
+// submitting a Callable and returning the Future
+ExecutorService service = Executors.newCachedThreadPool();
+Future<String> future = service.submit(new Callable<String>() {
+    @Override
+    public String call() throws Exception {
+        Thread.sleep(1000);
+        return "Helloworld";
+    }
+});
+System.out.println("Processing...");
+getIfNotCancelled(future);
+```
+
+```java
+public void getIfNotCancelled(Future<String> future) {
+    try {
+        if (!future.isCancelled()) {
+            System.out.println(future.get());
+        } else {
+            System.out.println("Cancelled");
+        }
+    } catch (InterruptedException || ExecutionException e) {
+        e.printStackTrace();
+    }
+}
+```
+
+In java 8, using a lambda expression and checking if the Future is done.  
+```java
+future = service.submit(() -> {
+    Thread.sleep(1000);
+    return "Helloworld";
+});
+System.out.println("Processing...");
+while (!future.isDone()) {
+    System.out.println("Waiting");
+}
+getIfNotCancelled(future);
+
+// future.cancel(true);
+```
+
+Clearly a more elegant mechanism is needed to notify the developer when the Future is completed. That's one of the issues addressed by `CompletableFuture`.  
+
+
+### Completing a CompletableFuture 
+
+The CompletableFuture class implements the Future Interface. The class also implements the CompletionStage interface, whose dozens of methods open up a wide range of possible use cases.  
+
+The real benefit of CompletableFuture is that it allows you to coordinate activities without writing nested callbacks.  
+
+Example
+```java
+// Retrieving a product
+private Map<Integer, Product> cache = new HashMap<>();
+private Logger logger = Logger.getLogger(this.getClass().getName());
+
+private Product getLocal(int id) {
+    return cache.get(id);
+}
+
+private Product getRemote(int id) {
+    try {
+        Thread.sleep(100);
+        if (id == 666) {
+            throw new RuntimeException("Evil request");
+        }
+    } catch (InterruptedException ignored) {}
+    return new Product(id, "name");
+}
+
+// Completing a CompletableFuture
+public CompletableFuture<Product> getProduct(int id) {
+    try {
+        Product product = getLocal(id);
+        if (product != null) {
+            return CompletableFuture.completedFuture(product);
+        } else {
+            CompletableFuture<Product> future = new CompletableFuture<>();
+            Product p = getRemote(id);
+            cache.put(id, p);
+            future.complete(p);
+            return future;
+        }
+    } catch (Exception e) {
+        CompletableFuture<Product> future = new CompletableFuture<>();
+        future.completeExceptionally(e);
+        return future;
+    }
+}
+
+// Using supplyAsync to retrieve a product, return the products asynchronously
+public CompletableFuture<Product> getProduct(int id) {
+    try {
+        Product product = getLocal(id);
+        if (product != null) {
+            return CompletableFuture.completedFuture(product);
+        } else {
+            return CompletableFuture.supplyAsync(() -> {
+                Product p = getRemote(id);
+                cache.put(id, p);
+                return p;
+            });
+        }
+    } catch (Exception e) {
+        CompletableFuture<Product> future = new CompletableFuture<>();
+        future.completeExceptionally(e);
+        return future;
+    }
+}
+```
+
+### Coordinating CompletableFutures 
+
+A trivial example: 
+1. Ask a Supplier for a string holding a number
+2. Parse the number into an integer
+3. Double the number
+4. Print it 
+
+```java
+private String sleepThenReturnString() {
+    try {
+        Thread.sleep(100);``````
+    } catch (InterruptedException e) {
+
+    }
+    return "42";
+}
+
+CompletableFuture.supplyAsync(() -> this::sleepThenReturnString)
+                .thenApply(Integer::parseInt)
+                .thenApply(x -> x * 2)
+                .thenAccept(System.out::println)
+                .join();
+```
+
+thenCompose Example
+```java
+int x = 3;
+int y = 2;
+CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> x)
+                .thenCompose(n -> CompletableFuture.supplyAsync(() -> n + y));
+assertTrue(5 == future.get());
+```
+
+thenCombine Example
+```java
+int x = 3;
+int y = 2;
+CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> x)
+                .thenCombine(CompletableFuture.supplyAsync(() -> y), (n1, n2) -> n1 + n2);
+assertTrue(5 == future.get());
+```
+
+using handle method
+```java
+CompletableFuture.supplyAsync(() -> Integer.parseInt(num))
+                .handle((var, exc) -> val != null ? val : 0);
+```
