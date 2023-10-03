@@ -1,5 +1,25 @@
 # System Design
 
+## Tutorials
+[Education-how-to-prepare-system-design-interview](https://www.educative.io/blog/how-to-prepare-system-design-interview)
+[Educative-complete-guide-to-system-design-2023](https://www.educative.io/blog/complete-guide-to-system-design)
+[Education-complete-guide-to-system-design-interview-2023](https://www.educative.io/blog/complete-guide-system-design-interview)
+
+### To be seen
+https://www.youtube.com/watch?v=q0KGYwNbf-0&t=3135s
+https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g
+https://www.youtube.com/c/SystemDesignInterview
+https://www.youtube.com/user/tusharroy2525
+https://www.youtube.com/c/TechDummiesNarendraL
+https://www.youtube.com/c/ScottShiCS/playlists
+https://youtu.be/PdtlXdse7pw?feature=shared
+
+design data intensive system - book
+
+staff prep - https://www.1point3acres.com/bbs/thread-907026-1-1.html
+
+
+
 ## Introduction
 System Design is the process of defining the architecture, interfaces, and data for a system that satisfies specific requirements.
 
@@ -38,6 +58,52 @@ File Systems:
 * Hadoop Distributed File System(HDFS): is a distributed file system that handles large sets of data and runs on commodity hardware. It was built to store unstructured data. HDFS is a more simplified version of GFS.
 
 System Design patterns:  
+* Bloom filters: Are probabilistic data structures designed to answer the set membership question: Is this element present in the set? Bloom filters are highly space-efficient and do not store actual items. They determine whether an item does not exist in a set or if an item might exist in a set. They can't tell if an item is definitely presently in a set. An empty Bloom filter is a bit vector with all bits set to zero.  
+* Consistent hashing: maps data to physical nodes and ensures that only a small set of keys move when servers are added or removed. Consistent hashing stores the data managed by a distributed system in a ring. This concept is important within distributed systems and works closely with data partitioning and data replication.  
+* Quorum: is the minimum number of servers on which a distributed operation needs to be performed successfully before declaring the operation's overall success.
+* Checksum: It verifies that the data received from the server matches the stored checksum.  
+* Merkle trees: Is a binary tree of hashes, in which each internal node is the hash of its two children, and each leaf node is a hash of a portion of the original data. Replicas can contain a lot of data. Splitting up the entire range to calculate checksums for comparison is not very feasible, because there's so much data to be transferred. Merkle trees enable us to easily compare replicas of a range.  
+* Leader election: Is the process of designating a single process as the organizer of tasks distributed across several computers. Leader election improves efficiency, simplifies architectures, and reduces operations.  
+
+Databases:
+* Relational databases: are structured. They have predefined schemas.SQL database store data in rows and columns. (MySQL, Oracle, PostgreSQL, MariaDB)  
+    * MySQL: Is an open-source relational database management system (RDBMS) that stores data in tables and rows. It follows client-server architecture and supports multithreading.  
+    * PostgreSQL: Is an open-source RDBMS that emphasizes extensibility and SQL compliance. Postgres employs SQL to access and manipulate the database. It uses its own version of SQL which can perform more complex queries. It use foreign key, which allow us to keep our data normalized.
+* Non-relational databases: are unstructured. They have a dynamic schema, like file folders that store information. (Redis/DynamoDB, MongoDB/CouchDB, Cassandra/HBase, Neo4J/InfiniteGraph)  
+    * MongoDB: is a NoSQL, non-relational database management system (DBMS) that uses documents instead of tables or rows for data storage. This data model makes it possible to manipulate related data in a single database operation. MongoDB documents use JSON-like documents and files that are JavaScript supported. The document fields can vary, making it easy to change the structure over time.  
+* How to choose a database: When choosing your database structure, it's important to factor in speed, reliability, and accuracy. We have relational database that can guarantee data validity, and we have non-relational database that can guarantee eventual consistency.   
+* Database schemas: are abstract designs that represnet the storage of the data in a database.   
+* Database queries: is a request to access data from a database to manipulate or retrieve it.  
+* ACID properties: 
+    * Atomicity: A transaction is an atomic unit
+    * Consistency: A database is initially in a consistent state and keep it.  
+    * Isloation: thread-safe
+    * Durability: Changes that have been committed to the database should remain.  
+* Database sharding and partitioning: When sharding a database, you make partitions of data so that the data is divided into various smaller, distinct chunks called shards. Two type: vertical sharding and horizontal sharding. You need to dertemine a shading key to partition your data. Sharding allows your application to make fewer queries and improves your application's overall performance and scalability, load balancing and manageability.   
+* Database indexing: Allows you to make it faster and easier to search and through your tables and find the rows or columns that you want. While indexes dramatically speed up data retrieval, they typically slow down data insertion and updates because of their size.  
+
+Distributed systems: Benefits: Scaling, Modular growth, Fault tolerance, Cost-effective, Low latency, Efficiency, Parallelism  
+* Distributed system failures: System failure, Communication medium failure, Secondary storage failure, method failure  
+* Destributed system fundamental:
+    * MapReduce: handle large amounts of data in an efficient manner. Partitioning -> Map -> intermediate files -> Reduce -> Aggregate
+    * Stateless and stateful systems: A stateless system maintains no state of past events. Stateful systems are responsible for maintaining and mutating a state.  
+    * Raft: establishes the concept of a replicated state machine and the associated replicated log of commands as first-class citizens and supports multiple consecutive rounds of consensus by default. It requires a set of nodes that form a consensus group, or a Raft cluster (Leader, Follower, Candidate)
+* Distributed system design patterns: 
+    * Object communication: Describe the messaging protocols and permissions for different components of the system to communicate.  
+    * Security: Handles confidentiality, integrity, and availability concerns to ensure the system is secure from unauthorized access  
+    * Event-driven: Describes the production, detection, consumption, and response to system events.  
+
+Scalable web applications:
+* DNS and load balancing  
+* N-tier application: are applications that have more than three components involved. (Caches, MQ, Load balancers, Search servers, Components involved in processing large amounts of data, Components running heterogeneous tech like web services)  
+* HTTP and REST: HTTP stands for HyperText Transfer Protocol. This protocol dictates the format of messages, how and when messages are sent, appropriate responses, and how messages are interpreted. HTTP messages can be either requests or response. REST stands for Representational State Transfer. It's a ruleset that defines best practices for sharing data between clients and servers, and it emphasizes the scalability of components and the simplicity of interfaces.  
+* Stream processing: focus on the real-time processing of continuous streams of data. (Kafka, Storm, Flink)  
+* Caching: that you use to temporarily store data so it can be accessed quickly. 
+    * Cache eviction: If a cache is full, some data will be evicted. Common policy include FIFO, LIFO, LRU, MRU, LFU, RR
+
+Machine learning and System Design  
+Containerization and System Design: Docker and Kubernetes  
+The Cloud and System Design:
 
 ## Distributed system fundamentals
 ### Data Durability and Consistency
