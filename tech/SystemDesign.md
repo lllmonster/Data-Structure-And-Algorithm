@@ -18,7 +18,10 @@ design data intensive system - book
 
 staff prep - https://www.1point3acres.com/bbs/thread-907026-1-1.html
 
+https://www.codinginterview.com
 
+### Questions
+1. in the PACELC theorm, what means availability, consistency and partition?
 
 ## Introduction
 System Design is the process of defining the architecture, interfaces, and data for a system that satisfies specific requirements.
@@ -32,6 +35,13 @@ Microservice: structures an application using loosely coupled services.
 Proxy server: act as a channel between a user and the internet. (improved security, privacy; access to blocked resources; cache data to speed up request; control of internet usage)
 
 CAP theorem: It formalizes the tradeoff between consistenct and availability when there's a partition.
+
+PACELC theorem: states the following about a system that replicates data  
+* if statement: if there's a partition, a distributed system can trade off between availability and consistency. (CAP theorem)  
+* else statement: if there's no partition, the system can trade off between latency and consistency.  
+* Examples of a PC/EC system include BigTable and HBase. They'll always choose consistency, giving up abailability and lower latency.
+* Example of a PA/EL system include Dynamo and Cassandra. They choose availability over consistency when a partition occurs. Otherwise, they choose lower latency.
+* Example of PA/EC system include MongoDB, in the case of partition, it chooses availability, but otherwise guarantees consistency.
 
 Redundancy and replication
 
@@ -105,27 +115,35 @@ Machine learning and System Design
 Containerization and System Design: Docker and Kubernetes  
 The Cloud and System Design:
 
-## Distributed system fundamentals
-### Data Durability and Consistency
-Know the difference and impacts of failure rates of storage solutions and corruption rates in read-write processes.
-
-### Replication
-The key to unlocking data durability and consistency; replication deals with backups of data, but also being able to repeat processes at scale.
-
-### Partitioning
-Also called shards, partitions divide data across different nodes within the system. As replication distributes the data across nodes, partitioning distributes processes across nodes. This reduces the reliance on pure application.
-
-### Consensus
-### Distributed Transactions
+Heartbeat: A heartbeat message is a mechanism that helps us detect failures in a distributed system.
 
 
+*AJAX polling vs Long polling vs WebSockets vs Server-Sent Events*  
 
-## The architecture of large-scale web applications
-### N-Tier applications
-### HTTP and REST
-### DNS and Load Balancing
-### Caching
-### Stream Processing
+AJAX polling: Polling is a standard technique used by most AJAX apps. The idea is that the client repeatedly polls a server for data.  
+1. The client opens a connection and request data from the server using regular HTTP
+2. The requested webpage sends request to the server at regular intervlas (eg 0.5s)
+3. The server calculates the response and send it back, just like regular HTTP traffic
+4. The client repeats the above three steps periodically to get updates from the server.  
+Mainly used when no real-time data is needed. One example is the weather app
 
+Long-Polling: The server may not respond immediately - Hanging GET
+1. The client opens a connection and request data from the server using regular HTTP, then waits for a response
+2. The server delays its response until an update is avilable or a timeout has occurred.
+3. When an update is available, the server sends a complete response to the client
+4. The client typically sends a new long-poll request, either immediately upon receiving a response or after a pause to allow an acceptable latency period.
+5. Each Long-Poll request has a timeout. Therefore, the client has to reconnect periodically after the connection is closed due to timeouts.
 
-## Designing distributed systems
+WebSocket:  
+It provides a persistent connection between a client and server that both parties can use to start sending data at any time. The WebSocket protocol enables the communication between a client and a server with lower overheads, facilitating real-time data transfer from and to the server.  
+
+Server-Sent Events:  
+1. The client opens a connection and request data from the server using regular HTTP
+2. The server sends the data to the client whenever there's new information available  
+SSE are best when we need real-time traffic from the server to the client or if the server is generating data in a loop and send multiple events to the client.
+
+## Interview Guide - Common Questions
+Three major focus areas in your prep plan should include the **fundamentals of distributed systems, large-scale web application architecture, and how to design distributed systems.**  
+
+### Design Uber
+* Problem overview
