@@ -1,3 +1,15 @@
+- [System Design](#system-design)
+  - [Tutorials](#tutorials)
+    - [To be seen](#to-be-seen)
+    - [Questions](#questions)
+  - [Introduction](#introduction)
+  - [Data Structure](#data-structure)
+    - [Quadtree](#quadtree)
+  - [Interview Guide - Common Questions](#interview-guide---common-questions)
+    - [Design Uber](#design-uber)
+    - [Design TinyURL (TODO)](#design-tinyurl-todo)
+    - [Design Yelp (TODO)](#design-yelp-todo)
+
 # System Design
 
 ## Tutorials
@@ -142,8 +154,97 @@ Server-Sent Events:
 2. The server sends the data to the client whenever there's new information available  
 SSE are best when we need real-time traffic from the server to the client or if the server is generating data in a loop and send multiple events to the client.
 
+## Data Structure
+### Quadtree
+Quadtrees are a knowledge structure that encodes a two-dimensional space into adaptable cells. It's a tree structure where every non-leaf node has four children. During the technique of quadtrees, nodes are recursively divided into pieces, with successive subdivisions leading to smaller and smaller cells.  
+
+When use? Quadtreees are used for scaling an internet service to handle thoudsands of requests every second. This requires an excellent caching strategy. When geolocation is the main parameter of those requests, conventional caching techniques and procedures fall through. Quadtrees are used to understand high cache hit ratios, while also keeping the responses relevant, even in intense areas.
+
+It's a dynamic grid and every night we recompute the quadtree to support out currently subscribed business. If the number of search results entered on a node exceeds a predefined threshold, then we divide it further.
+```java
+public static void buildQuadtree(Node node) {
+    if (searchBusinesses(node).size() > 20) {
+        node.subdivide();
+        for (Node child : node.getChildren()) {
+            buildQuadtree(child);
+        }
+    }
+}
+```
+When our server receives an invitation for businesses in a location, we first find the quadtree node for that location:
+```java
+public static void getNearbyBusinesses(float latitude, float longitude) {
+    QuadtreeNode node = LookupQuadTreeNode(latitude, longitude);
+    String cacheKey = "quadtree_" + node.getId();
+    List<Result> results = Cache.get(cacheKey);
+    if (results == null) {
+        results = searchBusinesses(node);
+        Cache.set(cacheKey, results, "2h");
+    }
+    render(results);
+}
+```
+Quadtrees allow us to mix the advantages of caching the geo-locations with both high and low precisions. 
+
+
 ## Interview Guide - Common Questions
+[ref](https://www.educative.io/blog/complete-guide-system-design-interview)
 Three major focus areas in your prep plan should include the **fundamentals of distributed systems, large-scale web application architecture, and how to design distributed systems.**  
 
 ### Design Uber
-* Problem overview
+[ref](https://www.educative.io/blog/uber-backend-system-design)
+* Problem overview: when designing Uber, there're two kinds of users: drivers and users. Requirements are as follow:  
+  * Drivers can frequently notify the service regarding location and availability
+  * Users can see all nearby drivers in real-time
+  * Users can request a ride using a destination and pick-up time
+  * Nearby drivers are notified when a user needs a ride
+  * Once a ride is accepted, both the driver and user can see the other’s location for the duration of the trip
+  * Once the drive is complete, the driver completes the ride and is available for other users
+* Constraints
+  * 300 million users and 1 million drivers in the system
+  * 1 million active customers and 500 thousand active drivers per day
+  * 1 million rides per day
+  * All active drivers notify their current location every three seconds
+  * System contacts drivers in real-time when a user requests a ride
+* Design considerations
+  * We need to update data structures to reflect drivers’ locations every three seconds. To update a driver to a new location, we need to find the right grid based on their previous location.
+  * If the new position doesn’t belong to the current grid, we need to remove the driver from the grid and reinsert them into the appropriate grid. If the new grid reaches a maximum limit, we have to repartition it.
+  * We need a quick mechanism to propagate the current location of nearby drivers to users in the area. Our system needs to notify the driver and the user of the car’s location for the duration of the ride.
+* Solving
+  * Keeping those considerations in mind, we can determine that a QuadTree isn’t ideal because we can’t guarantee that the tree will update as quickly as our system requires. We can keep the most recent driver position in a hash table and update our QuadTree less frequently. We want to guarantee that a driver’s current location is reflected in the QuadTree within 15 seconds. We’ll call our hash table DriverLocationHT.
+  * Driver Location Record
+    * DriverId - 3 bytes
+    * Old Latitude - 8 bytes
+    * Old longitude - 8 bytes
+    * New Latitude - 8 bytes
+    * New longitude - 8 bytes
+      * Total: 1 million * 35 bytes = 35MB
+      * Bandwidth: if we get the driverId and location, it will require (3+16=19 bytes). This information is gathered every three sec from 500 thousand daily active drivers, so we will receive 19 * 500,000 = 9.5 MB every three sec.
+  * To randomize distribution, we could distribute DriverLocationHT on multiple servers based on the DriverID. This will help with scalability, performance, and fault tolerance. We’ll refer to the machines holding this information as “driver location servers”. These servers will do two more things. Once the server receives an update on a driver’s location, it will broadcast it to relevant users. The server will also notify the respective QuadTree server to refresh the driver’s location.
+  * Broadcasting driver locations: we can use a push Model. We can use a notification service and build it on the pub/sub model. User subscribe all updates from nearby drivers. And Each update in a driver's location will be broadcasted to all subscribed users.
+    * Assume one million active users and 500 thousand active users per day. Also five customers subscribe to one driver. So we need 3 bytes for driver id and 8 bytes for userId, (500,000*3)+(500,000*5*8)=21.5 MB of memory
+    * for bandwidth, for each active driver, we have 5 subscribers, and each driver record is 19 bytes, so we need 5 * 500,000 * 19 bytes = 47.5 MB/s
+  * Notification service: we can either use HTTP long polling or push notifications. Users are subscribed to nearby drivers when they open the app for the first time. When new drivers enter their areas, we need to add a new user/driver subscription dynamically. To achieve this, we track the area that a user is watching. However, this can get pretty complicated.
+    * To repartition, we can create a cushion so that each grid grows beyond the limit before we decide to partition it. Assume our grids can grow or shrink by an extra 10% before we partition them. This will decrease the load for a grid partition.
+* Use case: request ride
+  * The customer enters a ride request.
+  * One of the Aggregator servers accepts the request and asks the QuadTree servers to return nearby drivers.
+  * The Aggregator server collects the results and sorts them by ratings.
+  * The Aggregator server sends a notification to the top drivers simultaneously.
+  * The first driver to accept will be assigned that ride. The other drivers will receive a cancellation.
+  * If the drivers do not respond, the Aggregator will request a ride from the next drivers on our list.
+  * The customer is notified once a driver accepts a request.
+* Advanced considerations:
+  * Fault tolerance and replication
+  * Ranking
+  * Clients using slow or disconnecting networks
+  * Clients that are disconnected during the duration of a ride
+  * how to handle billing if a ride is disconnected
+  * how to implement machine learning components in your system
+
+### Design TinyURL (TODO)
+[ref](https://www.educative.io/blog/system-design-tinyurl-instagram)
+
+
+### Design Yelp (TODO)
+[ref](https://www.educative.io/blog/top-10-system-design-interview-questions#proximity)
