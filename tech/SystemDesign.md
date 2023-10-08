@@ -3,11 +3,15 @@
     - [To be seen](#to-be-seen)
     - [Questions](#questions)
   - [Introduction](#introduction)
-  - [Data Structure](#data-structure)
+  - [Data Structure Or Method](#data-structure-or-method)
     - [Quadtree](#quadtree)
+    - [Hash and Encode](#hash-and-encode)
+    - [Consistent Hashing](#consistent-hashing)
+    - [Round-Robin load balancing](#round-robin-load-balancing)
   - [Interview Guide - Common Questions](#interview-guide---common-questions)
     - [Design Uber](#design-uber)
-    - [Design TinyURL (TODO)](#design-tinyurl-todo)
+    - [Design TinyURL (DONE)](#design-tinyurl-done)
+    - [Design Instragram (TODO)](#design-instragram-todo)
     - [Design Yelp (TODO)](#design-yelp-todo)
 
 # System Design
@@ -18,6 +22,7 @@
 [Education-complete-guide-to-system-design-interview-2023](https://www.educative.io/blog/complete-guide-system-design-interview)
 
 ### To be seen
+Google Systems Design Interview With An Ex-Googler: Code-deployment system   
 https://www.youtube.com/watch?v=q0KGYwNbf-0&t=3135s
 https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g
 https://www.youtube.com/c/SystemDesignInterview
@@ -31,6 +36,10 @@ design data intensive system - book
 staff prep - https://www.1point3acres.com/bbs/thread-907026-1-1.html
 
 https://www.codinginterview.com
+
+free course  
+https://www.educative.io/courses/system-design-interview-handbook/the-system-design-interview
+https://github.com/donnemartin/system-design-primer  
 
 ### Questions
 1. in the PACELC theorm, what means availability, consistency and partition?
@@ -96,11 +105,21 @@ Databases:
 * How to choose a database: When choosing your database structure, it's important to factor in speed, reliability, and accuracy. We have relational database that can guarantee data validity, and we have non-relational database that can guarantee eventual consistency.   
 * Database schemas: are abstract designs that represnet the storage of the data in a database.   
 * Database queries: is a request to access data from a database to manipulate or retrieve it.  
-* ACID properties: 
+* ACID Model:  (consistency, predictability, reliability)
+  * properties: 
     * Atomicity: A transaction is an atomic unit
     * Consistency: A database is initially in a consistent state and keep it.  
     * Isloation: thread-safe
-    * Durability: Changes that have been committed to the database should remain.  
+    * Durability: Changes that have been committed to the database should remain. 
+  * use case: Financial institutions will almost use ACID database (like money transfer depends on the atomic nature of ACID)
+  * what db are acid compliant? a relational database management, including MySQL, PostgreSQL, Oracle, SQLite, etc. 
+* BASE Model: (easy scale, more flexibility)
+  * properties
+    * Basically Available: Rather than enforcing immediate consistency, BASE-modelled NoSQL db will ensure availability of data by spreading and replicating it across the nodes of the database cluster.
+    * Soft State: Due to the lack of immedidate consistency, data values may change over time.
+    * Eventually Consistent: still it will achieve the final consistency state.
+  * use case: Marketing and customer service companies who deal with sentiment analysis will prefer the elasticity of BASE when conducting their social network research. Social network feeds are not well structured but contain huge amounts of data which a BASE-modelled db can easity restore.
+  * what db are using the BASE model? NoSQL database tend to conform to BASE principle. MongoDB, Cassandra and Redis are among the most popular NoSQL solutions, together with Amazon DynamoDB and Couchbase.
 * Database sharding and partitioning: When sharding a database, you make partitions of data so that the data is divided into various smaller, distinct chunks called shards. Two type: vertical sharding and horizontal sharding. You need to dertemine a shading key to partition your data. Sharding allows your application to make fewer queries and improves your application's overall performance and scalability, load balancing and manageability.   
 * Database indexing: Allows you to make it faster and easier to search and through your tables and find the rows or columns that you want. While indexes dramatically speed up data retrieval, they typically slow down data insertion and updates because of their size.  
 
@@ -122,6 +141,7 @@ Scalable web applications:
 * Stream processing: focus on the real-time processing of continuous streams of data. (Kafka, Storm, Flink)  
 * Caching: that you use to temporarily store data so it can be accessed quickly. 
     * Cache eviction: If a cache is full, some data will be evicted. Common policy include FIFO, LIFO, LRU, MRU, LFU, RR
+    * Cache memory: According to 80/20 rule (20% data are used 80% time), we can cache 20% of data and improve 80% latency time.
 
 Machine learning and System Design  
 Containerization and System Design: Docker and Kubernetes  
@@ -154,7 +174,7 @@ Server-Sent Events:
 2. The server sends the data to the client whenever there's new information available  
 SSE are best when we need real-time traffic from the server to the client or if the server is generating data in a loop and send multiple events to the client.
 
-## Data Structure
+## Data Structure Or Method
 ### Quadtree
 Quadtrees are a knowledge structure that encodes a two-dimensional space into adaptable cells. It's a tree structure where every non-leaf node has four children. During the technique of quadtrees, nodes are recursively divided into pieces, with successive subdivisions leading to smaller and smaller cells.  
 
@@ -185,6 +205,40 @@ public static void getNearbyBusinesses(float latitude, float longitude) {
 }
 ```
 Quadtrees allow us to mix the advantages of caching the geo-locations with both high and low precisions. 
+
+### Hash and Encode
+hash method: MD5 / SHA256  
+encode method: base32 / base64  
+* How to calcuate url length after hash and encode?
+  * The MD5 hash function produces a fixed-size hash value of 128 bits, which is equivalent to 16 bytes or 32 hexadecimal characters. 
+  * If you hash a 6-bit URL using MD5, the resulting hash will still be 128 bits in length. It doesn't matter how long or short the input is; MD5 always produces the same size hash.
+  * Now, if you encode the 128-bit MD5 hash using Base64, you'll need to calculate the length of the encoded string. Base64 encoding is done in groups of 3 bytes at a time, where each 3 bytes are represented as 4 Base64 characters. If the number of bytes in your hash is not a multiple of 3, padding characters ('=') are added at the end.
+  * In the case of a 128-bit hash from MD5, you have 16 bytes. When encoding in Base64:
+    - You'll have 16 bytes / 3 bytes per group = 5 groups.
+    - Each group is represented as 4 Base64 characters.
+    - So, you have 5 groups * 4 characters per group = 20 Base64 characters.
+  * However, you also need to consider padding, which is added to make the length a multiple of 4. In this case, you don't need any padding because 20 is already a multiple of 4.
+  * So, the encoded URL will be 20 characters long when using Base64 encoding for a 128-bit MD5 hash.
+  
+### Consistent Hashing
+Consistent Hashing
+In order to solve the above problem, consistent hashing is used because in this technique on average r/n needs to be remapped, where r is the number of records and n is the number of servers slots. It should be done when:  
+* There are a number of servers that need to be scaled up or down depending upon the load.
+* There are cache servers that need to be scaled.
+* There are many benefits to using consistent hashing:
+  * Scalability
+  * Load distribution
+  * Quick replication and partitioning of data
+  * Faster retrieval of keys as each server holds a limited number of keys
+
+The key idea behind consistent hashing is that every record and server is mapped on the unit circle. Each record is then assigned to the first server that appears on the circle in a clockwise direction. This brings even distribution of records.
+
+### Round-Robin load balancing 
+The round-robin load balancing technique is the simplest way to distribute traffic across a group of servers. The load balancer forwards the incoming requests to dedicated servers sequentially (one by one mechanism).  
+Round-robin is a static load balancer, because it does not modify the state of the servers while distributing incoming traffic.  
+Principal: i mod T  
+Limitation: This load balancing algorithm is not adaptive, as it does not consider the existing load on servers to distribute incoming requests. Ideally, the load balancer should forward the request to the server whose current state is idle.  
+Real-time load balancer: LVS
 
 
 ## Interview Guide - Common Questions
@@ -242,9 +296,11 @@ Three major focus areas in your prep plan should include the **fundamentals of d
   * how to handle billing if a ride is disconnected
   * how to implement machine learning components in your system
 
-### Design TinyURL (TODO)
+### Design TinyURL (DONE)
 [ref](https://www.educative.io/blog/system-design-tinyurl-instagram)
 
+### Design Instragram (TODO)
+[ref](https://www.educative.io/blog/system-design-tinyurl-instagram)
 
 ### Design Yelp (TODO)
 [ref](https://www.educative.io/blog/top-10-system-design-interview-questions#proximity)
