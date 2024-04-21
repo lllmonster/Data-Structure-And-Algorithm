@@ -1,3 +1,12 @@
+- [Array](#array)
+  - [1D Array](#1d-array)
+  - [Dynamic Array](#dynamic-array)
+  - [2D Array](#2d-array)
+    - [Note:](#note)
+  - [Two Pointer Technique -- Array](#two-pointer-technique----array)
+  - [Conclusion](#conclusion)
+
+
 # Array
 ## 1D Array
 An array has a `a fixed capacity`, and we need to specify the size of the array when we initialize it. Sometimes this will be inconvenient and wasteful.
@@ -28,6 +37,13 @@ public class Main {
     a1[0] = 4;
     // 6. Sort
     Arrays.sort(a1);
+    // Comparator, compare a[] with b[]
+    Arrays.sort(logs, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] a, int[] b) {
+                return Integer.compare(a[0], b[0]);
+            }
+        });
   }
 }
 ```

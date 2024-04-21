@@ -1,27 +1,49 @@
 - [System Design](#system-design)
   - [Tutorials](#tutorials)
+    - [Interview](#interview)
     - [To be seen](#to-be-seen)
     - [Questions](#questions)
   - [Introduction](#introduction)
+    - [How to Design large-scale system](#how-to-design-large-scale-system)
   - [Data Structure Or Method](#data-structure-or-method)
     - [Quadtree](#quadtree)
     - [Hash and Encode](#hash-and-encode)
     - [Consistent Hashing](#consistent-hashing)
     - [Round-Robin load balancing](#round-robin-load-balancing)
+    - [Distributed File System (DFS)](#distributed-file-system-dfs)
   - [Interview Guide - Common Questions](#interview-guide---common-questions)
     - [Design Uber](#design-uber)
     - [Design TinyURL (DONE)](#design-tinyurl-done)
     - [Design Instragram (TODO)](#design-instragram-todo)
     - [Design Yelp (TODO)](#design-yelp-todo)
+    - [List of common System Design Interview questions](#list-of-common-system-design-interview-questions)
 
 # System Design
 
 ## Tutorials
-[Education-how-to-prepare-system-design-interview](https://www.educative.io/blog/how-to-prepare-system-design-interview)
-[Educative-complete-guide-to-system-design-2023](https://www.educative.io/blog/complete-guide-to-system-design)
-[Education-complete-guide-to-system-design-interview-2023](https://www.educative.io/blog/complete-guide-system-design-interview)
+[Done: Education-how-to-prepare-system-design-interview](https://www.educative.io/blog/how-to-prepare-system-design-interview)
+[Done: Educative-complete-guide-to-system-design-2023](https://www.educative.io/blog/complete-guide-to-system-design)
+[Done: Education-complete-guide-to-system-design-interview-2023](https://www.educative.io/blog/complete-guide-system-design-interview)
+[Top 14 System Design interview questions for software engineers](https://www.educative.io/blog/top-10-system-design-interview-questions#chat)
+[Top 10 Facebook system design interview questions](https://www.educative.io/blog/facebook-system-design-interview)
+[Top 5 distributed system design patterns](https://www.educative.io/blog/distributed-system-design-patterns)
 
+### Interview
+45-60 min interview
+15min: get requirements (functional and non-functional)
+30min: design (api, architecture, databse, etc)
 ### To be seen
+Priority 1:
+* Grokking the system design interview
+* Youtube: Gaurav Sen
+* Youtube: Exponent
+* Youtube: Tech Dummies Narendra L
+* Youtube: System Design Interview
+* Youtube: System Design Fight Club
+Priority 2:
+* Youtube: Scott Shi
+Priority 3:  
+* design data intensive system - book
 Google Systems Design Interview With An Ex-Googler: Code-deployment system   
 https://www.youtube.com/watch?v=q0KGYwNbf-0&t=3135s
 https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g
@@ -30,8 +52,9 @@ https://www.youtube.com/user/tusharroy2525
 https://www.youtube.com/c/TechDummiesNarendraL
 https://www.youtube.com/c/ScottShiCS/playlists
 https://youtu.be/PdtlXdse7pw?feature=shared
+https://www.youtube.com/user/braveheartcy
 
-design data intensive system - book
+
 
 staff prep - https://www.1point3acres.com/bbs/thread-907026-1-1.html
 
@@ -41,10 +64,27 @@ free course
 https://www.educative.io/courses/system-design-interview-handbook/the-system-design-interview
 https://github.com/donnemartin/system-design-primer  
 
+https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=771667&ctid=231174
+
+
 ### Questions
 1. in the PACELC theorm, what means availability, consistency and partition?
+2. Cassandra vs Scylla DB
+3. Central Registry vs Gossip Protocol
+4. Cooridination Service (consensus algorithm)
+5. Counting Semaphore
+
 
 ## Introduction
+### How to Design large-scale system
+1. clarify the goals - understand basic requirments
+2. determine the scope - describe the feature set and its importance to the end goal
+3. design for the right scale 
+4. start simple, then iterate - describe the high-level proces end to end
+5. consider relavant DSA - decide to use what fundamental data structure and algorithm
+6. describe trade-off
+
+
 System Design is the process of defining the architecture, interfaces, and data for a system that satisfies specific requirements.
 
 Horizontal scaling: add more hardware to the existing hardware resource pool. It increases the computational power of the system.
@@ -86,7 +126,7 @@ MQ is a queue that routes messages from a source to a destination, or from sende
 
 File Systems:
 * Google File System: is a scalable distributed file system designed for large data-intensive applications, like gmail or youtube. It was built to handle batch processing on large data sets and is designed for system-to-system interaction, rather that user-to-user interaction. It's scalable and fault-tolerant.  
-* Hadoop Distributed File System(HDFS): is a distributed file system that handles large sets of data and runs on commodity hardware. It was built to store unstructured data. HDFS is a more simplified version of GFS.
+* Hadoop [Distributed File System](#distributed-file-system-dfs)(HDFS): is a distributed file system that handles large sets of data and runs on commodity hardware. It was built to store unstructured data. HDFS is a more simplified version of GFS.
 
 System Design patterns:  
 * Bloom filters: Are probabilistic data structures designed to answer the set membership question: Is this element present in the set? Bloom filters are highly space-efficient and do not store actual items. They determine whether an item does not exist in a set or if an item might exist in a set. They can't tell if an item is definitely presently in a set. An empty Bloom filter is a bit vector with all bits set to zero.  
@@ -240,9 +280,17 @@ Principal: i mod T
 Limitation: This load balancing algorithm is not adaptive, as it does not consider the existing load on servers to distribute incoming requests. Ideally, the load balancer should forward the request to the server whose current state is idle.  
 Real-time load balancer: LVS
 
+### Distributed File System (DFS)
+A distributed file system (DFS) is a file system that spans across multiple file servers or multiple locations, such as file servers that are situated in different physical places. Files are accessible just as if they were stored locally, from any device and from anywhere on the network.  
+A DFS is critical in situations where you need:
+* Transparent local access
+* location independency
+* scalability
+* fault tolerance
+
 
 ## Interview Guide - Common Questions
-[ref](https://www.educative.io/blog/complete-guide-system-design-interview)
+[ref](https://www.educative.io/blog/complete-guide-system-design-interview)  
 Three major focus areas in your prep plan should include the **fundamentals of distributed systems, large-scale web application architecture, and how to design distributed systems.**  
 
 ### Design Uber
@@ -304,3 +352,20 @@ Three major focus areas in your prep plan should include the **fundamentals of d
 
 ### Design Yelp (TODO)
 [ref](https://www.educative.io/blog/top-10-system-design-interview-questions#proximity)
+
+### List of common System Design Interview questions
+* Design a global chat service like Facebook Messenger or WhatsApp
+* Design a social network and message board service like Quora or Reddit
+* Design a global file storage and sharing service like Dropbox or Google Drive
+* Design a global video streaming service like YouTube or Netflix
+* Design an API rate limiter for sites like Firebase or GitHub
+* Design a proximity server like Yelp or Nearby Places/Friends
+* Design a search engine related service like Type-Ahead
+* Design Typeahead Suggestion
+* Design Ticketmaster
+* Design Twitter
+* Design Twitter Search
+* Design a Web Crawler
+* Design Instagram
+* Design FaceBook's Newsfeed
+* Design Uber
