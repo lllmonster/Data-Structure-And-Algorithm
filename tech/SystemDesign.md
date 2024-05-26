@@ -3,6 +3,12 @@
     - [Interview](#interview)
     - [To be seen](#to-be-seen)
     - [Questions](#questions)
+  - [Step-by-step Guide](#step-by-step-guide)
+    - [Understand the Basics](#understand-the-basics)
+    - [Common System Design Patterns](#common-system-design-patterns)
+    - [Case Study](#case-study)
+    - [Books and Resources](#books-and-resources)
+    - [Develop a Structured Approach](#develop-a-structured-approach)
   - [Introduction](#introduction)
     - [How to Design large-scale system](#how-to-design-large-scale-system)
   - [Data Structure Or Method](#data-structure-or-method)
@@ -45,16 +51,16 @@ Priority 2:
 Priority 3:  
 * design data intensive system - book
 Google Systems Design Interview With An Ex-Googler: Code-deployment system   
-https://www.youtube.com/watch?v=q0KGYwNbf-0&t=3135s
-https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g
-https://www.youtube.com/c/SystemDesignInterview
-https://www.youtube.com/user/tusharroy2525
-https://www.youtube.com/c/TechDummiesNarendraL
-https://www.youtube.com/c/ScottShiCS/playlists
-https://youtu.be/PdtlXdse7pw?feature=shared
-https://www.youtube.com/user/braveheartcy
+https://www.youtube.com/watch?v=q0KGYwNbf-0&t=3135s  
+https://www.youtube.com/channel/UCaO6VoaYJv4kS-TQO_M-N_g  
+https://www.youtube.com/c/SystemDesignInterview  
+https://www.youtube.com/user/tusharroy2525  
+https://www.youtube.com/c/TechDummiesNarendraL  
+https://www.youtube.com/c/ScottShiCS/playlists  
+https://youtu.be/PdtlXdse7pw?feature=shared  
+https://www.youtube.com/user/braveheartcy  
 
-
+https://github.com/donnemartin/system-design-primer
 
 staff prep - https://www.1point3acres.com/bbs/thread-907026-1-1.html
 
@@ -74,6 +80,74 @@ https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=771667&ctid=231174
 4. Cooridination Service (consensus algorithm)
 5. Counting Semaphore
 
+## Step-by-step Guide
+
+### Understand the Basics
+
+Key Concepts:
+* scalability
+* Load Balancing
+* Caching
+* Data Partitioning (Sharding)
+* Consistency, Availability, and Partition Tolerance (CAP Theorem)
+* SQL vs NoSql Database
+* Microservices vs Monolithic Architectures
+* Message Queues
+* CDNs(Content Delivery Networks)
+
+### Common System Design Patterns
+
+* Client-Server Model
+* Master-Slave Model
+* Peer-to-Peer Model
+* MapReduce
+* Pub-Sub Model
+
+### Case Study
+
+* Twitter
+* Facebook
+* Amazon
+* YouTube
+* Dropbox
+
+* URL Shortener
+* Notification System
+* E-commerce Platform
+
+### Books and Resources
+
+Books:
+
+* Designing Data-Intensive Applications by Martin Kleppmann
+* System Design Interview by Alex Xu
+* Building Microservices by Sam Newman
+
+Online Resources:
+
+* Grokking the System Design Interview
+* (System Design Primer on GitHub)[https://github.com/donnemartin/system-design-primer]
+
+### Develop a Structured Approach
+
+1. Requirements Clarification
+   1. Functional requirements(features, user interaction)
+   2. Non-functional requirements(scalability, performance, reliability)
+2. High-Level Design
+   1. Draw an initial high-level diagram
+   2. Identify major components and their interactions
+3. Detailed Design
+   1. Drill down into components (eg, database schema, API design)
+   2. Consider trade-offs and justify your decisions
+4. Scalability Considerations
+   1. Address how the system handles increases load
+   2. Discuss partitioning, load balancing, and caching strategies
+5. Bottlenecks and Trade-offs:
+   1. Identify potential bottlenecks
+   2. Discuss trade-offs related to CAP theorem, latency vs consistency, etc
+6. Security and Maintenance
+   1. Consider security aspects(authentication, authorization, data encryption)
+   2. Discuss how to maintain and monitor the system
 
 ## Introduction
 ### How to Design large-scale system
