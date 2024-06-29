@@ -85,7 +85,7 @@ https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=771667&ctid=231174
 ### Understand the Basics
 
 Key Concepts:
-* scalability
+* Scalability
 * Load Balancing
 * Caching
 * Data Partitioning (Sharding)
@@ -126,16 +126,24 @@ Books:
 Online Resources:
 
 * Grokking the System Design Interview
-* (System Design Primer on GitHub)[https://github.com/donnemartin/system-design-primer]
+* [System Design Primer on GitHub](https://github.com/donnemartin/system-design-primer)
 
 ### Develop a Structured Approach
 
 1. Requirements Clarification
    1. Functional requirements(features, user interaction)
+      1. who to use
+      2. how to use
+      3. how many user
+      4. what system do
+      5. what input and output
+      6. how much data
+      7. how many request
+      8. read/write ratio
    2. Non-functional requirements(scalability, performance, reliability)
 2. High-Level Design
    1. Draw an initial high-level diagram
-   2. Identify major components and their interactions
+   2. Identify major components and their connections
 3. Detailed Design
    1. Drill down into components (eg, database schema, API design)
    2. Consider trade-offs and justify your decisions
@@ -148,6 +156,10 @@ Online Resources:
 6. Security and Maintenance
    1. Consider security aspects(authentication, authorization, data encryption)
    2. Discuss how to maintain and monitor the system
+
+
+[System Design Template](./systemdesign/system-design-template.md)
+
 
 ## Introduction
 ### How to Design large-scale system
