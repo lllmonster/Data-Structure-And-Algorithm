@@ -6,11 +6,128 @@ A `Binary Tree` is a tree data structure in which each node has `at most two chi
 
 ## Traverse a Tree
 1.  Pre-order Traversal :
-root - left - right
-2.  In-order Traversal :
-left - root - right
-3.  Post-order Traversal :
-left - right - root
+root - left - right  
+
+```java
+// Recursive 
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        helper(ans, root);
+        return ans;
+    }
+
+    private void helper(List<Integer> ans, TreeNode root) {
+        if (root == null) return;
+        ans.add(root.val);
+        helper(ans, root.left);
+        helper(ans, root.right);
+    }
+}
+```
+
+
+```java
+// Interative
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stk = new Stack<>();
+        if (root != null) stk.push(root);
+        while(!stk.isEmpty()) {
+            root = stk.pop();
+            ans.add(root.val);
+            if (root.right != null) {
+                stk.push(root.right);
+            }
+            if (root.left != null) {
+                stk.push(root.left);
+            }
+        }
+        return ans;
+    }
+}
+```
+
+2.  In-order Traversal :  
+left - root - right  
+Recursive   
+```java
+// Recursive 
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        helper(ans, root);
+        return ans;
+    }
+
+    private void helper(List<Integer> ans, TreeNode root) {
+        if (root == null) return;
+        helper(ans, root.left);
+        ans.add(root.val);
+        helper(ans, root.right);
+    }
+}
+```
+
+```java
+// Interative
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stk = new Stack<>();
+        while(root != null || !stk.isEmpty()) {
+            while(root != null) {
+                stk.push(root);
+                root = root.left;
+            }
+            root = stk.pop();
+            ans.add(root.val);
+            root = root.right;
+        }
+        return ans;
+    }
+}
+```
+3.  Post-order Traversal :  
+left - right - root  
+ 
+```java
+// Recursive 
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        helper(ans, root);
+        return ans;
+    }
+
+    private void helper(List<Integer> ans, TreeNode root) {
+        if (root == null) return;
+        helper(ans, root.left);
+        helper(ans, root.right);
+        ans.add(root.val);
+    }
+}
+```
+
+```java
+// Interative
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stk = new Stack<>();
+        while(root != null) {
+            ans.addFirst(root.val);
+            if (root.left != null) stk.push(root.left);
+            root = root.right;
+            if (root == null && !stk.isEmpty()) {
+                root = stk.pop();
+            }
+        }
+        return ans;
+    }
+}
+```
 
 ## Level - Order Traversal
 Level - order traversal is to traverse the tree level by level.  
