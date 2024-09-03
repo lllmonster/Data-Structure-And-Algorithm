@@ -6,11 +6,29 @@
   - [Step-by-step Guide](#step-by-step-guide)
     - [Understand the Basics](#understand-the-basics)
     - [Common System Design Patterns](#common-system-design-patterns)
-    - [Case Study](#case-study)
     - [Books and Resources](#books-and-resources)
     - [Develop a Structured Approach](#develop-a-structured-approach)
-  - [Introduction](#introduction)
-    - [How to Design large-scale system](#how-to-design-large-scale-system)
+  - [How to Design large-scale system](#how-to-design-large-scale-system)
+  - [Component](#component)
+    - [Non-functional ability:](#non-functional-ability)
+    - [Horizontal scaling:](#horizontal-scaling)
+    - [Vertical scaling:](#vertical-scaling)
+    - [Microservice:](#microservice)
+    - [Proxy server:](#proxy-server)
+    - [CAP theorem:](#cap-theorem)
+    - [PACELC theorem:](#pacelc-theorem)
+    - [Redundancy and replication](#redundancy-and-replication)
+    - [Storage:](#storage)
+    - [Databases:](#databases)
+    - [Message Queues:](#message-queues)
+    - [File Systems:](#file-systems)
+    - [System Design patterns:](#system-design-patterns)
+    - [Communication:](#communication)
+    - [Distributed systems:](#distributed-systems)
+    - [CDN (Content-delivery-network)](#cdn-content-delivery-network)
+    - [Scalable web applications:](#scalable-web-applications)
+    - [Heartbeat:](#heartbeat)
+    - [AJAX polling vs Long polling vs WebSockets vs Server-Sent Events](#ajax-polling-vs-long-polling-vs-websockets-vs-server-sent-events)
   - [Data Structure Or Method](#data-structure-or-method)
     - [Quadtree](#quadtree)
     - [Hash and Encode](#hash-and-encode)
@@ -26,6 +44,8 @@
 
 # System Design
 
+System Design is the process of defining the architecture, interfaces, and data for a system that satisfies specific requirements.
+
 ## Tutorials
 [Done: Education-how-to-prepare-system-design-interview](https://www.educative.io/blog/how-to-prepare-system-design-interview)
 [Done: Educative-complete-guide-to-system-design-2023](https://www.educative.io/blog/complete-guide-to-system-design)
@@ -33,6 +53,9 @@
 [Top 14 System Design interview questions for software engineers](https://www.educative.io/blog/top-10-system-design-interview-questions#chat)
 [Top 10 Facebook system design interview questions](https://www.educative.io/blog/facebook-system-design-interview)
 [Top 5 distributed system design patterns](https://www.educative.io/blog/distributed-system-design-patterns)
+
+https://github.com/karanpratapsingh/system-design
+
 
 ### Interview
 45-60 min interview
@@ -103,17 +126,7 @@ Key Concepts:
 * MapReduce
 * Pub-Sub Model
 
-### Case Study
 
-* Twitter
-* Facebook
-* Amazon
-* YouTube
-* Dropbox
-
-* URL Shortener
-* Notification System
-* E-commerce Platform
 
 ### Books and Resources
 
@@ -161,8 +174,7 @@ Online Resources:
 [System Design Template](./systemdesign/system-design-template.md)
 
 
-## Introduction
-### How to Design large-scale system
+## How to Design large-scale system
 1. clarify the goals - understand basic requirments
 2. determine the scope - describe the feature set and its importance to the end goal
 3. design for the right scale 
@@ -171,28 +183,69 @@ Online Resources:
 6. describe trade-off
 
 
-System Design is the process of defining the architecture, interfaces, and data for a system that satisfies specific requirements.
 
-Horizontal scaling: add more hardware to the existing hardware resource pool. It increases the computational power of the system.
 
-Vertical scaling: add more power to your server. It increases the power of the hardware running the application.
+## Component
 
-Microservice: structures an application using loosely coupled services.
+### Non-functional ability:
+* Robustness (the ability to maintain operations during a crisis)
+* Scalability
+* Availability: availability is about ensuring the system remains accessible and operational over time
+* Performance
+* Extensibility
+* Resiliency (the ability to return to normal operations over an acceptable period of time post disruption)
+* Redundancy is about building backups and fail-safes into a system
+  * Redundancy is a key strategy used to achieve high availability, but availability also depends on other factors, including effective failover mechanisms, maintenance practices, and system architecture.
 
-Proxy server: act as a channel between a user and the internet. (improved security, privacy; access to blocked resources; cache data to speed up request; control of internet usage)
+### Horizontal scaling: 
 
-CAP theorem: It formalizes the tradeoff between consistenct and availability when there's a partition.
+add more hardware to the existing hardware resource pool. It increases the computational power of the system.
 
-PACELC theorem: states the following about a system that replicates data  
+### Vertical scaling: 
+
+add more power to your server. It increases the power of the hardware running the application.
+
+### Microservice: 
+
+structures an application using loosely coupled services.
+
+### Proxy server: 
+
+act as a channel between a user and the internet. (improved security, privacy; access to blocked resources; cache data to speed up request; control of internet usage)
+
+### CAP theorem: 
+
+It formalizes the tradeoff between consistenct and availability when there's a partition.
+
+It states that a distributed database can only guarantee two out of the following three properties at the same time:
+
+* Consistency: Every read receives the most recent write or an error.
+* Availability (A): Every request receives a (non-error) response, without guaranteeing that it contains the most recent write.
+* Partition Tolerance (P): The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes.
+
+Scenario:
+* CP:
+  * use case:  Financial transactions
+  * example: google cloud spanner
+* AP:
+  * use case:  Social media platforms
+  * example: Cassandra, Couchbase
+* CA:
+  * use case: However, in real-world distributed systems, achieving CA is challenging due to the inevitability of partitions3.
+  * example: Traditional relational databases (under ideal conditions without partitions)
+
+### PACELC theorem: 
+
+states the following about a system that replicates data  
 * if statement: if there's a partition, a distributed system can trade off between availability and consistency. (CAP theorem)  
 * else statement: if there's no partition, the system can trade off between latency and consistency.  
 * Examples of a PC/EC system include BigTable and HBase. They'll always choose consistency, giving up abailability and lower latency.
 * Example of a PA/EL system include Dynamo and Cassandra. They choose availability over consistency when a partition occurs. Otherwise, they choose lower latency.
 * Example of PA/EC system include MongoDB, in the case of partition, it chooses availability, but otherwise guarantees consistency.
 
-Redundancy and replication
+### Redundancy and replication
 
-Storage:  
+### Storage:  
 * Block Storage: data is broken down into blocks of equal size, and each block is given a unique identifier for easy accessibility. These blocks are stored in physical storage. As opposed to adhering to a fixed path, blocks can be stored anywhere in the system, making more efficient use of the resources.  
 
 * File Storage: Is a hierarchical storage methodology. The data is store in files. The files are stored in folders. This storage is only good for a limited amount of data, primarily structured data.  
@@ -201,33 +254,20 @@ Storage:
 
 * Redundant Disk Arrays (RAID): Is a technique to use multiple disks in concert to build a faster, bigger, and more reliable disk system.
 
-Message Queues:  
-MQ is a queue that routes messages from a source to a destination, or from sender to the receiver. It follows FIFO policy. MQ facilitate asynchronous behavior, which allows modules to communicate with each other in the background without hindering primary tasks.
-* Kafka: Kafka is a distributed system consisting of servers and clients that communicate through a TCP network protocol. The system allows us to read, write, store and process events. Kafka is primarily used for builidng data pipelines and implementing streaming solutions.
-    * kafka vs RabbitMQ
-    * Kafka vs Kinesis
-    * Kafka vs Flink
-    * Kafka vs RedisStream
-
-
-File Systems:
-* Google File System: is a scalable distributed file system designed for large data-intensive applications, like gmail or youtube. It was built to handle batch processing on large data sets and is designed for system-to-system interaction, rather that user-to-user interaction. It's scalable and fault-tolerant.  
-* Hadoop [Distributed File System](#distributed-file-system-dfs)(HDFS): is a distributed file system that handles large sets of data and runs on commodity hardware. It was built to store unstructured data. HDFS is a more simplified version of GFS.
-
-System Design patterns:  
-* Bloom filters: Are probabilistic data structures designed to answer the set membership question: Is this element present in the set? Bloom filters are highly space-efficient and do not store actual items. They determine whether an item does not exist in a set or if an item might exist in a set. They can't tell if an item is definitely presently in a set. An empty Bloom filter is a bit vector with all bits set to zero.  
-* Consistent hashing: maps data to physical nodes and ensures that only a small set of keys move when servers are added or removed. Consistent hashing stores the data managed by a distributed system in a ring. This concept is important within distributed systems and works closely with data partitioning and data replication.  
-* Quorum: is the minimum number of servers on which a distributed operation needs to be performed successfully before declaring the operation's overall success.
-* Checksum: It verifies that the data received from the server matches the stored checksum.  
-* Merkle trees: Is a binary tree of hashes, in which each internal node is the hash of its two children, and each leaf node is a hash of a portion of the original data. Replicas can contain a lot of data. Splitting up the entire range to calculate checksums for comparison is not very feasible, because there's so much data to be transferred. Merkle trees enable us to easily compare replicas of a range.  
-* Leader election: Is the process of designating a single process as the organizer of tasks distributed across several computers. Leader election improves efficiency, simplifies architectures, and reduces operations.  
-
-Databases:
+### Databases:
 * Relational databases: are structured. They have predefined schemas.SQL database store data in rows and columns. (MySQL, Oracle, PostgreSQL, MariaDB)  
+  * Master-slave, Master-master, Federation, Sharding, Denormalization, SQL Tuning
     * MySQL: Is an open-source relational database management system (RDBMS) that stores data in tables and rows. It follows client-server architecture and supports multithreading.  
     * PostgreSQL: Is an open-source RDBMS that emphasizes extensibility and SQL compliance. Postgres employs SQL to access and manipulate the database. It uses its own version of SQL which can perform more complex queries. It use foreign key, which allow us to keep our data normalized.
 * Non-relational databases: are unstructured. They have a dynamic schema, like file folders that store information. (Redis/DynamoDB, MongoDB/CouchDB, Cassandra/HBase, Neo4J/InfiniteGraph)  
-    * MongoDB: is a NoSQL, non-relational database management system (DBMS) that uses documents instead of tables or rows for data storage. This data model makes it possible to manipulate related data in a single database operation. MongoDB documents use JSON-like documents and files that are JavaScript supported. The document fields can vary, making it easy to change the structure over time.  
+  * Key-Value, Wide-Column, Graph, Document
+  * |  |  |  |
+    |-----------------|-----------------|-----------------|
+    | RAM    | [Bounded size]    | Redis, Memcached    |
+    | AP    | [Unbounded size]    | Cassandra, RIAK, Voldemort  |
+    | CP    | [Unbounded size]    | HBase, MongoDB, Couchbase, DynamoDB    |
+
+  * MongoDB: is a NoSQL, non-relational database management system (DBMS) that uses documents instead of tables or rows for data storage. This data model makes it possible to manipulate related data in a single database operation. MongoDB documents use JSON-like documents and files that are JavaScript supported. The document fields can vary, making it easy to change the structure over time.  
 * How to choose a database: When choosing your database structure, it's important to factor in speed, reliability, and accuracy. We have relational database that can guarantee data validity, and we have non-relational database that can guarantee eventual consistency.   
 * Database schemas: are abstract designs that represnet the storage of the data in a database.   
 * Database queries: is a request to access data from a database to manipulate or retrieve it.  
@@ -248,8 +288,54 @@ Databases:
   * what db are using the BASE model? NoSQL database tend to conform to BASE principle. MongoDB, Cassandra and Redis are among the most popular NoSQL solutions, together with Amazon DynamoDB and Couchbase.
 * Database sharding and partitioning: When sharding a database, you make partitions of data so that the data is divided into various smaller, distinct chunks called shards. Two type: vertical sharding and horizontal sharding. You need to dertemine a shading key to partition your data. Sharding allows your application to make fewer queries and improves your application's overall performance and scalability, load balancing and manageability.   
 * Database indexing: Allows you to make it faster and easier to search and through your tables and find the rows or columns that you want. While indexes dramatically speed up data retrieval, they typically slow down data insertion and updates because of their size.  
+* Relational DB datatype size:  
+  | Data Type      | Size                                | Range                   |
+  |----------------|-------------------------------------|-------------------------|
+  | INT            | 4 bytes                             | 2^31 - 2^-31            |
+  | DECIMAL        | DECIMAL(10,2) might take up around 5 bytes |                         |
+  | FLOAT          | 4 bytes                             |                         |
+  | DOUBLE         | 8 bytes                             |                         |
+  | CHAR(n)        | n bytes                             |                         |
+  | TEXT           | 64 KB                               |                         |
+  | TIMESTAMP      | 4 bytes                             |                         |
+  | BINARY(n)      | n bytes                             |                         |
+  | BLOB           | 64 KB                               |                         |
+  | BOOLEAN        | 1 byte                              |                         |
+  | UUID           | 16 bytes                            |                         |
+* test:
 
-Distributed systems: Benefits: Scaling, Modular growth, Fault tolerance, Cost-effective, Low latency, Efficiency, Parallelism  
+
+### Message Queues:  
+MQ is a queue that routes messages from a source to a destination, or from sender to the receiver. It follows FIFO policy. MQ facilitate asynchronous behavior, which allows modules to communicate with each other in the background without hindering primary tasks.
+* Kafka: Kafka is a distributed system consisting of servers and clients that communicate through a TCP network protocol. The system allows us to read, write, store and process events. Kafka is primarily used for builidng data pipelines and implementing streaming solutions.
+    * kafka vs RabbitMQ
+    * Kafka vs Kinesis
+    * Kafka vs Flink
+    * Kafka vs RedisStream
+
+
+### File Systems:
+* Google File System: is a scalable distributed file system designed for large data-intensive applications, like gmail or youtube. It was built to handle batch processing on large data sets and is designed for system-to-system interaction, rather that user-to-user interaction. It's scalable and fault-tolerant.  
+* Hadoop [Distributed File System](#distributed-file-system-dfs)(HDFS): is a distributed file system that handles large sets of data and runs on commodity hardware. It was built to store unstructured data. HDFS is a more simplified version of GFS.
+
+### System Design patterns:  
+* Bloom filters: Are probabilistic data structures designed to answer the set membership question: Is this element present in the set? Bloom filters are highly space-efficient and do not store actual items. They determine whether an item does not exist in a set or if an item might exist in a set. They can't tell if an item is definitely presently in a set. An empty Bloom filter is a bit vector with all bits set to zero.  
+* Consistent hashing: maps data to physical nodes and ensures that only a small set of keys move when servers are added or removed. Consistent hashing stores the data managed by a distributed system in a ring. This concept is important within distributed systems and works closely with data partitioning and data replication.  
+* Quorum: is the minimum number of servers on which a distributed operation needs to be performed successfully before declaring the operation's overall success.
+* Checksum: It verifies that the data received from the server matches the stored checksum.  
+* Merkle trees: Is a binary tree of hashes, in which each internal node is the hash of its two children, and each leaf node is a hash of a portion of the original data. Replicas can contain a lot of data. Splitting up the entire range to calculate checksums for comparison is not very feasible, because there's so much data to be transferred. Merkle trees enable us to easily compare replicas of a range.  
+* Leader election: Is the process of designating a single process as the organizer of tasks distributed across several computers. Leader election improves efficiency, simplifies architectures, and reduces operations.  
+
+
+### Communication:
+* TCP
+* UDP
+* REST
+* RPC
+
+### Distributed systems: 
+
+Benefits: Scaling, Modular growth, Fault tolerance, Cost-effective, Low latency, Efficiency, Parallelism  
 * Distributed system failures: System failure, Communication medium failure, Secondary storage failure, method failure  
 * Destributed system fundamental:
     * MapReduce: handle large amounts of data in an efficient manner. Partitioning -> Map -> intermediate files -> Reduce -> Aggregate
@@ -260,7 +346,21 @@ Distributed systems: Benefits: Scaling, Modular growth, Fault tolerance, Cost-ef
     * Security: Handles confidentiality, integrity, and availability concerns to ensure the system is secure from unauthorized access  
     * Event-driven: Describes the production, detection, consumption, and response to system events.  
 
-Scalable web applications:
+### CDN (Content-delivery-network)
+
+A Content Delivery Network (CDN) is a distributed network of servers strategically located across various geographical locations to deliver web content, such as images, videos, and other static assets, more efficiently to users.
+
+* Reduce latency
+* improve reliability, availability, scalability, and security of web app.
+
+The primary purpose of a CDN is to reduce latency and improve the overall performance of web applications by serving content from the server nearest to the user. CDNs can also help improve reliability, availability, and security of web applications.
+
+* Flat Topology: In a flat topology, all edge servers in the CDN are directly connected to the origin server. This approach can be effective for smaller CDNs, but may not scale well as the network grows.
+* Hierarchical Topology: In a hierarchical topology, edge servers are organized into multiple tiers, with each tier being responsible for serving content to the tier below it. This approach can improve scalability by distributing the load among multiple levels of servers and reducing the number of direct connections to the origin server.
+* Mesh Topology: In a mesh topology, edge servers are interconnected, allowing them to share content and load with each other. This approach can enhance the redundancy and fault tolerance of the CDN, as well as improve content delivery performance by reducing the need to fetch content from the origin server.
+* Hybrid Topology: A hybrid topology combines elements from various topologies to create an optimized CDN architecture tailored to specific needs. For example, a CDN could use a hierarchical structure for serving static content, while employing a mesh topology for dynamic content delivery.
+
+### Scalable web applications:
 * DNS and load balancing  
 * N-tier application: are applications that have more than three components involved. (Caches, MQ, Load balancers, Search servers, Components involved in processing large amounts of data, Components running heterogeneous tech like web services)  
 * HTTP and REST: HTTP stands for HyperText Transfer Protocol. This protocol dictates the format of messages, how and when messages are sent, appropriate responses, and how messages are interpreted. HTTP messages can be either requests or response. REST stands for Representational State Transfer. It's a ruleset that defines best practices for sharing data between clients and servers, and it emphasizes the scalability of components and the simplicity of interfaces.  
@@ -273,10 +373,12 @@ Machine learning and System Design
 Containerization and System Design: Docker and Kubernetes  
 The Cloud and System Design:
 
-Heartbeat: A heartbeat message is a mechanism that helps us detect failures in a distributed system.
+### Heartbeat: 
+
+A heartbeat message is a mechanism that helps us detect failures in a distributed system.
 
 
-*AJAX polling vs Long polling vs WebSockets vs Server-Sent Events*  
+###  AJAX polling vs Long polling vs WebSockets vs Server-Sent Events
 
 AJAX polling: Polling is a standard technique used by most AJAX apps. The idea is that the client repeatedly polls a server for data.  
 1. The client opens a connection and request data from the server using regular HTTP
@@ -439,6 +541,7 @@ Three major focus areas in your prep plan should include the **fundamentals of d
 ### Design Yelp (TODO)
 [ref](https://www.educative.io/blog/top-10-system-design-interview-questions#proximity)
 
+
 ### List of common System Design Interview questions
 * Design a global chat service like Facebook Messenger or WhatsApp
 * Design a social network and message board service like Quora or Reddit
@@ -455,3 +558,14 @@ Three major focus areas in your prep plan should include the **fundamentals of d
 * Design Instagram
 * Design FaceBook's Newsfeed
 * Design Uber
+
+
+* Twitter
+* Facebook
+* Amazon
+* YouTube
+* Dropbox
+
+* URL Shortener
+* Notification System
+* E-commerce Platform
