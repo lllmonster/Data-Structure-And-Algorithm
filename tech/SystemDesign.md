@@ -23,7 +23,7 @@
     - [Message Queues:](#message-queues)
     - [File Systems:](#file-systems)
     - [System Design patterns:](#system-design-patterns)
-    - [Communication:](#communication)
+    - [Communication - TCP/UDP/REST/RPC](#communication---tcpudprestrpc)
     - [Distributed systems:](#distributed-systems)
     - [CDN (Content-delivery-network)](#cdn-content-delivery-network)
     - [Scalable web applications:](#scalable-web-applications)
@@ -33,7 +33,8 @@
     - [Quadtree](#quadtree)
     - [Hash and Encode](#hash-and-encode)
     - [Consistent Hashing](#consistent-hashing)
-    - [Round-Robin load balancing](#round-robin-load-balancing)
+    - [Load Balancer](#load-balancer)
+    - [Reverse proxy (web-server)](#reverse-proxy-web-server)
     - [Distributed File System (DFS)](#distributed-file-system-dfs)
   - [Interview Guide - Common Questions](#interview-guide---common-questions)
     - [Design Uber](#design-uber)
@@ -53,6 +54,12 @@ System Design is the process of defining the architecture, interfaces, and data 
 [Top 14 System Design interview questions for software engineers](https://www.educative.io/blog/top-10-system-design-interview-questions#chat)
 [Top 10 Facebook system design interview questions](https://www.educative.io/blog/facebook-system-design-interview)
 [Top 5 distributed system design patterns](https://www.educative.io/blog/distributed-system-design-patterns)
+
+https://github.com/donnemartin/system-design-primer
+
+* TODO:
+  * https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/scaling_aws/README.md
+  * https://github.com/donnemartin/system-design-primer#client-caching
 
 https://github.com/karanpratapsingh/system-design
 
@@ -257,6 +264,13 @@ states the following about a system that replicates data
 ### Databases:
 * Relational databases: are structured. They have predefined schemas.SQL database store data in rows and columns. (MySQL, Oracle, PostgreSQL, MariaDB)  
   * Master-slave, Master-master, Federation, Sharding, Denormalization, SQL Tuning
+    * Federation(functional partitioning): split up database by function, resulting in less read and write traffic to each db and less replication lag. But might not effective, add more complexity.
+    * Sharding: make each db only manage a subset of data. Similar to federation, sharding results in less read and write traffic, less replication and more cache hits.
+    * Denormalization: attemps to improve read performance at the expense of some write performance. But data is duplicated, and heavy write might be even worse than its normalized couterpart.
+    * SQL tuning: It's important to benchmark and profile to simulate and uncover bottlenecks. 
+      * Benchmark: simulate high-load situations with tools
+      * Profile: enable tools like slow query log to help track performance issue
+  * Example
     * MySQL: Is an open-source relational database management system (RDBMS) that stores data in tables and rows. It follows client-server architecture and supports multithreading.  
     * PostgreSQL: Is an open-source RDBMS that emphasizes extensibility and SQL compliance. Postgres employs SQL to access and manipulate the database. It uses its own version of SQL which can perform more complex queries. It use foreign key, which allow us to keep our data normalized.
 * Non-relational databases: are unstructured. They have a dynamic schema, like file folders that store information. (Redis/DynamoDB, MongoDB/CouchDB, Cassandra/HBase, Neo4J/InfiniteGraph)  
@@ -296,6 +310,7 @@ states the following about a system that replicates data
   | FLOAT          | 4 bytes                             |                         |
   | DOUBLE         | 8 bytes                             |                         |
   | CHAR(n)        | n bytes                             |                         |
+  | VARCHAR(n)     | n bytes                             |                         |
   | TEXT           | 64 KB                               |                         |
   | TIMESTAMP      | 4 bytes                             |                         |
   | BINARY(n)      | n bytes                             |                         |
@@ -327,11 +342,31 @@ MQ is a queue that routes messages from a source to a destination, or from sende
 * Leader election: Is the process of designating a single process as the organizer of tasks distributed across several computers. Leader election improves efficiency, simplifies architectures, and reduces operations.  
 
 
-### Communication:
+### Communication - TCP/UDP/REST/RPC
 * TCP
 * UDP
 * REST
-* RPC
+* RPC (Remote procedure call): 
+  * RPC is request-response protocal:
+    * Client program: call the client stub procedure.The parameters are pushed onto the stack like a local procedure call
+    * Client stub procedure: Marshals procedure id and arguments into a request message
+    * Client communication module: OS sends the message from the client to the server
+    * Server communication module: OS passes the incoming packets to the server stub procedure.
+    * Server stub procedure: Unmarshalls the results, calls the server procedure matching the procedure id and passes the given arguments
+    * The server response repeats the steps above in reverse order.
+  * Popular RPC frameworks include Protobuf, Thrift, and Avro
+  * RPC is focused on exposing behavior. It is often used for performance reasons with internal communications, 
+* RPC vs REST:
+  * RPC is typically used to call remote functions on a server that require an action result. Use case:
+    * Take a picture with a remote device’s camera
+    * Use a machine learning algorithm on the server to identify fraud
+    * Transfer money from one account to another on a remote banking system
+    * Restart a server remotely
+  * REST API is typically used to perform create, read, update, and delete (CRUD) operations on a data object on a server. Use case:
+    * Add a product to a database
+    * Retrieve the contents of a music playlist
+    * Update a person’s address
+    * Delete a blog post
 
 ### Distributed systems: 
 
@@ -461,12 +496,23 @@ In order to solve the above problem, consistent hashing is used because in this 
 
 The key idea behind consistent hashing is that every record and server is mapped on the unit circle. Each record is then assigned to the first server that appears on the circle in a clockwise direction. This brings even distribution of records.
 
-### Round-Robin load balancing 
+### Load Balancer
+* Round-Robin load balancing: 
 The round-robin load balancing technique is the simplest way to distribute traffic across a group of servers. The load balancer forwards the incoming requests to dedicated servers sequentially (one by one mechanism).  
 Round-robin is a static load balancer, because it does not modify the state of the servers while distributing incoming traffic.  
 Principal: i mod T  
 Limitation: This load balancing algorithm is not adaptive, as it does not consider the existing load on servers to distribute incoming requests. Ideally, the load balancer should forward the request to the server whose current state is idle.  
 Real-time load balancer: LVS
+
+### Reverse proxy (web-server)
+Internet -> proxy -> web server  
+A reverse proxy is a web server that centralizes internal services and provides unified interfaces to the public.
+* increased security - Hide information about backend servers, blacklist IPs, limit number of connections per client - Clients only see the reverse proxy's IP, allowing you to scale servers or change their configuration
+* increased scalability and flexibilty
+* SSL termination
+* Compression
+* Caching
+* Static content (like HTML/CSS/JS, Photo, Video)
 
 ### Distributed File System (DFS)
 A distributed file system (DFS) is a file system that spans across multiple file servers or multiple locations, such as file servers that are situated in different physical places. Files are accessible just as if they were stored locally, from any device and from anywhere on the network.  
