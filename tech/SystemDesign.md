@@ -58,6 +58,7 @@ System Design is the process of defining the architecture, interfaces, and data 
 https://github.com/donnemartin/system-design-primer
 
 * TODO:
+  * https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/twitter/README.md
   * https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/scaling_aws/README.md
   * https://github.com/donnemartin/system-design-primer#client-caching
 
