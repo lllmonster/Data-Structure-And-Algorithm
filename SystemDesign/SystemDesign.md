@@ -9,30 +9,32 @@
     - [Books and Resources](#books-and-resources)
     - [Develop a Structured Approach](#develop-a-structured-approach)
   - [How to Design large-scale system](#how-to-design-large-scale-system)
+  - [Back-of-the-envelope estimation](#back-of-the-envelope-estimation)
   - [Component](#component)
     - [Non-functional ability:](#non-functional-ability)
     - [Horizontal scaling:](#horizontal-scaling)
     - [Vertical scaling:](#vertical-scaling)
     - [Microservice:](#microservice)
     - [Proxy server:](#proxy-server)
-    - [CAP theorem:](#cap-theorem)
+    - [Database](#database)
     - [PACELC theorem:](#pacelc-theorem)
     - [Redundancy and replication](#redundancy-and-replication)
     - [Storage:](#storage)
-    - [Databases:](#databases)
     - [Message Queues:](#message-queues)
     - [File Systems:](#file-systems)
     - [System Design patterns:](#system-design-patterns)
+    - [API Gateway](#api-gateway)
     - [Communication - TCP/UDP/REST/RPC](#communication---tcpudprestrpc)
     - [Distributed systems:](#distributed-systems)
     - [CDN (Content-delivery-network)](#cdn-content-delivery-network)
     - [Scalable web applications:](#scalable-web-applications)
     - [Heartbeat:](#heartbeat)
     - [AJAX polling vs Long polling vs WebSockets vs Server-Sent Events](#ajax-polling-vs-long-polling-vs-websockets-vs-server-sent-events)
+    - [Search](#search)
   - [Data Structure Or Method](#data-structure-or-method)
     - [Quadtree](#quadtree)
     - [Hash and Encode](#hash-and-encode)
-    - [Consistent Hashing](#consistent-hashing)
+    - [Consistent  ](#consistent-)
     - [Load Balancer](#load-balancer)
     - [Reverse proxy (web-server)](#reverse-proxy-web-server)
     - [Distributed File System (DFS)](#distributed-file-system-dfs)
@@ -41,6 +43,7 @@
     - [Design TinyURL (DONE)](#design-tinyurl-done)
     - [Design Instragram (TODO)](#design-instragram-todo)
     - [Design Yelp (TODO)](#design-yelp-todo)
+    - [Design Spotify](#design-spotify)
     - [List of common System Design Interview questions](#list-of-common-system-design-interview-questions)
 
 # System Design
@@ -63,6 +66,8 @@ https://github.com/donnemartin/system-design-primer
   * https://github.com/donnemartin/system-design-primer#client-caching
 
 https://github.com/karanpratapsingh/system-design
+
+https://bytebytego.com/courses/system-design-interview/back-of-the-envelope-estimation
 
 
 ### Interview
@@ -103,6 +108,8 @@ https://github.com/donnemartin/system-design-primer
 
 https://www.1point3acres.com/bbs/forum.php?mod=viewthread&tid=771667&ctid=231174
 
+二哥java 进阶 concurrent  
+https://javabetter.cn/thread/#%E5%B0%8F%E5%86%8C%E5%8C%85%E5%90%AB%E5%93%AA%E4%BA%9B%E5%86%85%E5%AE%B9
 
 ### Questions
 1. in the PACELC theorm, what means availability, consistency and partition?
@@ -191,7 +198,15 @@ Online Resources:
 6. describe trade-off
 
 
+## Back-of-the-envelope estimation
 
+| Power	| Approximate | value	| Fulll name |	Short name
+| -------|------------|-------|------------|------------
+|10	|1 Thousand	|1 Kilobyte	|1 KB
+|20	|1 Million	|1 Megabyte	|1 MB
+|30	|1 Billion	|1 Gigabyte	|1 GB
+|40	|1 Trillion	|1 Terabyte	|1 TB
+|50	|1 Quadrillion	|1 Petabyte	|1 PB
 
 ## Component
 
@@ -221,26 +236,8 @@ structures an application using loosely coupled services.
 
 act as a channel between a user and the internet. (improved security, privacy; access to blocked resources; cache data to speed up request; control of internet usage)
 
-### CAP theorem: 
+### [Database](Database.md)
 
-It formalizes the tradeoff between consistenct and availability when there's a partition.
-
-It states that a distributed database can only guarantee two out of the following three properties at the same time:
-
-* Consistency: Every read receives the most recent write or an error.
-* Availability (A): Every request receives a (non-error) response, without guaranteeing that it contains the most recent write.
-* Partition Tolerance (P): The system continues to operate despite an arbitrary number of messages being dropped (or delayed) by the network between nodes.
-
-Scenario:
-* CP:
-  * use case:  Financial transactions
-  * example: google cloud spanner
-* AP:
-  * use case:  Social media platforms
-  * example: Cassandra, Couchbase
-* CA:
-  * use case: However, in real-world distributed systems, achieving CA is challenging due to the inevitability of partitions3.
-  * example: Traditional relational databases (under ideal conditions without partitions)
 
 ### PACELC theorem: 
 
@@ -262,63 +259,7 @@ states the following about a system that replicates data
 
 * Redundant Disk Arrays (RAID): Is a technique to use multiple disks in concert to build a faster, bigger, and more reliable disk system.
 
-### Databases:
-* Relational databases: are structured. They have predefined schemas.SQL database store data in rows and columns. (MySQL, Oracle, PostgreSQL, MariaDB)  
-  * Master-slave, Master-master, Federation, Sharding, Denormalization, SQL Tuning
-    * Federation(functional partitioning): split up database by function, resulting in less read and write traffic to each db and less replication lag. But might not effective, add more complexity.
-    * Sharding: make each db only manage a subset of data. Similar to federation, sharding results in less read and write traffic, less replication and more cache hits.
-    * Denormalization: attemps to improve read performance at the expense of some write performance. But data is duplicated, and heavy write might be even worse than its normalized couterpart.
-    * SQL tuning: It's important to benchmark and profile to simulate and uncover bottlenecks. 
-      * Benchmark: simulate high-load situations with tools
-      * Profile: enable tools like slow query log to help track performance issue
-  * Example
-    * MySQL: Is an open-source relational database management system (RDBMS) that stores data in tables and rows. It follows client-server architecture and supports multithreading.  
-    * PostgreSQL: Is an open-source RDBMS that emphasizes extensibility and SQL compliance. Postgres employs SQL to access and manipulate the database. It uses its own version of SQL which can perform more complex queries. It use foreign key, which allow us to keep our data normalized.
-* Non-relational databases: are unstructured. They have a dynamic schema, like file folders that store information. (Redis/DynamoDB, MongoDB/CouchDB, Cassandra/HBase, Neo4J/InfiniteGraph)  
-  * Key-Value, Wide-Column, Graph, Document
-  * |  |  |  |
-    |-----------------|-----------------|-----------------|
-    | RAM    | [Bounded size]    | Redis, Memcached    |
-    | AP    | [Unbounded size]    | Cassandra, RIAK, Voldemort  |
-    | CP    | [Unbounded size]    | HBase, MongoDB, Couchbase, DynamoDB    |
 
-  * MongoDB: is a NoSQL, non-relational database management system (DBMS) that uses documents instead of tables or rows for data storage. This data model makes it possible to manipulate related data in a single database operation. MongoDB documents use JSON-like documents and files that are JavaScript supported. The document fields can vary, making it easy to change the structure over time.  
-* How to choose a database: When choosing your database structure, it's important to factor in speed, reliability, and accuracy. We have relational database that can guarantee data validity, and we have non-relational database that can guarantee eventual consistency.   
-* Database schemas: are abstract designs that represnet the storage of the data in a database.   
-* Database queries: is a request to access data from a database to manipulate or retrieve it.  
-* ACID Model:  (consistency, predictability, reliability)
-  * properties: 
-    * Atomicity: A transaction is an atomic unit
-    * Consistency: A database is initially in a consistent state and keep it.  
-    * Isloation: thread-safe
-    * Durability: Changes that have been committed to the database should remain. 
-  * use case: Financial institutions will almost use ACID database (like money transfer depends on the atomic nature of ACID)
-  * what db are acid compliant? a relational database management, including MySQL, PostgreSQL, Oracle, SQLite, etc. 
-* BASE Model: (easy scale, more flexibility)
-  * properties
-    * Basically Available: Rather than enforcing immediate consistency, BASE-modelled NoSQL db will ensure availability of data by spreading and replicating it across the nodes of the database cluster.
-    * Soft State: Due to the lack of immedidate consistency, data values may change over time.
-    * Eventually Consistent: still it will achieve the final consistency state.
-  * use case: Marketing and customer service companies who deal with sentiment analysis will prefer the elasticity of BASE when conducting their social network research. Social network feeds are not well structured but contain huge amounts of data which a BASE-modelled db can easity restore.
-  * what db are using the BASE model? NoSQL database tend to conform to BASE principle. MongoDB, Cassandra and Redis are among the most popular NoSQL solutions, together with Amazon DynamoDB and Couchbase.
-* Database sharding and partitioning: When sharding a database, you make partitions of data so that the data is divided into various smaller, distinct chunks called shards. Two type: vertical sharding and horizontal sharding. You need to dertemine a shading key to partition your data. Sharding allows your application to make fewer queries and improves your application's overall performance and scalability, load balancing and manageability.   
-* Database indexing: Allows you to make it faster and easier to search and through your tables and find the rows or columns that you want. While indexes dramatically speed up data retrieval, they typically slow down data insertion and updates because of their size.  
-* Relational DB datatype size:  
-  | Data Type      | Size                                | Range                   |
-  |----------------|-------------------------------------|-------------------------|
-  | INT            | 4 bytes                             | 2^31 - 2^-31            |
-  | DECIMAL        | DECIMAL(10,2) might take up around 5 bytes |                         |
-  | FLOAT          | 4 bytes                             |                         |
-  | DOUBLE         | 8 bytes                             |                         |
-  | CHAR(n)        | n bytes                             |                         |
-  | VARCHAR(n)     | n bytes                             |                         |
-  | TEXT           | 64 KB                               |                         |
-  | TIMESTAMP      | 4 bytes                             |                         |
-  | BINARY(n)      | n bytes                             |                         |
-  | BLOB           | 64 KB                               |                         |
-  | BOOLEAN        | 1 byte                              |                         |
-  | UUID           | 16 bytes                            |                         |
-* test:
 
 
 ### Message Queues:  
@@ -342,6 +283,16 @@ MQ is a queue that routes messages from a source to a destination, or from sende
 * Merkle trees: Is a binary tree of hashes, in which each internal node is the hash of its two children, and each leaf node is a hash of a portion of the original data. Replicas can contain a lot of data. Splitting up the entire range to calculate checksums for comparison is not very feasible, because there's so much data to be transferred. Merkle trees enable us to easily compare replicas of a range.  
 * Leader election: Is the process of designating a single process as the organizer of tasks distributed across several computers. Leader election improves efficiency, simplifies architectures, and reduces operations.  
 
+### API Gateway
+It serves as a centralized entry point for managing and routing requests from client to the backend services.  
+1. Routing
+2. Protocol Translation
+3. Request Aggregation
+4. Authentication and Authorization
+5. Rate limiting and throttling
+6. Load Balancing
+7. Caching
+8. Monitoring and Logging
 
 ### Communication - TCP/UDP/REST/RPC
 * TCP
@@ -429,6 +380,7 @@ Long-Polling: The server may not respond immediately - Hanging GET
 3. When an update is available, the server sends a complete response to the client
 4. The client typically sends a new long-poll request, either immediately upon receiving a response or after a pause to allow an acceptable latency period.
 5. Each Long-Poll request has a timeout. Therefore, the client has to reconnect periodically after the connection is closed due to timeouts.
+Use case : notification system, Live scores, real-time dashboards.
 
 WebSocket:  
 It provides a persistent connection between a client and server that both parties can use to start sending data at any time. The WebSocket protocol enables the communication between a client and a server with lower overheads, facilitating real-time data transfer from and to the server.  
@@ -437,6 +389,12 @@ Server-Sent Events:
 1. The client opens a connection and request data from the server using regular HTTP
 2. The server sends the data to the client whenever there's new information available  
 SSE are best when we need real-time traffic from the server to the client or if the server is generating data in a loop and send multiple events to the client.
+
+### Search
+
+Elasticsearch is a powerful search engine that excels in full-text search, complex query execution, and handling high-volume traffic efficiently. At its core, Elasticsearch operates using inverted indexes, a key feature that makes it highly efficient for search operations.  
+Inverted indexes allow Elasticsearch to quickly locate and retrieve data by mapping each unique word to the documents or records it appears in, significantly speeding up search queries.
+
 
 ## Data Structure Or Method
 ### Quadtree
@@ -484,7 +442,7 @@ encode method: base32 / base64
   * However, you also need to consider padding, which is added to make the length a multiple of 4. In this case, you don't need any padding because 20 is already a multiple of 4.
   * So, the encoded URL will be 20 characters long when using Base64 encoding for a 128-bit MD5 hash.
   
-### Consistent Hashing
+### Consistent  
 Consistent Hashing
 In order to solve the above problem, consistent hashing is used because in this technique on average r/n needs to be remapped, where r is the number of records and n is the number of servers slots. It should be done when:  
 * There are a number of servers that need to be scaled up or down depending upon the load.
@@ -587,6 +545,39 @@ Three major focus areas in your prep plan should include the **fundamentals of d
 
 ### Design Yelp (TODO)
 [ref](https://www.educative.io/blog/top-10-system-design-interview-questions#proximity)
+
+### Design Spotify
+Design Spotify
+
+1. Let me clarify some requirements.
+
+Songs -> Find and play music
+Playlist
+Users
+Artist
+Podcast
+
+Which area do you want to focus on for today’s design  -> Use case: Find and play music
+
+Numbers:
+1. Song storage: 3MB per song
+2. Song metadata: 100 bytes per
+3. User metadata: 1KB per
+
+1 billion users
+Per use 1 KB -> 10^9 KB = 1TB
+100 million songs
+Per song 5 MB -> total storage 100 * 10^6 * 5 = 500 TB
+3x replication
+100B per song metadata
+
+Traffic, how many active users, songs, -> bandwidth
+
+Basic Components
+
+Client -> LB -> WebServer -> DB
+
+
 
 
 ### List of common System Design Interview questions
