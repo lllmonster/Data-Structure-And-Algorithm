@@ -38,6 +38,8 @@
     - [Load Balancer](#load-balancer)
     - [Reverse proxy (web-server)](#reverse-proxy-web-server)
     - [Distributed File System (DFS)](#distributed-file-system-dfs)
+  - [Common Issue](#common-issue)
+    - [Hot key issue in redis](#hot-key-issue-in-redis)
   - [Interview Guide - Common Questions](#interview-guide---common-questions)
     - [Design Uber](#design-uber)
     - [Design TinyURL (DONE)](#design-tinyurl-done)
@@ -72,8 +74,13 @@ https://bytebytego.com/courses/system-design-interview/back-of-the-envelope-esti
 
 ### Interview
 45-60 min interview
-15min: get requirements (functional and non-functional)
-30min: design (api, architecture, databse, etc)
+Requirements (functional, non-functional, capacity) - 5 min
+Core Entity - 2 min
+API - 5 min
+Data Flow (optional) - 5 min
+High Level Design - 10-15 min
+Deep Dive - 10 min
+
 ### To be seen
 Priority 1:
 * Grokking the system design interview
@@ -208,6 +215,10 @@ Online Resources:
 |40	|1 Trillion	|1 Terabyte	|1 TB
 |50	|1 Quadrillion	|1 Petabyte	|1 PB
 
+Memory access time: ~100 nanoseconds (0.0001 ms)  
+SSD access time: ~0.1 milliseconds  
+HDD access time: ~10 milliseconds  
+
 ## Component
 
 ### Non-functional ability:
@@ -279,6 +290,11 @@ MQ is a queue that routes messages from a source to a destination, or from sende
 * Bloom filters: Are probabilistic data structures designed to answer the set membership question: Is this element present in the set? Bloom filters are highly space-efficient and do not store actual items. They determine whether an item does not exist in a set or if an item might exist in a set. They can't tell if an item is definitely presently in a set. An empty Bloom filter is a bit vector with all bits set to zero.  
 * Consistent hashing: maps data to physical nodes and ensures that only a small set of keys move when servers are added or removed. Consistent hashing stores the data managed by a distributed system in a ring. This concept is important within distributed systems and works closely with data partitioning and data replication.  
 * Quorum: is the minimum number of servers on which a distributed operation needs to be performed successfully before declaring the operation's overall success.
+  * Sloppy quorum & Hinted Handoff: allows operations to proceed even if only a subset nodes are available
+    * if the required nodes for a write quorum are unavailable, the system temporarily writes the data to any available nodes (referred as hinted nodes). Once the node is recovered, hinted nodes will transfer data back to the original node.
+    * Similarly, read operations can be satisfied by querying any nodes which hold the relevant data.
+    * Pros: Fault tolerance, Improved Latency, Flexibility, Eventual Consistency
+    * Cons: Temporary inconsistency, increased complexity, potential of data loss, Resource Overhead, Delay in consistency
 * Checksum: It verifies that the data received from the server matches the stored checksum.  
 * Merkle trees: Is a binary tree of hashes, in which each internal node is the hash of its two children, and each leaf node is a hash of a portion of the original data. Replicas can contain a lot of data. Splitting up the entire range to calculate checksums for comparison is not very feasible, because there's so much data to be transferred. Merkle trees enable us to easily compare replicas of a range.  
 * Leader election: Is the process of designating a single process as the organizer of tasks distributed across several computers. Leader election improves efficiency, simplifies architectures, and reduces operations.  
@@ -480,6 +496,14 @@ A DFS is critical in situations where you need:
 * location independency
 * scalability
 * fault tolerance
+
+## Common Issue
+### Hot key issue in redis
+1. identify hot key
+2. choose appropriate data structure
+3. client-side caching
+4. cache server
+5. compresse the value, or store value externally
 
 
 ## Interview Guide - Common Questions
