@@ -35,9 +35,7 @@
          1. give us more control over the redirection process for update or expire links
          2. prevent browser from cacheing the redirect, which will cause the issue if we need to change or delete short url in the future
          3. allow us to track click statistics for each short url
-6. Diagram
-![Diagram](../../image/shortenurl-1.png)
-7. Deep Dive
+6. Deep Dive
    1. how to ensure short url is unqiue?
       1. increment a global counter and encode it -> easy to scale with proper counter management -> BUT it's challenge to maintain a single global counter
          1. when we try to scale our write service, the counter need to be accesiable for all write instances. -> To resolve this, we can use a centralized Redis instance to store the counter. Redis is single-threaded and is very fast for this use case. It also supports atomic increment operations which allows us to increment the counter without any issues.
@@ -56,3 +54,6 @@
       1. each row consist of : shortUrl(8 bytes), longUrl(100bytes),createdAt(8bytes),customAlias(100bytes),expiredAt(8bytes) -> total ~100 bytes, around up to 500 bytes for additional metadata -> store 1b mappings, we need 1B * 500bytes = 500GB storage -> most of db can support it
       2. what if db goes down -> data replication
       3. As our read throughput is much larger than write throughput, we can split primary server into Read Service and Write Service. And horizontally scale each of them.
+7. Diagram
+![Diagram](../../image/shortenurl-1.png)
+
