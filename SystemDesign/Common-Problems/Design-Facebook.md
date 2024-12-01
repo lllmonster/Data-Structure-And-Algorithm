@@ -57,3 +57,43 @@
    4. page through their feed
    5. (optional) like and comment the post
    6. (optional) have restricted visibility
+2. Non-Funtional Requirements
+   1. HA
+   2. low latency
+   3. handle massive number of users
+   4. able to follow unlimited users
+3. Core Entity
+   1. User
+   2. Follow
+   3. Post
+4. API
+   1. create post
+   ```
+   POST /post/create
+   {content} -> postId
+   ```
+   2. follow people
+   ```
+   POST /user/{id}/follow
+   ```
+   3. get feed
+   ```
+   GET /feed
+   -> Post[]
+   ```
+5. High-level Design
+   1. API gateway -> Post Service -> Post DB
+   2. API gateway -> Follow Service -> Follow DB
+   3. API gateway -> Feed Service -> Post & Follow DB
+6. Deep Dive
+   1. How to handle users who are following a large number of users?
+      1. in this case, the query to the Follow table will take a while and build feed. This problem is known as "Fan-out" - a single requests fans out to create many more requests. -> The instinct way is we should compute feed on write action rather than the read time -> we can have a precomputed Feed table which is just a list of postIds, stored in chronological order, and limited to a small number. -> Challenge would be write.
+   2. How to handle users with a large number of followers?
+      1. It's a simliar fanout problem when we create a post : we need to write to millions of Feed records. We can use Async workers with Hybrid Feeds.
+         1. Async workers: we can queue up write requests and have a fleet of workers consume these requests and update feeds. Each worker will look up all the followers and prepend the post to the feed entry. -> Some worker might do a lot of work while others are only writing a few. Instead of just write a postId and UserId in the event, we could also include a partition of followers so that we can split the work across many workers.
+         2. Hybrid Feeds: we can choose which account we'd like to pre-calculate and which we do not. For celebrity, instead of writing to 100 million followers we can instead add a flag to the Follow table which indicates this particular follow isn't precomputed. In the async worker queue, we will ignore these requests. Once user read, we can merge precomputed feed with recent posts from those celebrity.
+   3. How to handle uneven reads of posts?
+      1. For the vast majority of posts, they will be read for a few days and never read again. For some celebrity, the read of post in the first few hours will be massive.
+      2. We can use cache for posts and set a TTL -> Challenge: hot shard issue
+7. Diagram
+![Diagram](../../image/FB-newsfeed1.png)
