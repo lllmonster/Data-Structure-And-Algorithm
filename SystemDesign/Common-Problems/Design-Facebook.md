@@ -97,3 +97,62 @@
       2. We can use cache for posts and set a TTL -> Challenge: hot shard issue
 7. Diagram
 ![Diagram](../../image/FB-newsfeed1.png)
+
+# Post Search
+1. Functional Requirements
+   1. create and like posts
+   2. search post by keyword
+   3. sort search results by recency or like count
+   4. (optional) support fuzzy matching on terms
+   5. (optional) privacy rules and filters
+   6. (optional) ranking
+   7. (optional) image and media
+   8. (optional) realtime updates
+2. Non-Functional Requirements
+   1. fast query time
+   2. support a high volume of requests
+   3. new posts must be searchable in 1 min
+   4. HA
+3. Scale Estimations
+   1. 1B users
+   2. post created: 10k posts/sec
+   3. likes created: 100k likes/ sec
+   4. searchs: 10k search / sec
+   5. searchable post: 1B posts/day * 365 * 10 years = 3.6T posts
+   6. raw size : 3.6T * 1kb/post = 3.6 PB
+4. Core Entity
+   1. User
+   2. Post
+   3. Like
+5. API
+   1. search `GET /search?query={QUERY}&sort_order=LIKES|TIME`
+   2. create post `POST /post`
+   3. like a post `POST /post/{id}/like`
+6. High-level Design
+   1. PostService / LikeService -> LB -> Ingestion Service <-> Index
+   2. Client -> API Gateway -> Search Service -> Index : Create an Inverted Index (which we can create a dictionary that maps keywords to the documentId). Here we can create a map from keywords to posts. -> Challenge: postIds are going to get very large, especially for common keywords. Also there would be many keys for every post, we need to handle this scaling part.
+   3. Search results by recency or like count : we can use multiple indexs, one sorted by creation time and one sorted by like count. Use redis to store these index.
+7. Deep Dive
+   1. How to handle large volume of requests from users? : our in-memory reverse-index based system is quite fast, but we are going to handle a lot of traffic. we can use a CDN to cache at the edge. -> Most CDNs operate like a big set of geographically-spread HTTP caches. We can append `cache-control` headers to our `/search` endpoint and tell CDN when and how long to cache a result
+   2. How to handle multi-keyword, phrase queries? 
+      1. Intersection and Filter : get Taylor and Swify result and intersect them. But this would be slow.
+      2. Bigrams and Shingles: The idea is simple: in this sentence:  
+        "I saw Taylor Swift at the concert"  
+        We can create tokens for each pair of words:  
+        "I saw"  
+        "saw Taylor"  
+        "Taylor Swift"  
+        "Swift at"  
+        "at the"  
+        "the concert"    
+        These can be inserted into our "Likes" and "Creation" indexes. When we want to search for "Taylor Swift", instead of grabbing "Taylor" and "Swift", then intersecting the results, we can go straight to the "Taylor Swift" entry and grab the relevant postIds directly.  
+        The biggest problem with this approach is that it dramatically increases the size of our indexes.  
+    3. How to address the large volume of writes?
+       1. Post creation: when post is created and a post has 100 words, we need to trigger 100+ writes. If a lots of posts are created simultaneously, our ingestion service might get overwhelmed. -> We can partition the incoming requests. By using stream like Kakfa, we can fan out the creation requests to multi ingestion instances and partition the load. We can also buffer requests. Finally, we can scale out our index by sharding the indexes by keyword. This way writes to the indexes are spread across many indexs.
+       2. Like Event: like counts would be far larger than post creations. We can involve a Two stage architecture. First, we can write to the index with only specific milestones like powers of 2 or 10. This reduces the number of writes exponentially. Instead of 1000 writes for 1000 likes, we only need 10.
+    4. How to optimize storage of our system? This system is indexing an impressive amount of data, but our users are likely only interested in a vanishingly small portion of it. How can we optimize storage?
+       1. First, we can put caps and limits on each of our inverted indexes. We probably won't need all 10M posts with "Mark" contained somewhere in their contents. By keeping our indexes to 1k-10k items, we can reduce the necessary storage by orders of magnitude.
+       2. Next, most keywords won't be searched often or even at all. Based on our search analytics, we can run a batch job to move rarely used keywords to a less frequently accessed but ultimately cheaper storage. One way to do this is to move these keyword indexes to cold, blob storage like S3 or R2.
+       3. On a regular basis we'll determine which keywords were rarely (or not at all) accessed in the past month. We'll move these indexes from our in-memory Redis instance to a blob in our blob storage. When the index needs to be queried, we'll first try to query Redis. If we don't get our keyword there, we can query the index from our blob storage with a small latency penalty.
+8. Diagram
+![Diagram](../../image/FB-postsearch1.png)
