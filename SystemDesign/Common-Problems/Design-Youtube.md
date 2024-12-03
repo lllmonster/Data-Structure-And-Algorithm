@@ -22,7 +22,7 @@
    2. video
    3. videoMetadata
 4. API
-   1. upload a vide 
+   1. upload a video 
    ```
    POST /upload 
    {Video, VideoMetadata}
