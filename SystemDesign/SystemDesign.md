@@ -16,7 +16,7 @@
     - [Vertical scaling:](#vertical-scaling)
     - [Microservice:](#microservice)
     - [Proxy server:](#proxy-server)
-    - [Database](#database)
+    - [Data Models](#data-models)
     - [PACELC theorem:](#pacelc-theorem)
     - [Redundancy and replication](#redundancy-and-replication)
     - [Storage:](#storage)
@@ -221,12 +221,30 @@ HDD access time: ~10 milliseconds
 
 ## Component
 
+![Diagram](../image/ddia-ch1-1.png)
+
 ### Non-functional ability:
-* Robustness (the ability to maintain operations during a crisis)
+* Reliability
+  * Fault tolerance
+  * No unauthorized access
+  * chaos testing
+  * Automating test
+  * Staging environment
+  * Quick roll-back
 * Scalability
+  * handle high traffic volume
+  * traffic load with peek of read/write
+  * Capacity planning
+  * Response time vs throughput
+  * End user response time
+  * Scale up
 * Availability: availability is about ensuring the system remains accessible and operational over time
-* Performance
-* Extensibility
+* Maintainability
+  * Add new people to work
+  * productivity
+  * Operable, configurable and testable
+  * Simple
+  * Evolveable
 * Resiliency (the ability to return to normal operations over an acceptable period of time post disruption)
 * Redundancy is about building backups and fail-safes into a system
   * Redundancy is a key strategy used to achieve high availability, but availability also depends on other factors, including effective failover mechanisms, maintenance practices, and system architecture.
@@ -247,7 +265,7 @@ structures an application using loosely coupled services.
 
 act as a channel between a user and the internet. (improved security, privacy; access to blocked resources; cache data to speed up request; control of internet usage)
 
-### [Database](Database.md)
+### [Data Models](Database.md)
 
 
 ### PACELC theorem: 
