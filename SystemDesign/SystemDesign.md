@@ -34,7 +34,7 @@
   - [Data Structure Or Method](#data-structure-or-method)
     - [Quadtree](#quadtree)
     - [Hash and Encode](#hash-and-encode)
-    - [Consistent  ](#consistent-)
+    - [Consistent Hashing](#consistent-hashing)
     - [Load Balancer](#load-balancer)
     - [Reverse proxy (web-server)](#reverse-proxy-web-server)
     - [Distributed File System (DFS)](#distributed-file-system-dfs)
@@ -306,7 +306,7 @@ MQ is a queue that routes messages from a source to a destination, or from sende
 
 ### System Design patterns:  
 * Bloom filters: Are probabilistic data structures designed to answer the set membership question: Is this element present in the set? Bloom filters are highly space-efficient and do not store actual items. They determine whether an item does not exist in a set or if an item might exist in a set. They can't tell if an item is definitely presently in a set. An empty Bloom filter is a bit vector with all bits set to zero.  
-* Consistent hashing: maps data to physical nodes and ensures that only a small set of keys move when servers are added or removed. Consistent hashing stores the data managed by a distributed system in a ring. This concept is important within distributed systems and works closely with data partitioning and data replication.  
+* [Consistent hashing](#consistent-hashing)
 * Quorum: is the minimum number of servers on which a distributed operation needs to be performed successfully before declaring the operation's overall success.
   * Sloppy quorum & Hinted Handoff: allows operations to proceed even if only a subset nodes are available
     * if the required nodes for a write quorum are unavailable, the system temporarily writes the data to any available nodes (referred as hinted nodes). Once the node is recovered, hinted nodes will transfer data back to the original node.
@@ -476,8 +476,7 @@ encode method: base32 / base64
   * However, you also need to consider padding, which is added to make the length a multiple of 4. In this case, you don't need any padding because 20 is already a multiple of 4.
   * So, the encoded URL will be 20 characters long when using Base64 encoding for a 128-bit MD5 hash.
   
-### Consistent  
-Consistent Hashing
+### Consistent Hashing
 In order to solve the above problem, consistent hashing is used because in this technique on average r/n needs to be remapped, where r is the number of records and n is the number of servers slots. It should be done when:  
 * There are a number of servers that need to be scaled up or down depending upon the load.
 * There are cache servers that need to be scaled.

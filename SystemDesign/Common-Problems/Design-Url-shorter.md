@@ -12,11 +12,14 @@
    3. shorten url need to be unqiue
    4. support 1B shortened URLs and 100M DAU
    5. (optional) Advanced security features like spam detection and malicious URL filtering.
-3. Core Entity
+3. Estimation
+   1. read-heavy, 100:1 r/w ratio
+   2. Assume 500M urls per month, redirect times will be 500M * 100 = 50B per month -> 20k/s
+4. Core Entity
    1. original URL
    2. shorten URL
    3. user
-4. API
+5. API
    1. shorten url
    ```
    POST /urls
@@ -28,14 +31,15 @@
    GET /{short_url}
    -> HTTP 302 Redirect to the original long URL
    ```
-5. High-Level Design
+6. High-Level Design
    1. client -> web server (generate short url) -> DB
    2. client -> web server (redirect to the original url)
       1. Temproray redirect 302 vs Permanent redirect 301 :  302 is better
          1. give us more control over the redirection process for update or expire links
          2. prevent browser from cacheing the redirect, which will cause the issue if we need to change or delete short url in the future
          3. allow us to track click statistics for each short url
-6. Deep Dive
+   3. DB: need to store billions of records, read heady, each object is small, no relationship between record -> NoSQL would be a good choice.
+7. Deep Dive
    1. how to ensure short url is unqiue?
       1. increment a global counter and encode it -> easy to scale with proper counter management -> BUT it's challenge to maintain a single global counter
          1. when we try to scale our write service, the counter need to be accesiable for all write instances. -> To resolve this, we can use a centralized Redis instance to store the counter. Redis is single-threaded and is very fast for this use case. It also supports atomic increment operations which allows us to increment the counter without any issues.
@@ -54,6 +58,6 @@
       1. each row consist of : shortUrl(8 bytes), longUrl(100bytes),createdAt(8bytes),customAlias(100bytes),expiredAt(8bytes) -> total ~100 bytes, around up to 500 bytes for additional metadata -> store 1b mappings, we need 1B * 500bytes = 500GB storage -> most of db can support it
       2. what if db goes down -> data replication
       3. As our read throughput is much larger than write throughput, we can split primary server into Read Service and Write Service. And horizontally scale each of them.
-7. Diagram
+8. Diagram
 ![Diagram](../../image/shortenurl-1.png)
 
