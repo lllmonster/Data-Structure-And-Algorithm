@@ -1,9 +1,11 @@
 [Ref](https://www.geeksforgeeks.org/system-design-netflix-a-complete-architecture/)
+[Ref](https://www.youtube.com/watch?v=VvZf7lISfgs)  
 
 1. Functional Requirements
    1. create account, log in and out
    2. subscription
    3. stream vidoes and share, play, pause, rewind, and fast-forwarded
+      1. Need to support different devices and network speeds
    4. Download for offline viewing
    5. personalized content recommendation based on user experience and viewing history
    6. upload
@@ -32,8 +34,10 @@
 6. High-level Design
    1. User Service
    2. Video Processing Service
-      1. File Chunker -> Content Filter -> Transcoder -> Quality Conversion -> Blob Storage (S3)
-      2. We can use  Message Queue to decouple video processing pipeline from the uploads functionality.
+      1. Video Chunker -> Content Filter -> Transcoder -> Quality Conversion -> Blob Storage (S3)
+      2. Video Chunker - to support switching between multiple resolutions/encodings.
+         1. Pros: parallel upload, lower barrier to starting video, grab next chunks based on current networking abilities (we need a table to keep track of chunks)
+      3. We can use  Message Queue to decouple video processing pipeline from the uploads functionality.
    3. Streaming Service
       1. Open Connect, work with Internet Service providers to localize their traffic and deliver their content more efficiently.
       2. we can use Adaptive bitrate streaming protocols such as HTTP Live Streaming (HLS) which is designed for reliability and it dynamically adapts to network conditions by optimizing playback for the available speed of the connections.
