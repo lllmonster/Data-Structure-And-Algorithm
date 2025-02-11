@@ -10,6 +10,18 @@
    5. Graph DB: Neo4j, CosmosDB
    6. Time-Series DB: Prometheus, InfluxDB
 
+1. OLTP: online transaction processing database, optimized for latency, such as MySQL
+2. OLAP: online analytical processing database, optimized for data crunching, warehousing, column oriented, column compression, also for read / queries
+   1. materialized views, lack of flexibility
+   2. like HBase, Hive, Spark
+
+1. Row Store
+   1. \+ easy to add/modify a record
+   2. \- might read in unnecessary data
+2. Column Store
+   1. \+ only need to read in relevant data, suitable for read-mostly case.
+   2. \- tuple writes require multiple access
+
 ## Summary
 RelationalDB:  
 1. Many-to-many relationships
@@ -28,7 +40,7 @@ Key-Value Store:
 Document Store:  
 1. isolated documents
 2. retreve by a key
-3. doc with different schemas that are easy to udpate
+3. flexible schemas, high write throughptu
 4. easy to scale
 5. Suitable for content management application such as blogs and video platforms. Also effective for storing catalog information.
 

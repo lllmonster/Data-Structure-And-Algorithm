@@ -36,7 +36,7 @@
    1. Bid Service
       1. Option 1: all bids go into Kafka, ordered by log, sharded by auctionId.   
       `Client -> Kafka -> Bid Service (determine if bid is accepted or rejected)`  
-      Pros: High Kafka write throughput
+      Pros: High Kafka write throughput  
       Cons: User is notified their own status asynchronously, could be delayed.  
       2. We need a Synchronous Bids for the sake of our user experience. Option 1 is not feasible since it uses streaming processing.
       ![Bid](../../image/bid1.png)
