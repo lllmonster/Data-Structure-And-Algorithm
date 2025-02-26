@@ -342,17 +342,28 @@ It serves as a centralized entry point for managing and routing requests from cl
     * The server response repeats the steps above in reverse order.
   * Popular RPC frameworks include Protobuf, Thrift, and Avro
   * RPC is focused on exposing behavior. It is often used for performance reasons with internal communications, 
-* RPC vs REST:
-  * RPC is typically used to call remote functions on a server that require an action result. Use case:
-    * Take a picture with a remote device’s camera
-    * Use a machine learning algorithm on the server to identify fraud
-    * Transfer money from one account to another on a remote banking system
-    * Restart a server remotely
-  * REST API is typically used to perform create, read, update, and delete (CRUD) operations on a data object on a server. Use case:
-    * Add a product to a database
-    * Retrieve the contents of a music playlist
-    * Update a person’s address
-    * Delete a blog post
+  * Pros:
+    * It works well for internal communication between services, as it provides a more efficient and direct method of invoking functions or methods across networked systems.
+    * High Performance or Low Latency, as it often uses binary protocols (like gRPC) rather than text-based formats like JSON or XML used in REST
+    * Complex Operations (Batching Calls)
+    * gRPC - Strong Typing and Code Generation, Cross language Support
+    * Streaming Data (Bidirectional Communication)
+  * Cons:
+    * While RPC can be more efficient for certain scenarios, REST is often more suitable for web applications, public APIs, and loosely coupled systems. REST is stateless, easy to cache, and uses HTTP, which is universally supported. It’s especially advantageous when building public APIs, as it allows for easy integration with third-party applications and is simpler for developers to interact with, often using tools like curl or Postman.
+* REST vs RPC
+  * Use RPC when:
+    - You need high-performance, low-latency communication.
+    - The system involves tightly coupled services or internal communication.
+    - You require strong typing and automatic code generation.
+    - Streaming or bidirectional communication is important.
+    - You're working in a controlled environment with known interfaces.
+  * Use REST when:
+    - You need a simpler, stateless communication protocol.
+    - Your application involves loosely coupled systems, or you are building public APIs.
+    - You want to leverage HTTP features such as caching, scalability, and simplicity.
+    - You need easy integration with web clients or external consumers.
+
+
 
 ### Distributed systems: 
 
