@@ -215,9 +215,37 @@ Online Resources:
 |40	|1 Trillion	|1 Terabyte	|1 TB
 |50	|1 Quadrillion	|1 Petabyte	|1 PB
 
+ns = nanosecond, us = microsecond, ms=millisecond
+
 Memory access time: ~100 nanoseconds (0.0001 ms)  
 SSD access time: ~0.1 milliseconds  
 HDD access time: ~10 milliseconds  
+
+Example : Estimate Twitter QPS ans storage requirements  
+Assumptions:  
+- 300 million monthly active user
+- 50% users use Twitter daily
+- user post 2 tweets per day on average
+- 10% tweets contain media
+- data is stored for 5 years
+
+Estimiations:  
+- Query per second (QPS)
+  - 300 * 50% * 2 tweets / 24 hour / 3600 seconds =~ 3500
+  - Peek QPS = 2 * 3500 = 7000
+- Media storage
+  - Average tweet size : 64 bytes id + 140 bytes text + 1MB media = ~1MB
+  - 150 million * 2 * 10% * 1MB =~ 30 TB per day
+  - 5 year storage = 30 TB * 365 * 5 = 55 PB
+
+Commonly asked estimation:  
+ - QPS, peak QPS
+ - Bandwidth and Traffic 
+ - storage
+ - cache
+ - number of server
+
+
 
 ## Component
 
