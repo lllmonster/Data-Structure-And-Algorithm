@@ -17,7 +17,7 @@
     - [Microservice:](#microservice)
     - [Proxy server:](#proxy-server)
     - [Data Models](#data-models)
-    - [PACELC theorem:](#pacelc-theorem)
+    - [CAP theorem:](#cap-theorem)
     - [Redundancy and replication](#redundancy-and-replication)
     - [Storage:](#storage)
     - [Message Queues:](#message-queues)
@@ -295,15 +295,14 @@ act as a channel between a user and the internet. (improved security, privacy; a
 
 ### [Data Models](Database.md)
 
+### CAP theorem:
+* Consistency : means all cliens see the same data at the same time no matter which node they connect to 
+* Availability: means any client which requests data get a response even if some of the nodes are down
+* Parition Tolerance : a parition indicates a communication break between two nodes. Partition tolerance means the system continues to operate despite network paritions.
 
-### PACELC theorem: 
-
-states the following about a system that replicates data  
-* if statement: if there's a partition, a distributed system can trade off between availability and consistency. (CAP theorem)  
-* else statement: if there's no partition, the system can trade off between latency and consistency.  
-* Examples of a PC/EC system include BigTable and HBase. They'll always choose consistency, giving up abailability and lower latency.
-* Example of a PA/EL system include Dynamo and Cassandra. They choose availability over consistency when a partition occurs. Otherwise, they choose lower latency.
-* Example of PA/EC system include MongoDB, in the case of partition, it chooses availability, but otherwise guarantees consistency.
+CAP theorem stats that one of the three properties must be sacrificed to support 2 of the 3 properties.
+* In real world, network failure is unavoidable. And when a parition occurs, we must choose between consistency and availability
+* If we choose consistency over availability (CP system), we must block all write operations to n1 and n2 to avoid data inconsistency among three servers, which makes system unavailable. E.g. bank system 
 
 ### Redundancy and replication
 

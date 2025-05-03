@@ -1,5 +1,83 @@
+- [System Design - Key Value Store](#system-design---key-value-store)
+- [System Design - Dynamo](#system-design---dynamo)
 
-System Design - Dynamo
+
+# System Design - Key Value Store
+Ref : System Design Interview - An Insider's Guide_ Volume 2  
+
+There's no perfect design. Each design achieves a specific balance regrading the tradeoffs of the read, write and memory usage. Another tradeoff has to be made was between consistency and avaiability.
+
+1. Requirements
+   1. The size of key-value pair is small : less than 10kb
+   2. ability to store big data
+   3. High Availability: The system response quickly, even during failures
+   4. High scalability: The system can be scaled to support large data set
+   5. Automatica scaling: The addition/deletion of servers should be automatic based on traffic
+   6. Tunable consistency
+   7. Low latency
+2. Single server key-value store
+   1. Two optimizations can be done to fit more data in a single server:
+      1. Data compression
+      2. Store only frequently used data in memory and the rest on disk
+3. Distributed key-value store
+   1. [CAP theorem](../SystemDesign.md#cap-theorem)
+4. Core components:
+   1. Data parition
+      1. Two challenge : distribute data evenly & minimize data movement -> use Consistent Hashing & Virtual Nodes to resolve.
+   2. Data replication
+   3. Consistency
+      1. Quorum consensus can gurarantee consistency for both read and write operations.
+         1. R=1 and W=N: fast read
+         2. R=N and W=1, fast write
+         3. W+R > N: strong consistency is guaranteed
+         4. W+R <= N: strong consistency is not guaranteed
+   4. Inconsistency resolution : versioning
+      1. Replication gives high availability but causes inconsistencies among replicas. Versioning and vector locks are used to solve inconsistency problems.
+      2. Eevn though vector clocks can resolve conflicts, there are two downside: a. add complexity b. version pair can grow rapidly
+   5. Handling failures
+      1. Failure detection: Gossip protocol
+      2. Handling temproray failures: sloppy quorum & hinted handoff
+      3. Handling permanent failures: anti-entropy protocol to keep replicas in sync (Merkle tree)
+      4. Handling data center outage
+   6. System architecture diagram
+      1. ![diagram](../../image/kayvaluestore1.png)
+      2. Main features are listed as follows:
+         1. Clients communicate with the key-value store through simple APIs: get(key) and put(key, value)
+         2. A coordinator is a node that acts as as proxy between the client and the key-value store
+         3. Nodes are distributed on a ring using consistent hashing
+         4. The system is completely decentralized so adding and moving nodes can be automatic
+         5. Data is replicated at multiple nodes
+         6. There's no single point of failures as every node has the same set of responsibilies.
+      3. Each node performs many tasks as follows:
+         1. Client API
+         2. Confilct resolution
+         3. Replication
+         4. Failure detection
+         5. Failure repair mechanism
+         6. Storage engine
+   7. Write path
+      1. ![diagram1](../../image/keyvaluestore2.png)
+   8. Read path
+      1. ![diagram2](../../image/keyvaluestore3.png)
+         1. After a read request is directed to a specific node, it first check if data is in memory cache. If so, the data is returned to the client
+      2. ![diagram3](../../image/keyvaluestore4.png)
+         1. If the data is not in memoryy, it will be retrieved from the disk instead. We need an efficient way to find out which SSTable contains the key. *Bloom* filter is commonly used to solve this problem.
+   9. Summary  
+      1.  | Goal/Problems	| Technique 
+			| -------|------------
+			| Ability to store big data | Use consistent hashing to spread load across servers
+			| High availability reads | Data replication; Mutl-datacenter setup
+			| High availability writes | Versioning and conflict resolution with vector clocks
+			| Dataset parition | Consistent Hashing
+			| Incremental scalability | Consistent Hashing
+			| Heterogeneity | Consistent Hashing
+			| Tunable consistency | Quorum consensus
+			| Handling temporary failures | Sloppy quorum and hinted handoff
+			| Handling permanent failures | Merkle tree
+			| Handling data center outage | Cross-datacenter replication
+
+
+# System Design - Dynamo
 
 key-value store (HA, Scalable, decentralized, eventual consistency)
 (dynamo1.png)
