@@ -1,3 +1,4 @@
+# System Design 1
 [REF](https://www.hellointerview.com/learn/system-design/answer-keys/bitly)
 
 1. Functional Requirements
@@ -61,3 +62,42 @@
 8. Diagram
 ![Diagram](../../image/shortenurl-1.png)
 
+# System Design 2
+Ref : System Design Interview - An Insider's Guide_ Volume 2
+
+1. Requirements
+   1. URL shortening - return a much shorter URL
+   2. URL redirecting
+   3. High availability, scalability, and fault tolerance considerations
+2. Estimiation
+   1. Write Operation : 100 millions URLs are generated per day
+   2. Write operation per second : 100 million / 24 / 3600 = 1000 per second
+   3. Read operation: assuming r/w ratio is 10:1, it will be 10,000 per second
+   4. Assuming service will run 10 years, storage will be 100 million * 365 * 10 * 100bytes = 36.5 TB
+3. High-level design
+   1. API Endpoints
+      1. URL shortening: `POST api/v1/data/shorten`
+         1. Request parameter: {longURL}
+         2. Return short URL
+      2. URL redirecting: `GET api/v1/shortURL`
+         1. Return long URL for HTTP redirection
+   2. URL redirecting [!diagram](../../image/urlshorter1.png)
+      1. [301 redirect vs 302 redirect](../SystemDesign.md#http-status)
+   3. URL shortening
+      1. We must find a hash function fx which satisfy the following requirements
+         1. unqiue
+         2. can be decoded
+4. Deep Dive
+   1. Data Model: id, shortURL, long URL
+   2. Hash function
+      1. Hash value length: 0-9,a-z,A-Z total 62 characters, we need to find the smallest n such that 62^n >= 365 billion -> n is 7.
+      2. Hash + collision resolution: Use well known hash functions like CRC32/MD5/SHA-1, collect the first 7 characters of a hash value; recrusively append a new predefined string until no more collision is discovered.
+         1. This method can elminate collision; however, it is expensive to query the database to check if a shortURL exists for every request. A technique called bloom filters can improve performance. 
+      3. Base 62 conversion ![diagram](../../image/urlshorter2.png)
+         1. length is not fixed; collision is not possible; next available shortURL is easy to figure out.
+5. Additional Points
+   1. Rate limiter
+   2. Web server scaling
+   3. Databse scaling
+   4. Analytics
+   5. Availability, consistency, and reliability

@@ -25,6 +25,7 @@
     - [System Design patterns:](#system-design-patterns)
     - [API Gateway](#api-gateway)
     - [Communication - TCP/UDP/REST/RPC](#communication---tcpudprestrpc)
+    - [HTTP status](#http-status)
     - [Distributed systems:](#distributed-systems)
     - [CDN (Content-delivery-network)](#cdn-content-delivery-network)
     - [Scalable web applications:](#scalable-web-applications)
@@ -390,6 +391,13 @@ It serves as a centralized entry point for managing and routing requests from cl
     - You want to leverage HTTP features such as caching, scalability, and simplicity.
     - You need easy integration with web clients or external consumers.
 
+
+### HTTP status 
+- 301 vs 302
+  - 301 redirect: shows that the requested URL is "permanently" moved to the long URL. Since it is permanently redirected, the browser caches the reponse, and subsequent requests for the same URL will not be sent to the backend service. Instead, requests are redirected to the long URL server directly
+    - pros: reduce the server load
+  - 302 redirect: means that the URL is "temporarily" moved to the long URL, meaning the subsequent requests from the same URL will be sent to the backend service first. Then, they are redirecte to the long URL server.
+    - pros: analytics (track click rate and source of the click more easily)
 
 
 ### Distributed systems: 
